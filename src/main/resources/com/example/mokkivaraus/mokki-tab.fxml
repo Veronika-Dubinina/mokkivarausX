@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox prefHeight="400.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.mokkivaraus.MokkiController">
+    <children>
+        <HBox alignment="CENTER_RIGHT" prefHeight="31.0" prefWidth="600.0" spacing="5.0">
+            <children>
+            <HBox HBox.hgrow="ALWAYS">
+               <children>
+                  <TextField fx:id="searchTF" promptText="Haku" style="-fx-border-radius: 5 0 0 5; -fx-background-radius: 5 0 0 5;" HBox.hgrow="ALWAYS">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </TextField>
+                  <ComboBox fx:id="searchFilterCB" onAction="#setSearchFilter" prefHeight="28.0" prefWidth="122.0" promptText="Hakusuodatin" style="-fx-border-radius: 0 5 5 0; -fx-background-radius: 0 5 5 0;" />
+               </children>
+            </HBox>
+                <Button mnemonicParsing="false" onAction="#onAddBtnClicked" style="-fx-background-color: lightgreen;" text="Lisää mökki +">
+               <font>
+                  <Font size="14.0" />
+               </font></Button>
+                <Button mnemonicParsing="false" onAction="#onRefreshBtnClicked" style="-fx-background-color: #ff677f;" text="Päivitä">
+               <font>
+                  <Font size="14.0" />
+               </font></Button>
+            </children>
+            <padding>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            </padding>
+        </HBox>
+        <TableView fx:id="mokkiTable" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="SOMETIMES">
+            <columns>
+                <TableColumn id="mokki_id" prefWidth="83.96708989143372" text="ID" />
+                <TableColumn id="mokki_nimi" prefWidth="105.53289794921875" text="NIMI" />
+                <TableColumn id="mokki_postinro" prefWidth="77.83833312988281" text="POSTINRO" />
+                <TableColumn id="mokki_osoite" prefWidth="156.74249267578125" text="OSOITE" />
+                <TableColumn id="mokki_hinta" prefWidth="89.757568359375" text="HINTA" />
+                <TableColumn id="mokki_kuvaus" prefWidth="164.69158935546875" text="KUVAUS" />
+                <TableColumn id="mokki_henkilomaara" prefWidth="58.0628662109375" text="HM" />
+                <TableColumn id="mokki_varustelu" prefWidth="164.0" text="VARUSTELU" />
+            </columns>
+            <columnResizePolicy>
+                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+            </columnResizePolicy>
+        </TableView>
+    </children>
+</VBox>

@@ -1,14 +1,39 @@
 package com.example.mokkivaraus;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
+import javafx.scene.text.Text;
 
-public class HelloController {
-    @FXML
-    private Label welcomeText;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class MainController implements Initializable {
 
     @FXML
-    protected void onHelloButtonClick() {
-        welcomeText.setText("Welcome to JavaFX Application!");
+    public AnchorPane topPane;
+
+    @FXML
+    public TabPane contentPane;
+
+    @FXML
+    private Tab mokkiTab;
+
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(getClass().getResource("mokki-tab.fxml"));
+            VBox view = fxmlLoader.load();
+            mokkiTab.setContent(view);
+        } catch (IOException e) {
+            System.out.println("load excp");
+            throw new RuntimeException(e);
+        }
+
     }
 }

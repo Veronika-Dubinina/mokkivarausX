@@ -4,7 +4,7 @@ import javafx.scene.control.*;
 
 import java.util.HashMap;
 
-public class MokkiDialogController extends DialogController{
+public class MokkiDC extends DialogController{
     // Attributes
     private Mokki mokki = new Mokki();
 
@@ -18,20 +18,25 @@ public class MokkiDialogController extends DialogController{
     private TextArea varusteluArea = new TextArea();
 
     // Constructor
-    public MokkiDialogController(String tableName, String identifierKey, Object identifierValue, boolean editMode) {
-        super(tableName, identifierKey, identifierValue, editMode);
+    public MokkiDC(String tableName, String identifierKey) {
+        super(tableName, identifierKey);
     }
 
     // Methods
     public Mokki getMokki() {return this.mokki;}
 
-    public void setMokki(Mokki mokki) {
-        this.mokki = mokki;
+    @Override
+    void setObject(Object object) {
+        this.editMode = true;
+        this.mokki = (Mokki) object;
         this.identifierValue = mokki.getMokki_id();
     }
 
     @Override
     void setDialogContent() {
+        // DialogPane title
+        dialogTitle.setText("Lisää uusi mökki");
+
         // Labels
         formsGridPane.add(new Label("Alue:"), 0, 0, 1, 1);
         formsGridPane.add(new Label("Nimi:"), 0, 1, 1, 1);
@@ -55,6 +60,10 @@ public class MokkiDialogController extends DialogController{
 
     @Override
     void setEditContent() {
+        // DialogPane title
+        dialogTitle.setText("Päivitä mökin tiedot");
+
+        // Set data from mokki-object
         alueCmBox.setValue(dataBase.getRow("alue", "alue_id", mokki.getAlue_id(), Alue.class));
         nimiField.setText(mokki.getMokkinimi());
         postinroCmBox.setValue(dataBase.getRow("posti", "postinro", mokki.getPostinro(), Posti.class));
