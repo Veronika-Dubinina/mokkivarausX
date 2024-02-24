@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DialogPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<!-- fx:controller="com.example.mokkivaraus.MokkiDialogController" -->
+
+<DialogPane fx:id="dialogPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+    <header>
+      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="58.0" prefWidth="480.0" style="-fx-background-color: darkblue;">
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" text="Päivitä taulukko" textAlignment="CENTER" textFill="WHITE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+         </children></AnchorPane>
+    </header>
+    <content>
+      <AnchorPane fx:id="mainContent" minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="320.0">
+         <children>
+            <GridPane fx:id="formsGridPane" hgap="10.0" layoutX="22.0" layoutY="21.0" prefHeight="324.0" prefWidth="380.0" vgap="5.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+              <columnConstraints>
+                <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="179.9149932861328" minWidth="10.0" prefWidth="100.65999603271484" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="269.84000396728516" minWidth="10.0" prefWidth="269.84000396728516" />
+              </columnConstraints>
+            </GridPane>
+            <HBox alignment="TOP_RIGHT" layoutX="82.0" layoutY="391.0" prefHeight="30.0" prefWidth="200.0" spacing="5.0" AnchorPane.rightAnchor="0.0">
+               <children>
+                  <AnchorPane>
+                     <children>
+                        <Button fx:id="addBtn" minWidth="60.0" mnemonicParsing="false" onAction="#addBtnClicked" style="-fx-background-color: lightgreen;" text="Lisää" AnchorPane.rightAnchor="0.0" />
+                        <Button fx:id="deleteBtn" layoutX="65.0" minWidth="60.0" mnemonicParsing="false" onAction="#deleteBtnClicked" style="-fx-background-color: #ff8092;" text="Poista" visible="false" AnchorPane.leftAnchor="0.0" />
+                        <Button fx:id="updateBtn" layoutX="130.0" minWidth="60.0" mnemonicParsing="false" onAction="#updateBtnClicked" style="-fx-background-color: #7ed8fc;" text="Päivitä" visible="false" AnchorPane.leftAnchor="65.0" />
+                     </children>
+                  </AnchorPane>
+                  <Button fx:id="closeBtn" minWidth="60.0" mnemonicParsing="false" onAction="#closeBtnClicked" text="Sulje" />
+               </children>
+            </HBox>
+         </children></AnchorPane>
+    </content>
+</DialogPane>
