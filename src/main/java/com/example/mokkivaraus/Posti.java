@@ -22,12 +22,6 @@ public class Posti {
         }
     }
 
-    // Fill Posti from user input
-    public Posti(String postinro, String toimipaikka) {
-        this.postinro = postinro;
-        this.toimipaikka = toimipaikka;
-    }
-
     // Methods
     public String getPostinro() {
         return postinro;

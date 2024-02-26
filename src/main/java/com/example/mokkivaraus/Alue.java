@@ -22,12 +22,6 @@ public class Alue {
         }
     }
 
-    // Fill Alue from user input
-    public Alue(int alue_id, String nimi) {
-        this.alue_id = alue_id;
-        this.nimi = nimi;
-    }
-
     // Methods
     public int getAlue_id() {
         return alue_id;

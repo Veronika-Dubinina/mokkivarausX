@@ -38,26 +38,7 @@ public class Mokki {
         }
     }
 
-    // Fill Mokki from user input
-    public Mokki(int mokki_id, int alue_id, String postinro, String mokkinimi, String katuosoite, double hinta, String kuvaus, int henkilomaara, String varustelu) {
-        this.mokki_id = mokki_id;
-        this.alue_id = alue_id;
-        this.postinro = postinro;
-        this.mokkinimi = mokkinimi;
-        this.katuosoite = katuosoite;
-        this.hinta = hinta;
-        this.kuvaus = kuvaus;
-        this.henkilomaara = henkilomaara;
-        this.varustelu = varustelu;
-    }
-
-
     // Methods
-    @Override
-    public String toString() {
-        return "Mokki: " + mokki_id + " " + mokkinimi;
-    }
-
     public int getMokki_id() {
         return mokki_id;
     }
@@ -128,5 +109,10 @@ public class Mokki {
 
     public void setVarustelu(String varustelu) {
         this.varustelu = varustelu;
+    }
+
+    @Override
+    public String toString() {
+        return "Mokki: " + mokki_id + " " + mokkinimi;
     }
 }
