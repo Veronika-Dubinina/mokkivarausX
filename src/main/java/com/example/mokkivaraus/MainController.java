@@ -30,11 +30,11 @@ public class MainController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader();
-            fxmlLoader.setLocation(getClass().getResource("tab-view.fxml"));
+            FXMLLoader fxmlMokkiLoader = new FXMLLoader();
+            fxmlMokkiLoader.setLocation(getClass().getResource("tab-view.fxml"));
             MokkiController mc = new MokkiController();
-            fxmlLoader.setController(mc);
-            VBox view = fxmlLoader.load();
+            fxmlMokkiLoader.setController(mc);
+            VBox view = fxmlMokkiLoader.load();
             mokkiTab.setContent(view);
             // Загрузить вкладку здесь
         } catch (IOException e) {
