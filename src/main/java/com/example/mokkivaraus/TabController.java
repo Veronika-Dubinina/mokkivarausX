@@ -6,34 +6,38 @@ import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.ResourceBundle;
 
-abstract class TabController {
+abstract class TabController<T> implements Initializable {
     // Attributes
     protected DataBase dataBase = new DataBase();
     protected String tableName;
     protected String identifierKey;
-    protected Class tableClass;
+    protected String searchFilter = getSearchFilters()[0];
+    protected Class<T> tableClass = null;
 
     @FXML
     public TextField searchTF;
     @FXML
     public ComboBox<String> searchFilterCB;
     @FXML
-    private TableView<Mokki> mokkiTable;
+    public TableView<T> tableView;
 
     // Constructors
-    public TabController(String tableName, String identifierKey, Class tableClass) {
+    public TabController(String tableName, String identifierKey, Class<T> tableClass) {
         this.tableName = tableName;
         this.identifierKey = identifierKey;
         this.tableClass = tableClass;
@@ -44,42 +48,75 @@ abstract class TabController {
     public void onAddBtnClicked(ActionEvent event) {
         loadDialog(getController());
     }
+    @FXML
+    public void setSearchFilter(ActionEvent actionEvent) {
+        searchFilter = searchFilterCB.getValue();
+    }
+    @FXML
+    public void onRefreshBtnClicked(ActionEvent actionEvent) {
+        updateTable();
+        initSearch();
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        // Set action on table row double click
+        tableView.setRowFactory( tv -> {
+            TableRow<T> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && (! row.isEmpty()) ) {
+                    T rowData = row.getItem();
+                    DialogController dialogController = getController();
+                    dialogController.setObject(rowData);
+                    loadDialog(dialogController);
+                }
+            });
+            return row ;
+        });
+
+        // Initial table and fill it with content
+        initTable();
+        updateTable();
+
+        // Initial search
+        searchFilterCB.getItems().addAll(getSearchFilters());
+        initSearch();
+    }
 
     /**
      * Matches table columns with class attributes
-     * @param table TableView
-     * @param colToAttr Dictionary with key-value pair like column-attribute
      */
-    void initTable(TableView<?> table, HashMap<String, String> colToAttr) {
-        // Loop throw list of table columns
-        for (TableColumn<?,?> tc : table.getColumns()) {
-            // Set column cellValueFactory as class attribute
-            String id = tc.getId();
-            tc.setCellValueFactory(new PropertyValueFactory<>((String) colToAttr.get(id)));
+    void initTable() {
+        ArrayList<String[]> colToAttr = getColToAttr();
+        // Set table columns
+        for (int i = 0; i < colToAttr.get(0).length; i++) {
+            // Create new column
+            TableColumn<T, ?> tc = new TableColumn<>(colToAttr.get(0)[i]);
+            // Map column to class attribute
+            tc.setCellValueFactory(new PropertyValueFactory<>(colToAttr.get(1)[i]));
+            tableView.getColumns().add(tc);
         }
-
     }
 
     /**
      * Refreshes table
-     * @param table TableView to be refreshed
-     * @param list List of values
      */
-    void updateTable(TableView table, ObservableList list) {
+    void updateTable() {
         try {
-            table.setItems(list);
-            table.refresh();
-        } catch (Exception e) {
-            System.out.println(e);
+            ObservableList<T> list = dataBase.getAllRows(tableName, identifierKey, tableClass);
+            tableView.setItems(list);
+            tableView.refresh();
+        } catch (Exception ex) {
+            System.out.println(ex.toString());
         }
     }
 
     /**
-     * Opens dialog window to edit or add new mokki-object in mokki-table
+     * Opens dialog window to edit or add a new object in the table
      * @param dialogController Controller
      */
     public void loadDialog(Object dialogController) {
-        // Open MokkiDC window
+        // Open DialogController window
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();
             fxmlLoader.setLocation(getClass().getResource("changeTable-dialog.fxml"));
@@ -96,12 +133,43 @@ abstract class TabController {
             newStage.showAndWait();
 
             // Reset table data
-            updateTable(mokkiTable, dataBase.getAllRows(tableName, identifierKey, tableClass));
+            updateTable();
             initSearch();
         } catch (IOException ex) {
             System.out.println("DialogPane load error!!" + ex);
         }
     }
+
+    /**
+     * Initials search for Table
+     */
+    public void initSearch() {
+        FilteredList<T> filteredData = new FilteredList<>(dataBase.getAllRows(tableName, identifierKey, tableClass), b -> true);
+        searchTF.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredData.setPredicate(object -> {
+                // if no search value
+                if (newValue.isEmpty() || newValue.isBlank() || newValue == null) {
+                    return true;
+                }
+                // Search Conditions
+                return getSearchConditions(object, newValue);
+            });
+        });
+
+        SortedList<T> sortedData = new SortedList<>(filteredData);
+
+        // Bind sorted result with TableView
+        sortedData.comparatorProperty().bind(tableView.comparatorProperty());
+
+        // Apply filtered sorted data to the TableView
+        tableView.setItems(sortedData);
+    };
+
+    /**
+     * Returns list of table columns mapped to class attributes
+     * @return ArrayList of table column and class attribute
+     */
+    abstract ArrayList<String[]> getColToAttr();
 
     /**
      * Returns DialogController-object
@@ -110,8 +178,14 @@ abstract class TabController {
     abstract DialogController getController();
 
     /**
-     * Initials search for Table
+     * List of search conditions
+     * @return True - if condition match
      */
-    abstract void initSearch();
+    abstract boolean getSearchConditions(T object, String newValue);
 
+    /**
+     * Returns list of search filters
+     * @return Array of search filters
+     */
+    abstract String[] getSearchFilters();
 }

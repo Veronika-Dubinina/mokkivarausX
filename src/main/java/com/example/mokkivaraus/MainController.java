@@ -27,7 +27,7 @@ public class MainController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();
-            fxmlLoader.setLocation(getClass().getResource("mokki-tab.fxml"));
+            fxmlLoader.setLocation(getClass().getResource("tab-view.fxml"));
             VBox view = fxmlLoader.load();
             mokkiTab.setContent(view);
         } catch (IOException e) {
