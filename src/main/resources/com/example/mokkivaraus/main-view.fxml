@@ -33,12 +33,12 @@
             <tabs>
                 <Tab fx:id="mokkiTab" text=" Mökit">
                     <content>
-                        <!-- Mokki view -->
+                        <!-- Mokki Tab -->
                     </content>
                 </Tab>
                 <Tab text="Tab 2">
                     <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                        <!-- Test -->
                     </content>
                 </Tab>
             </tabs>

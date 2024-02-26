@@ -22,6 +22,7 @@ public class MainController implements Initializable {
     @FXML
     private Tab mokkiTab;
 
+    // Добавить вкладку как атрибут здесь
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -30,6 +31,7 @@ public class MainController implements Initializable {
             fxmlLoader.setLocation(getClass().getResource("tab-view.fxml"));
             VBox view = fxmlLoader.load();
             mokkiTab.setContent(view);
+            // Загрузить вкладку здесь
         } catch (IOException e) {
             System.out.println("load excp");
             throw new RuntimeException(e);

@@ -30,6 +30,39 @@ public class DataBase {
     }
 
     /**
+     * Returns result of executed SQL query. For SELECT statement
+     * @param sql SQL Query
+     * @return returns the ResultSet object
+     */
+    public ResultSet getData(String sql) {
+        ResultSet res = null;
+        try (Connection conn = getDbConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             // Execute query
+             ResultSet result = ps.executeQuery();){
+                res = result;
+        } catch (Exception ex) {
+            System.out.println("!!Exception DataBase.getData:" + ex);
+        }
+
+        return res;
+    }
+
+    /**
+     * Executes the SQL query. For statement, such as INSERT, UPDATE or DELETE;
+     * @param sql SQL Query
+     */
+    public void setData(String sql) {
+        try (Connection conn = getDbConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);){
+            // Execute query
+            ps.executeUpdate();
+        } catch (Exception ex) {
+            System.out.println("!!Exception DataBase.setData : " + ex);
+        }
+    }
+
+    /**
      * Returns data from the database table packed into a list.
      * @param tableName Name of the table
      * @param orderByColumn Column by which the table is ordered
