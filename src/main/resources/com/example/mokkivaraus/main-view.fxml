@@ -36,7 +36,7 @@
                         <!-- Mokki Tab -->
                     </content>
                 </Tab>
-                <Tab text="Tab 2">
+                <Tab fx:id="Test" text="Test">
                     <content>
                         <!-- Test -->
                     </content>

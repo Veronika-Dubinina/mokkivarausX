@@ -22,6 +22,9 @@ public class MainController implements Initializable {
     @FXML
     private Tab mokkiTab;
 
+    @FXML
+    private Tab Test;
+
     // Добавить вкладку как атрибут здесь
 
     @Override
@@ -29,6 +32,8 @@ public class MainController implements Initializable {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();
             fxmlLoader.setLocation(getClass().getResource("tab-view.fxml"));
+            MokkiController mc = new MokkiController();
+            fxmlLoader.setController(mc);
             VBox view = fxmlLoader.load();
             mokkiTab.setContent(view);
             // Загрузить вкладку здесь
