@@ -36,6 +36,11 @@
                         <!-- Mokki Tab -->
                     </content>
                 </Tab>
+                <Tab fx:id="alueTab" text="Alue">
+                    <content>
+                        <!-- Alue Tab -->
+                    </content>
+                </Tab>
                 <Tab fx:id="Test" text="Test">
                     <content>
                         <!-- Test -->

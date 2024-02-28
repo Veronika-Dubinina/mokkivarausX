@@ -23,6 +23,10 @@ public class MainController implements Initializable {
     private Tab mokkiTab;
 
     @FXML
+    private Tab alueTab;
+
+
+    @FXML
     private Tab Test;
 
     // Добавить вкладку как атрибут здесь
@@ -31,11 +35,22 @@ public class MainController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
             FXMLLoader fxmlMokkiLoader = new FXMLLoader();
+            FXMLLoader fxmlAlueLoader = new FXMLLoader();
+
             fxmlMokkiLoader.setLocation(getClass().getResource("tab-view.fxml"));
+            fxmlAlueLoader.setLocation(getClass().getResource("tab-view.fxml"));
+
             MokkiController mc = new MokkiController();
+            AlueController ac = new AlueController(); /*?*/
+
             fxmlMokkiLoader.setController(mc);
+            fxmlAlueLoader.setController(ac); /*?*/
+
             VBox view = fxmlMokkiLoader.load();
+            VBox view2 = fxmlAlueLoader.load();
+
             mokkiTab.setContent(view);
+            alueTab.setContent(view2);
             // Загрузить вкладку здесь
         } catch (IOException e) {
             System.out.println("load excp");

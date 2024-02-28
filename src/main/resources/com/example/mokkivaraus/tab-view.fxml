@@ -24,7 +24,7 @@
                   <ComboBox fx:id="searchFilterCB" onAction="#setSearchFilter" prefHeight="28.0" prefWidth="122.0" promptText="Hakusuodatin" style="-fx-border-radius: 0 5 5 0; -fx-background-radius: 0 5 5 0;" />
                </children>
             </HBox>
-                <Button mnemonicParsing="false" onAction="#onAddBtnClicked" style="-fx-background-color: lightgreen;" text="Lisää mökki +">
+                <Button mnemonicParsing="false" onAction="#onAddBtnClicked" style="-fx-background-color: lightgreen;" text="Lisää +">
                <font>
                   <Font size="14.0" />
                </font></Button>
