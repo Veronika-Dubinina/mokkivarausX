@@ -61,7 +61,7 @@ public class AutoCompleteTextField<T> extends TextField {
                         return true;
                     }
                     // Search Conditions
-                    return object.toString().toLowerCase().contains(newValue.trim().toLowerCase());
+                    return getSearchConditions(object, newValue);
                 });
 
                 // Populate context menu with list of matches
@@ -73,10 +73,10 @@ public class AutoCompleteTextField<T> extends TextField {
                 }
             }
         });
+    }
 
-
-
-
+    public boolean getSearchConditions(T object, String newValue) {
+        return object.toString().toLowerCase().contains(newValue.trim().toLowerCase());
     }
 
     private void populatePopup(SortedList<T> sortedData) {
