@@ -43,7 +43,7 @@ public class MokkiController extends TabController<Mokki> implements Initializab
 
     @Override
     boolean getSearchConditions(Mokki mokki, String newValue) {
-        String searchKeyword = newValue.toLowerCase();
+        String searchKeyword = newValue.trim().toLowerCase();
         if (mokki.getMokkinimi().toLowerCase().contains(searchKeyword) && (searchFilter.equals("kaikki") || searchFilter.equals("nimi"))) {
             return true; // Match in Nimi
         } else if (mokki.getKatuosoite().toLowerCase().contains(searchKeyword) && (searchFilter.equals("kaikki") || searchFilter.equals("osoite"))) {

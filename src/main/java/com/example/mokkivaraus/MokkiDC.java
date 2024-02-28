@@ -10,7 +10,12 @@ public class MokkiDC extends DialogController{
 
     private ComboBox<Alue> alueCmBox = new ComboBox<>(dataBase.getAllRows("alue", "alue_id", Alue.class));
     private TextField nimiField = new TextField();
-    private ComboBox<Posti> postinroCmBox = new ComboBox<>(dataBase.getAllRows("posti", "postinro", Posti.class));
+    private AutoCompleteTextField<Posti> postinroField = new AutoCompleteTextField<>(dataBase.getAllRows("posti", "postinro", Posti.class)) {
+        @Override
+        public void onCreateLabelClicked() {
+            System.out.println("Create Label Clicked");
+        }
+    };
     private TextField katuosoiteField = new TextField();
     private TextField hintaField = new TextField();
     private TextField henkilomaaraField = new TextField();
@@ -50,7 +55,7 @@ public class MokkiDC extends DialogController{
         // Fields
         formsGridPane.add(alueCmBox, 1, 0, 1, 1);
         formsGridPane.add(nimiField, 1, 1, 1, 1);
-        formsGridPane.add(postinroCmBox, 1, 2, 1, 1);
+        formsGridPane.add(postinroField, 1, 2, 1, 1);
         formsGridPane.add(katuosoiteField, 1, 3, 1, 1);
         formsGridPane.add(hintaField, 1, 4, 1, 1);
         formsGridPane.add(henkilomaaraField, 1, 5, 1, 1);
@@ -66,7 +71,7 @@ public class MokkiDC extends DialogController{
         // Set data from mokki-object
         alueCmBox.setValue(dataBase.getRow("alue", "alue_id", mokki.getAlue_id(), Alue.class));
         nimiField.setText(mokki.getMokkinimi());
-        postinroCmBox.setValue(dataBase.getRow("posti", "postinro", mokki.getPostinro(), Posti.class));
+        postinroField.setLastSelectedItem(dataBase.getRow("posti", "postinro", mokki.getPostinro(), Posti.class));
         katuosoiteField.setText(mokki.getKatuosoite());
         hintaField.setText(String.valueOf(mokki.getHinta()));
         henkilomaaraField.setText(String.valueOf(mokki.getHenkilomaara()));
@@ -155,7 +160,7 @@ public class MokkiDC extends DialogController{
      * @return false - if posti-field is empty
      */
     private boolean checkPostinro() {
-        var posti = postinroCmBox.getValue();
+        var posti = postinroField.getLastSelectedItem();
         if (posti == null) { // is empty
             alertMessage = "Valitse Posti, kiitos!";
             return false;
