@@ -25,7 +25,6 @@ public class MainController implements Initializable {
     @FXML
     private Tab alueTab;
 
-
     @FXML
     private Tab Test;
 
@@ -34,24 +33,24 @@ public class MainController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
+            // Mokki Tab
             FXMLLoader fxmlMokkiLoader = new FXMLLoader();
-            FXMLLoader fxmlAlueLoader = new FXMLLoader();
-
             fxmlMokkiLoader.setLocation(getClass().getResource("tab-view.fxml"));
-            fxmlAlueLoader.setLocation(getClass().getResource("tab-view.fxml"));
-
             MokkiController mc = new MokkiController();
-            AlueController ac = new AlueController(); /*?*/
-
             fxmlMokkiLoader.setController(mc);
-            fxmlAlueLoader.setController(ac); /*?*/
+            VBox mokkiView = fxmlMokkiLoader.load();
+            mokkiTab.setContent(mokkiView);
 
-            VBox view = fxmlMokkiLoader.load();
-            VBox view2 = fxmlAlueLoader.load();
+            // Alue Tab
+            FXMLLoader fxmlAlueLoader = new FXMLLoader();
+            fxmlAlueLoader.setLocation(getClass().getResource("tab-view.fxml"));
+            AlueController ac = new AlueController();
+            fxmlAlueLoader.setController(ac);
+            VBox alueView = fxmlAlueLoader.load();
+            alueTab.setContent(alueView);
 
-            mokkiTab.setContent(view);
-            alueTab.setContent(view2);
             // Загрузить вкладку здесь
+
         } catch (IOException e) {
             System.out.println("load excp");
             throw new RuntimeException(e);
