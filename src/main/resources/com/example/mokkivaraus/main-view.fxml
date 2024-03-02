@@ -41,7 +41,7 @@
                         <!-- Alue Tab -->
                     </content>
                 </Tab>
-                <Tab fx:id="Test" text="Test">
+                <Tab fx:id="Test" text="Asiakas">
                     <content>
                         <!-- Test -->
                     </content>
