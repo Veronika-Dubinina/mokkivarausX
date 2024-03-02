@@ -179,6 +179,8 @@ abstract class TabController<T> implements Initializable {
 
     /**
      * List of search conditions
+     * @param object object to compare
+     * @param newValue Search field text
      * @return True - if condition match
      */
     abstract boolean getSearchConditions(T object, String newValue);

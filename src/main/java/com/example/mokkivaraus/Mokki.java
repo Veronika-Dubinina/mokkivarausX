@@ -20,7 +20,6 @@ public class Mokki {
     // Constructors
     // Default constructor
     public Mokki() {}
-
     // Fill Mokki from result set
     public Mokki(ResultSet res) {
         try {
@@ -36,6 +35,17 @@ public class Mokki {
         } catch (Exception e) {
             System.out.println("!!Exc. MokkiConstr : " + e);
         }
+    }
+    // Fill all attributes from user input
+    public Mokki(int alue_id, String postinro, String mokkinimi, String katuosoite, double hinta, String kuvaus, int henkilomaara, String varustelu) {
+        this.alue_id = alue_id;
+        this.postinro = postinro;
+        this.mokkinimi = mokkinimi;
+        this.katuosoite = katuosoite;
+        this.hinta = hinta;
+        this.kuvaus = kuvaus;
+        this.henkilomaara = henkilomaara;
+        this.varustelu = varustelu;
     }
 
     // Methods
@@ -114,5 +124,19 @@ public class Mokki {
     @Override
     public String toString() {
         return "Mokki: " + mokki_id + " " + mokkinimi;
+    }
+
+    public HashMap<String, Object> getAttrMap() {
+        HashMap<String, Object> attrMap = new HashMap<>();
+        attrMap.put("alue_id", alue_id);
+        attrMap.put("postinro", postinro);
+        attrMap.put("mokkinimi", mokkinimi);
+        attrMap.put("katuosoite", katuosoite);
+        attrMap.put("hinta", hinta);
+        attrMap.put("kuvaus", kuvaus);
+        attrMap.put("henkilomaara", henkilomaara);
+        attrMap.put("varustelu", varustelu);
+
+        return attrMap;
     }
 }

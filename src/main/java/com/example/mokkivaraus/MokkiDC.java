@@ -1,8 +1,17 @@
 package com.example.mokkivaraus;
 
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
+import org.controlsfx.control.PopOver;
 
 import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class MokkiDC extends DialogController{
     // Attributes
@@ -10,10 +19,80 @@ public class MokkiDC extends DialogController{
 
     private ComboBox<Alue> alueCmBox = new ComboBox<>(dataBase.getAllRows("alue", "alue_id", Alue.class));
     private TextField nimiField = new TextField();
-    private AutoCompleteTextField<Posti> postinroField = new AutoCompleteTextField<>(dataBase.getAllRows("posti", "postinro", Posti.class)) {
+    private AutoCompleteTextField<Posti> postinroField = new AutoCompleteTextField<>(dataBase.getAllRows("posti", "postinro", Posti.class), true) {
         @Override
         public void onCreateLabelClicked() {
-            System.out.println("Create Label Clicked");
+            // Create popover window
+            PopOver popover = new PopOver();
+            VBox content = new VBox();
+            content.setSpacing(10);
+            content.setPadding(new Insets(10));
+
+            // Posti attributes
+            AtomicReference<String> postinro = new AtomicReference<>("");
+            AtomicReference<String> toimipaikka = new AtomicReference<>("");
+
+            // Popover nodes
+            // Postinumero text field
+            TextField postinroTF = new TextField();
+            postinroTF.setPromptText("Postinro");
+            postinroTF.textProperty().addListener((object, oldValue, newValue) -> {
+                String nro = newValue.trim();
+                if (nro.length() == 5 && nro.matches("[0-9]+")) {
+                    postinro.set(nro);
+                    postinroTF.setStyle("-fx-border-color: green");
+                } else {
+                    postinro.set("");
+                    postinroTF.setStyle("-fx-border-color: red");
+                }
+            });
+            // Toimipaikka text field
+            TextField toimipaikkaTF = new TextField();
+            toimipaikkaTF.setPromptText("Toimipaikka");
+            toimipaikkaTF.textProperty().addListener((object, oldValue, newValue) -> {
+                String tp = newValue.trim();
+                if (!tp.isEmpty() && tp.length() <= 45) {
+                    toimipaikka.set(tp);
+                    toimipaikkaTF.setStyle("-fx-border-color: green");
+
+                } else {
+                    toimipaikka.set("");
+                    toimipaikkaTF.setStyle("-fx-border-color: red");
+                }
+            });
+            // Close button
+            Button close = new Button("Peruuta");
+            close.setOnAction(event -> {
+                // Hide popover
+                popover.hide();
+            });
+            // Add button
+            Button add = new Button("Lisää");
+            add.setOnAction(event -> {
+                if (postinro.get().isEmpty() || toimipaikka.get().isEmpty()) {
+                    return;
+                } else {
+                    Posti posti = new Posti(postinro.get(), toimipaikka.get());
+                    dataBase.addRow("posti", posti.getAttrMap());
+                    setLastSelectedItem(posti);
+                }
+
+                popover.hide();
+            });
+            // Buttons container
+            HBox buttons = new HBox(close, add);
+            buttons.setSpacing(10);
+
+            // Popover root node
+            content.getChildren().addAll(
+                    postinroTF,
+                    toimipaikkaTF,
+                    buttons
+            );
+
+            // Set popover content and show it
+            popover.setContentNode(content);
+            popover.show(this);
         }
     };
     private TextField katuosoiteField = new TextField();
@@ -81,17 +160,7 @@ public class MokkiDC extends DialogController{
 
     @Override
     HashMap<String, Object> listOfAttributes() {
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("alue_id", mokki.getAlue_id());
-        map.put("postinro", mokki.getPostinro());
-        map.put("mokkinimi", mokki.getMokkinimi());
-        map.put("katuosoite", mokki.getKatuosoite());
-        map.put("hinta", mokki.getHinta());
-        map.put("kuvaus", mokki.getKuvaus());
-        map.put("henkilomaara", mokki.getHenkilomaara());
-        map.put("varustelu", mokki.getVarustelu());
-
-        return map;
+        return mokki.getAttrMap();
     }
 
     @Override

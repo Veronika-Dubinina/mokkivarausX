@@ -22,6 +22,7 @@ public class AutoCompleteTextField<T> extends TextField {
     private ObjectProperty<T> lastSelectedItem = new SimpleObjectProperty<>();
     private ObservableList<T> entries = FXCollections.observableArrayList();
     private ContextMenu entriesPopup;
+    private boolean addCreateLbl = false;
 
     // Constructors
     public AutoCompleteTextField(Collection<T> entries) {
@@ -29,6 +30,11 @@ public class AutoCompleteTextField<T> extends TextField {
         this.entriesPopup = new ContextMenu();
         this.entries.addAll(entries);
         setListener();
+    }
+
+    public AutoCompleteTextField(Collection<T> entries, boolean addCreateLbl) {
+        this(entries);
+        this.addCreateLbl = addCreateLbl;
     }
 
     // Methods
@@ -45,16 +51,29 @@ public class AutoCompleteTextField<T> extends TextField {
         return lastSelectedItem;
     }
 
+    public boolean isAddCreateLbl() {
+        return addCreateLbl;
+    }
+
+    public void setAddCreateLbl(boolean addCreateLbl) {
+        this.addCreateLbl = addCreateLbl;
+    }
+
+    /**
+     * Add text listener
+     */
     private void setListener() {
-        // Search in entries
+        // List of filtered data
         FilteredList<T> filteredData = new FilteredList<>(entries);
 
+        // Add listener on key typed
         this.addEventFilter(KeyEvent.KEY_TYPED, new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
                 String newValue = getText();
                 lastSelectedItem.set(null);
 
+                // Search in entries
                 filteredData.setPredicate(object -> {
                     // if no search value
                     if (newValue.isEmpty() || newValue.isBlank() || newValue == null) {
@@ -75,29 +94,39 @@ public class AutoCompleteTextField<T> extends TextField {
         });
     }
 
+    /**
+     * List of search conditions
+     * @param object object to compare
+     * @param newValue Search field text
+     * @return True - if condition match
+     */
     public boolean getSearchConditions(T object, String newValue) {
         return object.toString().toLowerCase().contains(newValue.trim().toLowerCase());
     }
 
+    /**
+     * Populate popup menu with data
+     * @param sortedData Data to populate with
+     */
     private void populatePopup(SortedList<T> sortedData) {
+        // List of menu items
         List<CustomMenuItem> menuItems = new LinkedList<>();
 
-        for (int i = 0; i < sortedData.size(); i++) {
+        for (T itemObject : sortedData) {
             // New context menu item
-            T itemObject = sortedData.get(i);
             CustomMenuItem item = new CustomMenuItem(new Label(itemObject.toString()), true);
-            // if item is selected
+            // If item is selected
             item.setOnAction((ActionEvent event) -> {
                 lastSelectedItem.set(itemObject);
                 entriesPopup.hide();
                 setText(itemObject.toString());
             });
-            // Add item into list of items
+            // Add item into list of menu items
             menuItems.add(item);
         }
 
-        // Show 'Create' label if there is no matches
-        if (sortedData.size() == 0) {
+        // Add 'Create' label with action -> onCreateLabelClicked()
+        if (addCreateLbl && sortedData.isEmpty()) {
             // 'Create' label
             CustomMenuItem item = new CustomMenuItem(new Label("Lisää uusi"), true);
             item.setOnAction((ActionEvent event) -> {
@@ -111,5 +140,8 @@ public class AutoCompleteTextField<T> extends TextField {
         entriesPopup.getItems().addAll(menuItems);
     }
 
+    /**
+     * Method called when the 'Create' label is selected
+     */
     public void onCreateLabelClicked(){};
 }

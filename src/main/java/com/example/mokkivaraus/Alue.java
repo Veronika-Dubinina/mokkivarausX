@@ -11,7 +11,6 @@ public class Alue {
     // Constructors
     // Default constructor
     public Alue() {}
-
     // Fill Alue from result set
     public Alue(ResultSet res) {
         try{
@@ -20,6 +19,10 @@ public class Alue {
         } catch (Exception e) {
             System.out.println("!!Exc. Alue.Constr : " + e);
         }
+    }
+    // Fill all attributes from user input
+    public Alue(String nimi) {
+        this.nimi = nimi;
     }
 
     // Methods
@@ -42,5 +45,12 @@ public class Alue {
     @Override
     public String toString() {
         return nimi;
+    }
+
+    public HashMap<String, Object> getAttrMap() {
+        HashMap<String, Object> attrMap = new HashMap<>();
+        attrMap.put("nimi", nimi);
+
+        return attrMap;
     }
 }

@@ -11,7 +11,6 @@ public class Posti {
     // Constructors
     // Default constructor
     public Posti() {}
-
     // Fill Posti from result set
     public Posti(ResultSet res) {
         try {
@@ -20,6 +19,11 @@ public class Posti {
         } catch (Exception e) {
             System.out.println("!!Exc. Posti.Constr : " + e);
         }
+    }
+    // Fill all attributes from user input
+    public Posti(String postinro, String toimipaikka) {
+        this.postinro = postinro;
+        this.toimipaikka = toimipaikka;
     }
 
     // Methods
@@ -42,5 +46,13 @@ public class Posti {
     @Override
     public String toString() {
         return postinro + " - " + toimipaikka;
+    }
+
+    public HashMap<String, Object> getAttrMap() {
+        HashMap<String, Object> attrMap = new HashMap<>();
+        attrMap.put("postinro", this.postinro);
+        attrMap.put("toimipaikka", this.toimipaikka);
+
+        return attrMap;
     }
 }

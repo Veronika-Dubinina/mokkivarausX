@@ -35,7 +35,6 @@ public class AlueDC extends DialogController{
         // Labels
         formsGridPane.add(new Label("Nimi:"), 0, 1, 1, 1);
 
-
         // Fields
         formsGridPane.add(nimiField, 1, 1, 1, 1);
     }
@@ -51,11 +50,7 @@ public class AlueDC extends DialogController{
     }
     @Override
     HashMap<String, Object> listOfAttributes() {
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("alue_id", alue.getAlue_id());
-        map.put("nimi", alue.getNimi());
-
-        return map;
+        return alue.getAttrMap();
     }
 
     @Override
@@ -73,24 +68,6 @@ public class AlueDC extends DialogController{
         return false;
     }
 
-
-         /**
-     * Checks alue-field. If alue is not selected returns false
-     * @return false - if alue-field is empty
-     */
-         /*
-    private boolean checkAlue() {
-        var alue = alueCmBox.getValue();
-        if (alue == null) { // is empty
-            alertMessage = "Valitse Alue, kiitos!";
-            return false;
-        }
-
-        // if ok
-        alue.setAlue_id(((Alue) alue).getAlue_id());
-        return true;
-    }
-*/
     /**
      * Checks nimi-field. Returns false if the field does not match the parameters
      * @return false - if nimi-field is empty or nimi length is more than 45 characters
@@ -107,6 +84,4 @@ public class AlueDC extends DialogController{
         }
         return false;
     }
-
-
 }
