@@ -127,7 +127,7 @@ public class MokkiDC extends DialogController{
         formsGridPane.add(new Label("Postinro:"), 0, 2, 1, 1);
         formsGridPane.add(new Label("Katuosoite:"), 0, 3, 1, 1);
         formsGridPane.add(new Label("Hinta:"), 0, 4, 1, 1);
-        formsGridPane.add(new Label("Henkilomaara:"), 0, 5, 1, 1);
+        formsGridPane.add(new Label("Henkilömrä:"), 0, 5, 1, 1);
         formsGridPane.add(new Label("Kuvaus:"), 0, 6, 1, 1);
         formsGridPane.add(new Label("Varustelu:"), 0, 7, 1, 1);
 
