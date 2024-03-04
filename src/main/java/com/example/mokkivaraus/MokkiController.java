@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-public class MokkiController extends TabController<Mokki> implements Initializable  {
+public class MokkiController extends TabController<Mokki> {
     // Constructor
     public MokkiController() {
         // Set class attributes

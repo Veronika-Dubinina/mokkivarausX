@@ -31,17 +31,22 @@
     <center>
         <TabPane fx:id="contentPane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
             <tabs>
-                <Tab fx:id="mokkiTab" text=" Mökit">
-                    <content>
-                        <!-- Mokki Tab -->
-                    </content>
-                </Tab>
-                <Tab fx:id="alueTab" text="Alue">
+                <Tab fx:id="alueTab" text="Alueet">
                     <content>
                         <!-- Alue Tab -->
                     </content>
                 </Tab>
-                <Tab fx:id="AsiakasTab" text="Asiakas">
+                <Tab fx:id="mokkiTab" text="Mökit">
+                    <content>
+                        <!-- Mokki Tab -->
+                    </content>
+                </Tab>
+                <Tab fx:id="palveluTab" text="Palvelut">
+                    <content>
+                        <!-- Palvelu Tab -->
+                    </content>
+                </Tab>
+                <Tab fx:id="AsiakasTab" text="Asiakkaat">
                     <content>
                         <!-- Asiakas -->
                     </content>

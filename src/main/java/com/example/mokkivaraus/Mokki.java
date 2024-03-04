@@ -20,7 +20,7 @@ public class Mokki {
     // Constructors
     // Default constructor
     public Mokki() {}
-    // Fill Mokki from result set
+    // Fill from result set
     public Mokki(ResultSet res) {
         try {
             this.mokki_id = res.getInt("mokki_id");

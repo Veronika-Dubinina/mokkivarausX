@@ -23,6 +23,9 @@ public class MainController implements Initializable {
     private Tab mokkiTab;
 
     @FXML
+    private Tab palveluTab;
+
+    @FXML
     private Tab alueTab;
 
     @FXML
@@ -35,14 +38,6 @@ public class MainController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
-            // Mokki Tab
-            FXMLLoader fxmlMokkiLoader = new FXMLLoader();
-            fxmlMokkiLoader.setLocation(getClass().getResource("tab-view.fxml"));
-            MokkiController mc = new MokkiController();
-            fxmlMokkiLoader.setController(mc);
-            VBox mokkiView = fxmlMokkiLoader.load();
-            mokkiTab.setContent(mokkiView);
-
             // Alue Tab
             FXMLLoader fxmlAlueLoader = new FXMLLoader();
             fxmlAlueLoader.setLocation(getClass().getResource("tab-view.fxml"));
@@ -51,8 +46,23 @@ public class MainController implements Initializable {
             VBox alueView = fxmlAlueLoader.load();
             alueTab.setContent(alueView);
 
-            // Asiakas tab
+            // Mokki Tab
+            FXMLLoader fxmlMokkiLoader = new FXMLLoader();
+            fxmlMokkiLoader.setLocation(getClass().getResource("tab-view.fxml"));
+            MokkiController mc = new MokkiController();
+            fxmlMokkiLoader.setController(mc);
+            VBox mokkiView = fxmlMokkiLoader.load();
+            mokkiTab.setContent(mokkiView);
 
+            // Palvelu Tab
+            FXMLLoader fxmlPalveluLoader = new FXMLLoader();
+            fxmlPalveluLoader.setLocation(getClass().getResource("tab-view.fxml"));
+            PalveluController pc = new PalveluController();
+            fxmlPalveluLoader.setController(pc);
+            VBox palveluView = fxmlPalveluLoader.load();
+            palveluTab.setContent(palveluView);
+
+            // Asiakas tab
             FXMLLoader fxmlAsiakasLoader = new FXMLLoader();
             fxmlAsiakasLoader.setLocation(getClass().getResource("tab-view.fxml"));
             AsiakasController acс = new AsiakasController();
