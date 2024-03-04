@@ -26,9 +26,11 @@ public class MainController implements Initializable {
     private Tab alueTab;
 
     @FXML
-    private Tab Test;
+    private Tab AsiakasTab;
 
     // Добавить вкладку как атрибут здесь
+    @FXML
+    private Tab Test;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -48,6 +50,15 @@ public class MainController implements Initializable {
             fxmlAlueLoader.setController(ac);
             VBox alueView = fxmlAlueLoader.load();
             alueTab.setContent(alueView);
+
+            // Asiakas tab
+
+            FXMLLoader fxmlAsiakasLoader = new FXMLLoader();
+            fxmlAsiakasLoader.setLocation(getClass().getResource("tab-view.fxml"));
+            AsiakasController acс = new AsiakasController();
+            fxmlAsiakasLoader.setController(acс);
+            VBox AsiakasView = fxmlAsiakasLoader.load();
+            AsiakasTab.setContent(AsiakasView);
 
             // Загрузить вкладку здесь
 
