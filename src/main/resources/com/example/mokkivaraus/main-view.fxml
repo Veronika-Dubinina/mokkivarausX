@@ -51,6 +51,11 @@
                         <!-- Asiakas -->
                     </content>
                 </Tab>
+                <Tab fx:id="VarausTab" text="Varaus">
+                    <content>
+                        <!-- Varaus -->
+                    </content>
+                </Tab>
             </tabs>
         </TabPane>
     </center>

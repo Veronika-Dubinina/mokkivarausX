@@ -1,7 +1,6 @@
 package com.example.mokkivaraus;
 
-import javafx.scene.control.TextField;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import java.util.HashMap;
 
 public class AsiakasDC extends DialogController {
@@ -14,7 +13,6 @@ public class AsiakasDC extends DialogController {
     private TextField lahiosoiteField = new TextField();
     private TextField emailField = new TextField();
     private TextField puhelinnroField = new TextField();
-
 
     // Constructor
     public AsiakasDC(String tableName, String identifierKey) {
@@ -39,23 +37,23 @@ public class AsiakasDC extends DialogController {
         dialogTitle.setText("Lisää uusi asiakas");
 
         // Labels and Fields
-        formsGridPane.add(new Label("Postinro:"), 0, 0, 1, 1);
-        formsGridPane.add(postinroField, 1, 0, 1, 1);
+        formsGridPane.add(new Label("Postinro:"), 0, 0);
+        formsGridPane.add(postinroField, 1, 0);
 
-        formsGridPane.add(new Label("Etunimi:"), 0, 1, 1, 1);
-        formsGridPane.add(etunimiField, 1, 1, 1, 1);
+        formsGridPane.add(new Label("Etunimi:"), 0, 1);
+        formsGridPane.add(etunimiField, 1, 1);
 
-        formsGridPane.add(new Label("Sukunimi:"), 0, 2, 1, 1);
-        formsGridPane.add(sukunimiField, 1, 2, 1, 1);
+        formsGridPane.add(new Label("Sukunimi:"), 0, 2);
+        formsGridPane.add(sukunimiField, 1, 2);
 
-        formsGridPane.add(new Label("Lähiosoite:"), 0, 3, 1, 1);
-        formsGridPane.add(lahiosoiteField, 1, 3, 1, 1);
+        formsGridPane.add(new Label("Lähiosoite:"), 0, 3);
+        formsGridPane.add(lahiosoiteField, 1, 3);
 
-        formsGridPane.add(new Label("Email:"), 0, 4, 1, 1);
-        formsGridPane.add(emailField, 1, 4, 1, 1);
+        formsGridPane.add(new Label("Email:"), 0, 4);
+        formsGridPane.add(emailField, 1, 4);
 
-        formsGridPane.add(new Label("Puhelinnro:"), 0, 5, 1, 1);
-        formsGridPane.add(puhelinnroField, 1, 5, 1, 1);
+        formsGridPane.add(new Label("Puhelinnumero:"), 0, 5);
+        formsGridPane.add(puhelinnroField, 1, 5);
     }
 
     @Override
@@ -64,101 +62,67 @@ public class AsiakasDC extends DialogController {
         dialogTitle.setText("Päivitä asiakkaan tiedot");
 
         // Set data from asiakas-object
-        // Populate fields with existing data for editing
+        postinroField.setText(asiakas.getPostinro());
+        etunimiField.setText(asiakas.getEtunimi());
+        sukunimiField.setText(asiakas.getSukunimi());
+        lahiosoiteField.setText(asiakas.getLahiosoite());
+        emailField.setText(asiakas.getEmail());
+        puhelinnroField.setText(asiakas.getPuhelinnro());
     }
 
     @Override
     HashMap<String, Object> listOfAttributes() {
-        return asiakas.getAttrMap();
+        HashMap<String, Object> attrMap = new HashMap<>();
+        attrMap.put("postinro", postinroField.getText());
+        attrMap.put("etunimi", etunimiField.getText());
+        attrMap.put("sukunimi", sukunimiField.getText());
+        attrMap.put("lahiosoite", lahiosoiteField.getText());
+        attrMap.put("email", emailField.getText());
+        attrMap.put("puhelinnro", puhelinnroField.getText());
+        return attrMap;
     }
 
     @Override
     boolean checkData() {
-        if (!validatePostinro()) // Postinro
-            alertTitle = "Postinro virhe";
-        else if (!validateEtunimi()) // Etunimi
-            alertTitle = "Etunimi virhe";
-        else if (!validateSukunimi()) // Sukunimi
-            alertTitle = "Sukunimi virhe";
-        else if (!validateLahiosoite()) // Lahiosoite
-            alertTitle = "Lähiosoite virhe";
-        else if (!validateEmail()) // Email
-            alertTitle = "Email virhe";
-        else if (!validatePuhelinnro()) // Puhelinnro
-            alertTitle = "Puhelinnro virhe";
-        else { // if all data is valid
+        if (!checkPostinro() || !checkEtunimi() || !checkSukunimi() || !checkLahiosoite() || !checkEmail() || !checkPuhelinnro()) {
+            alertTitle = "Virhe tietojen tarkastuksessa";
+            alertMessage = "Tarkista syöttämäsi tiedot ja yritä uudelleen.";
+            return false;
+        } else {
             alertTitle = "Menestys";
-            alertMessage = "Taulukko on päivitetty";
+            alertMessage = "Tiedot tarkastettu ja hyväksytty.";
             return true;
         }
-
-        // Returns false if there is a data failure
-        return false;
     }
 
-    /**
-     * Checks postinro-field. Returns false if the field does not match the parameters
-     *
-     * @return false - if postinro-field is empty or invalid
-     */
-    private boolean validatePostinro() {
-        String postinro = postinroField.getText();
-        // Implement postinro validation logic
-        return true; // Replace true with validation logic
+    // Methods to check each field individually
+    private boolean checkPostinro() {
+        // Implement your validation logic for postinro field
+        return true; // Return true if validation passes
     }
 
-    /**
-     * Checks etunimi-field. Returns false if the field does not match the parameters
-     *
-     * @return false - if etunimi-field is empty or invalid
-     */
-    private boolean validateEtunimi() {
-        String etunimi = etunimiField.getText();
-        // Implement etunimi validation logic
-        return true; // Replace true with validation logic
+    private boolean checkEtunimi() {
+        // Implement your validation logic for etunimi field
+        return true; // Return true if validation passes
     }
 
-    /**
-     * Checks sukunimi-field. Returns false if the field does not match the parameters
-     *
-     * @return false - if sukunimi-field is empty or invalid
-     */
-    private boolean validateSukunimi() {
-        String sukunimi = sukunimiField.getText();
-        // Implement sukunimi validation logic
-        return true; // Replace true with validation logic
+    private boolean checkSukunimi() {
+        // Implement your validation logic for sukunimi field
+        return true; // Return true if validation passes
     }
 
-    /**
-     * Checks lahiosoite-field. Returns false if the field does not match the parameters
-     *
-     * @return false - if lahiosoite-field is empty or invalid
-     */
-    private boolean validateLahiosoite() {
-        String lahiosoite = lahiosoiteField.getText();
-        // Implement lahiosoite validation logic
-        return true; // Replace true with validation logic
+    private boolean checkLahiosoite() {
+        // Implement your validation logic for lahiosoite field
+        return true; // Return true if validation passes
     }
 
-    /**
-     * Checks email-field. Returns false if the field does not match the parameters
-     *
-     * @return false - if email-field is empty or invalid
-     */
-    private boolean validateEmail() {
-        String email = emailField.getText();
-        // Implement email validation logic
-        return true; // Replace true with validation logic
+    private boolean checkEmail() {
+        // Implement your validation logic for email field
+        return true; // Return true if validation passes
     }
 
-    /**
-     * Checks puhelinnro-field. Returns false if the field does not match the parameters
-     *
-     * @return false - if puhelinnro-field is empty or invalid
-     */
-    private boolean validatePuhelinnro() {
-        String puhelinnro = puhelinnroField.getText();
-        // Implement puhelinnro validation logic
-        return true; // Replace true with validation logic
+    private boolean checkPuhelinnro() {
+        // Implement your validation logic for puhelinnro field
+        return true; // Return true if validation passes
     }
 }
