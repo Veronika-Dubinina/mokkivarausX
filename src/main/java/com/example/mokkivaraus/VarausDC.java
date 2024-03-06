@@ -54,7 +54,7 @@ public class VarausDC extends DialogController {
         formsGridPane.add(varattuAlkupvmPicker, 1, 5, 1, 1);
         formsGridPane.add(varattuLoppupvmPicker, 1, 6, 1, 1);
     }
-// не добавлят окно редактирования почему то
+// не добавлят окно редактирования почему то я хз
     @Override
     void setEditContent() {
         // DialogPane title
