@@ -62,7 +62,6 @@ public class VarausDC extends DialogController {
     void setEditContent() {
         // DialogPane title
         dialogTitle.setText("Päivitä varauksen tiedot");
-        System.out.println("V1");
 
         // Set data from varaus-object
         asiakasCmBox.setValue(dataBase.getRow("asiakas", "asiakas_id", varaus.getAsiakas_id(), Asiakas.class));
