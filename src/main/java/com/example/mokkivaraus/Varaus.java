@@ -1,6 +1,8 @@
 package com.example.mokkivaraus;
 
 import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.HashMap;
 
 public class Varaus {
@@ -8,10 +10,10 @@ public class Varaus {
     private int varaus_id;
     private int asiakas_id;
     private int mokki_mokki_id;
-    private String varattu_pvm;
-    private String vahvistus_pvm;
-    private String varattu_alkupvm;
-    private String varattu_loppupvm;
+    private Timestamp varattu_pvm;
+    private Timestamp vahvistus_pvm;
+    private Timestamp varattu_alkupvm;
+    private Timestamp varattu_loppupvm;
 
     // Constructors
     public Varaus() {}
@@ -21,16 +23,16 @@ public class Varaus {
             this.varaus_id = res.getInt("varaus_id");
             this.asiakas_id = res.getInt("asiakas_id");
             this.mokki_mokki_id = res.getInt("mokki_mokki_id");
-            this.varattu_pvm = res.getString("varattu_pvm");
-            this.vahvistus_pvm = res.getString("vahvistus_pvm");
-            this.varattu_alkupvm = res.getString("varattu_alkupvm");
-            this.varattu_loppupvm = res.getString("varattu_loppupvm");
+            this.varattu_pvm = res.getTimestamp("varattu_pvm");
+            this.vahvistus_pvm = res.getTimestamp("vahvistus_pvm");
+            this.varattu_alkupvm = res.getTimestamp("varattu_alkupvm");
+            this.varattu_loppupvm = res.getTimestamp("varattu_loppupvm");
         } catch (Exception e) {
             System.out.println("!!Exc. Varaus.Constr : " + e);
         }
     }
 
-    public Varaus(int asiakas_id, int mokki_mokki_id, String varattu_pvm, String vahvistus_pvm, String varattu_alkupvm, String varattu_loppupvm) {
+    public Varaus(int asiakas_id, int mokki_mokki_id, Timestamp varattu_pvm, Timestamp vahvistus_pvm, Timestamp varattu_alkupvm, Timestamp varattu_loppupvm) {
         this.asiakas_id = asiakas_id;
         this.mokki_mokki_id = mokki_mokki_id;
         this.varattu_pvm = varattu_pvm;
@@ -64,35 +66,35 @@ public class Varaus {
         this.mokki_mokki_id = mokki_mokki_id;
     }
 
-    public String getVarattu_pvm() {
+    public Timestamp getVarattu_pvm() {
         return varattu_pvm;
     }
 
-    public void setVarattu_pvm(String varattu_pvm) {
+    public void setVarattu_pvm(Timestamp varattu_pvm) {
         this.varattu_pvm = varattu_pvm;
     }
 
-    public String getVahvistus_pvm() {
+    public Timestamp getVahvistus_pvm() {
         return vahvistus_pvm;
     }
 
-    public void setVahvistus_pvm(String vahvistus_pvm) {
+    public void setVahvistus_pvm(Timestamp vahvistus_pvm) {
         this.vahvistus_pvm = vahvistus_pvm;
     }
 
-    public String getVarattu_alkupvm() {
+    public Timestamp getVarattu_alkupvm() {
         return varattu_alkupvm;
     }
 
-    public void setVarattu_alkupvm(String varattu_alkupvm) {
+    public void setVarattu_alkupvm(Timestamp varattu_alkupvm) {
         this.varattu_alkupvm = varattu_alkupvm;
     }
 
-    public String getVarattu_loppupvm() {
+    public Timestamp getVarattu_loppupvm() {
         return varattu_loppupvm;
     }
 
-    public void setVarattu_loppupvm(String varattu_loppupvm) {
+    public void setVarattu_loppupvm(Timestamp varattu_loppupvm) {
         this.varattu_loppupvm = varattu_loppupvm;
     }
 

@@ -3,6 +3,9 @@ package com.example.mokkivaraus;
 import javafx.scene.control.*;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import java.util.HashMap;
 
 public class VarausDC extends DialogController {
@@ -59,14 +62,15 @@ public class VarausDC extends DialogController {
     void setEditContent() {
         // DialogPane title
         dialogTitle.setText("Päivitä varauksen tiedot");
+        System.out.println("V1");
 
         // Set data from varaus-object
         asiakasCmBox.setValue(dataBase.getRow("asiakas", "asiakas_id", varaus.getAsiakas_id(), Asiakas.class));
         mokkiCmBox.setValue(dataBase.getRow("mokki", "mokki_id", varaus.getMokki_mokki_id(), Mokki.class));
-        varattuPvmPicker.setValue(LocalDate.parse(varaus.getVarattu_pvm()));
-        vahvistusPvmPicker.setValue(LocalDate.parse(varaus.getVahvistus_pvm()));
-        varattuAlkupvmPicker.setValue(LocalDate.parse(varaus.getVarattu_alkupvm()));
-        varattuLoppupvmPicker.setValue(LocalDate.parse(varaus.getVarattu_loppupvm()));
+        varattuPvmPicker.setValue(varaus.getVarattu_pvm().toLocalDateTime().toLocalDate());
+        vahvistusPvmPicker.setValue(varaus.getVahvistus_pvm().toLocalDateTime().toLocalDate());
+        varattuAlkupvmPicker.setValue(varaus.getVarattu_alkupvm().toLocalDateTime().toLocalDate());
+        varattuLoppupvmPicker.setValue(varaus.getVarattu_loppupvm().toLocalDateTime().toLocalDate());
     }
 
     @Override
@@ -74,10 +78,10 @@ public class VarausDC extends DialogController {
         HashMap<String, Object> attrMap = new HashMap<>();
         attrMap.put("asiakas_id", asiakasCmBox.getValue().getAsiakas_id());
         attrMap.put("mokki_mokki_id", mokkiCmBox.getValue().getMokki_id());
-        attrMap.put("varattu_pvm", Date.valueOf(varattuPvmPicker.getValue()));
-        attrMap.put("vahvistus_pvm", Date.valueOf(vahvistusPvmPicker.getValue()));
-        attrMap.put("varattu_alkupvm", Date.valueOf(varattuAlkupvmPicker.getValue()));
-        attrMap.put("varattu_loppupvm", Date.valueOf(varattuLoppupvmPicker.getValue()));
+        attrMap.put("varattu_pvm", varattuPvmPicker.getValue());
+        attrMap.put("vahvistus_pvm", vahvistusPvmPicker.getValue());
+        attrMap.put("varattu_alkupvm", varattuAlkupvmPicker.getValue());
+        attrMap.put("varattu_loppupvm", varattuLoppupvmPicker.getValue());
 
         return attrMap;
     }
