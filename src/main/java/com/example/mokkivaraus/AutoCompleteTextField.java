@@ -126,7 +126,7 @@ public class AutoCompleteTextField<T> extends TextField {
         }
 
         // Add 'Create' label with action -> onCreateLabelClicked()
-        if (addCreateLbl && sortedData.isEmpty()) {
+        if (addCreateLbl) {
             // 'Create' label
             CustomMenuItem item = new CustomMenuItem(new Label("Lisää uusi"), true);
             item.setOnAction((ActionEvent event) -> {
