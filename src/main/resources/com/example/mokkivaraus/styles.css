@@ -1,0 +1,77 @@
+/* Colors
+blue -  577590
+green - 00AFB9
+yellow - FDFCDC
+orrange - FED9B7
+red - F07167
+*/
+.root {
+    -fx-font-family: "Gill Sans";
+    -fx-font-size: 14;
+}
+.button {
+    -fx-background-radius: 5px;
+    -fx-border-style: none;
+}
+.scroll-pane {
+    -fx-background-color: white;
+}
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+.top {
+    -fx-padding: 10px;
+    -fx-spacing: 5;
+    -fx-alignment: bottom-left;
+    -fx-background-color: #577590;
+}
+.top > .label {
+    -fx-text-fill: white;
+}
+.companyName {
+    -fx-font-size: 18;
+}
+.main {
+    -fx-padding: 10px;
+    -fx-spacing: 5;
+    -fx-background-color: white;
+}
+.contentBar {
+    -fx-padding: 5px;
+    -fx-spacing: 5;
+}
+
+.addBtn {
+    -fx-background-color: #90BE6D;
+}
+.addBtn:hover {
+    -fx-background-color: #7fa860;
+}
+.updateBtn {
+    -fx-background-color: #6e93b4;
+}
+.updateBtn:hover {
+    -fx-background-color: #62829f;
+}
+.backBtn {
+    -fx-background-color: #F8961E;
+}
+.backBtn:hover {
+    -fx-background-color: #de861b;
+}
+#alueBoxes {
+    -fx-padding: 5px;
+    -fx-spacing: 5;
+}
+.alueBox {
+    -fx-background-color: whitesmoke;
+    -fx-background-radius: 5px;
+    -fx-border-style: solid;
+    -fx-border-color: #577590;
+    -fx-border-radius: 5px;
+}
+.alueBox:hover {
+    -fx-background-color: #277DA1;
+}
+

@@ -23,6 +23,7 @@ public class MokkiController extends TabController<Mokki> {
     public MokkiController() {
         // Set class attributes
         super("mokki", "mokki_id", Mokki.class);
+        filter = "WHERE alue_id = " + SessionData.alue.getAlue_id();
     }
 
     // Methods

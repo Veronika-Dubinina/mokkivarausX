@@ -6,6 +6,7 @@ public class PalveluController extends TabController<Palvelu> {
     // Constructor
     public PalveluController() {
         super("palvelu", "palvelu_id", Palvelu.class);
+        filter = "WHERE alue_id = " + SessionData.alue.getAlue_id();
     }
 
     // Methods

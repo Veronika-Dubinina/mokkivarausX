@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-public class VarausController extends TabController<Varaus> implements Initializable {
+public class VarausController extends TabController<Varaus> {
     // Constructor
     public VarausController() {
         // Set class attributes

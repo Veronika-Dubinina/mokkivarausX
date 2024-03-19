@@ -28,6 +28,7 @@ abstract class TabController<T> implements Initializable {
     protected String identifierKey;
     protected String searchFilter = getSearchFilters()[0];
     protected Class<T> tableClass = null;
+    protected String filter = "";
 
     @FXML
     public TextField searchTF;
@@ -86,7 +87,7 @@ abstract class TabController<T> implements Initializable {
     /**
      * Matches table columns with class attributes
      */
-    void initTable() {
+    private void initTable() {
         ArrayList<String[]> colToAttr = getColToAttr();
         // Set table columns
         for (int i = 0; i < colToAttr.get(0).length; i++) {
@@ -101,9 +102,9 @@ abstract class TabController<T> implements Initializable {
     /**
      * Refreshes table
      */
-    void updateTable() {
+    private void updateTable() {
         try {
-            ObservableList<T> list = dataBase.getAllRows(tableName, identifierKey, tableClass);
+            ObservableList<T> list = dataBase.getAllRows(tableName, identifierKey, tableClass, filter);
             tableView.setItems(list);
             tableView.refresh();
         } catch (Exception ex) {
@@ -115,7 +116,7 @@ abstract class TabController<T> implements Initializable {
      * Opens dialog window to edit or add a new object in the table
      * @param dialogController Controller
      */
-    public void loadDialog(Object dialogController) {
+    private void loadDialog(Object dialogController) {
         // Open DialogController window
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();
@@ -143,8 +144,8 @@ abstract class TabController<T> implements Initializable {
     /**
      * Initials search for Table
      */
-    public void initSearch() {
-        FilteredList<T> filteredData = new FilteredList<>(dataBase.getAllRows(tableName, identifierKey, tableClass), b -> true);
+    private void initSearch() {
+        FilteredList<T> filteredData = new FilteredList<>(dataBase.getAllRows(tableName, identifierKey, tableClass, filter), b -> true);
         searchTF.textProperty().addListener((observable, oldValue, newValue) -> {
             filteredData.setPredicate(object -> {
                 // if no search value

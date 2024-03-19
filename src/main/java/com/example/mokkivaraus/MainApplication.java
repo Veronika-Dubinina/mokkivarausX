@@ -10,8 +10,8 @@ import java.io.IOException;
 public class MainApplication extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("main-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 900, 600);
+        FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("alue-view.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 600, 600);
         primaryStage.setTitle("Mokkivaraus");
         primaryStage.setScene(scene);
         primaryStage.show();

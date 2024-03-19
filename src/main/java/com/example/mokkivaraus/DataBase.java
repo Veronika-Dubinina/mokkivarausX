@@ -68,11 +68,31 @@ public class DataBase {
      * @param orderByColumn Column by which the table is ordered
      * @param tableClass Class representing the table row
      * @return ObservableList of TableClass-objects
-     * @param <TableClass>
+     *
      */
     public <TableClass> ObservableList<TableClass> getAllRows(String tableName, String orderByColumn, Class<TableClass> tableClass) {
+        return getAllRows(tableName, orderByColumn, tableClass, "");
+    };
+
+    /**
+     * Returns data from the database table packed into a list.
+     * @param tableName Name of the table
+     * @param orderByColumn Column by which the table is ordered
+     * @param tableClass Class representing the table row
+     * @param filter Selection filter (WHERE)
+     * @return ObservableList of TableClass-objects
+     *
+     */
+    public <TableClass> ObservableList<TableClass> getAllRows(String tableName, String orderByColumn, Class<TableClass> tableClass, String filter) {
         // Sql query
-        String sql = "SELECT * FROM " + tableName + " ORDER BY " + orderByColumn;
+        String sql = "SELECT * FROM " + tableName + " ";
+        // Add filter
+        if (!filter.isEmpty()) {
+            sql += filter + " ";
+        }
+        // Order by
+        sql += "ORDER BY " + orderByColumn;
+
         // List of TableClass-objects
         ObservableList<TableClass> tableClassObservableList = FXCollections.observableArrayList();
         // List of TableClass constructors

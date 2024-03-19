@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-public class AsiakasController extends TabController<Asiakas> implements Initializable {
+public class AsiakasController extends TabController<Asiakas> {
     // Constructor
     public AsiakasController() {
         // Set class attributes
