@@ -34,6 +34,9 @@ public class MainController implements Initializable {
     @FXML
     private Tab VarausTab;
 
+    @FXML
+    private Tab LaskuTab;
+
     // Добавить вкладку как атрибут здесь
     @FXML
     private Tab Test;
@@ -82,6 +85,15 @@ public class MainController implements Initializable {
             fxmlVarausLoader.setController(vc);
             VBox VarausView = fxmlVarausLoader.load();
             VarausTab.setContent(VarausView);
+
+            // Lasku tab
+
+            FXMLLoader fxmlLaskuLoader = new FXMLLoader();
+            fxmlLaskuLoader.setLocation(getClass().getResource("tab-view.fxml"));
+            LaskuController lc = new LaskuController();
+            fxmlLaskuLoader.setController(lc);
+            VBox LaskuView = fxmlLaskuLoader.load();
+            LaskuTab.setContent(LaskuView);
 
 
             // Загрузить вкладку здесь

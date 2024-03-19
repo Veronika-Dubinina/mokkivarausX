@@ -28,8 +28,8 @@ public class VarausController extends TabController<Varaus> implements Initializ
     // Methods
     @Override
     ArrayList<String[]> getColToAttr() {
-        String[] cols = new String[]{ "asiakas_id", "mokki_mokki_id", "varattu_pvm", "vahvistus_pvm", "varattu_alkupvm", "varattu_loppupvm"};
-        String[] attrs = new String[]{ "asiakas_id", "mokki_mokki_id", "varattu_pvm", "vahvistus_pvm", "varattu_alkupvm", "varattu_loppupvm"};
+        String[] cols = new String[]{ "varaus_id","asiakas_id", "mokki_mokki_id", "varattu_pvm", "vahvistus_pvm", "varattu_alkupvm", "varattu_loppupvm"};
+        String[] attrs = new String[]{ "varaus_id","asiakas_id", "mokki_mokki_id", "varattu_pvm", "vahvistus_pvm", "varattu_alkupvm", "varattu_loppupvm"};
         ArrayList<String[]> colToAttr = new ArrayList<>();
         colToAttr.add(cols);
         colToAttr.add(attrs);

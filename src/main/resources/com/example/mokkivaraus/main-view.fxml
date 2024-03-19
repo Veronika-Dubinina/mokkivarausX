@@ -56,6 +56,11 @@
                         <!-- Varaus -->
                     </content>
                 </Tab>
+                <Tab fx:id="LaskuTab" text="Lasku">
+                    <content>
+                        <!-- Lasku -->
+                    </content>
+                </Tab>
             </tabs>
         </TabPane>
     </center>
