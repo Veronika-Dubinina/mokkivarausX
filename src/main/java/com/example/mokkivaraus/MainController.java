@@ -1,64 +1,53 @@
 package com.example.mokkivaraus;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
-import javafx.stage.Stage;
+import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
-    // Attributes
+
+    @FXML
+    public AnchorPane topPane;
+
     @FXML
     public TabPane contentPane;
-    @FXML
-    public Button alueBtn;
-    @FXML
-    private Tab varausTab;
+
     @FXML
     private Tab mokkiTab;
+
     @FXML
     private Tab palveluTab;
+
     @FXML
     private Tab alueTab;
+
     @FXML
-    private Tab asiakasTab;
+    private Tab AsiakasTab;
+
     @FXML
-    private Tab raporttiTab;
+    private Tab VarausTab;
+
+    // Добавить вкладку как атрибут здесь
     @FXML
-    public void backToAlueView(ActionEvent actionEvent) {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("alue-view.fxml"));
-            Stage stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root, 600, 600);
-            stage.setScene(scene);
-            stage.show();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
+    private Tab Test;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
-            // Alue
-            alueBtn.setText(SessionData.alue.toString());
-
-            // Varaus tab
-            FXMLLoader fxmlVarausLoader = new FXMLLoader();
-            fxmlVarausLoader.setLocation(getClass().getResource("tab-view.fxml"));
-            VarausController vc = new VarausController();
-            fxmlVarausLoader.setController(vc);
-            VBox varausView = fxmlVarausLoader.load();
-            varausTab.setContent(varausView);
+            // Alue Tab
+            FXMLLoader fxmlAlueLoader = new FXMLLoader();
+            fxmlAlueLoader.setLocation(getClass().getResource("tab-view.fxml"));
+            AlueController ac = new AlueController();
+            fxmlAlueLoader.setController(ac);
+            VBox alueView = fxmlAlueLoader.load();
+            alueTab.setContent(alueView);
 
             // Mokki Tab
             FXMLLoader fxmlMokkiLoader = new FXMLLoader();
@@ -81,14 +70,19 @@ public class MainController implements Initializable {
             fxmlAsiakasLoader.setLocation(getClass().getResource("tab-view.fxml"));
             AsiakasController acс = new AsiakasController();
             fxmlAsiakasLoader.setController(acс);
-            VBox asiakasView = fxmlAsiakasLoader.load();
-            asiakasTab.setContent(asiakasView);
+            VBox AsiakasView = fxmlAsiakasLoader.load();
+            AsiakasTab.setContent(AsiakasView);
 
-            // Raportti tab
-            FXMLLoader fxmlRaporttiLoader = new FXMLLoader();
-            fxmlRaporttiLoader.setLocation(getClass().getResource("raporttiTab-view.fxml"));
-            VBox raporttiView = fxmlRaporttiLoader.load();
-            raporttiTab.setContent(raporttiView);
+
+            // Varaus tab
+
+            FXMLLoader fxmlVarausLoader = new FXMLLoader();
+            fxmlVarausLoader.setLocation(getClass().getResource("tab-view.fxml"));
+            VarausController vc = new VarausController();
+            fxmlVarausLoader.setController(vc);
+            VBox VarausView = fxmlVarausLoader.load();
+            VarausTab.setContent(VarausView);
+
 
             // Загрузить вкладку здесь
 
@@ -98,6 +92,4 @@ public class MainController implements Initializable {
         }
 
     }
-
-
 }
