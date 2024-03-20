@@ -25,8 +25,8 @@
             <HBox prefWidth="600.0" styleClass="contentBar">
                <children>
                   <TextField fx:id="searchTF" promptText="Haku" HBox.hgrow="ALWAYS" />
-                  <Button mnemonicParsing="false" styleClass="addBtn" text="Lisää" />
-                  <Button mnemonicParsing="false" styleClass="updateBtn" text="Päivitä" />
+                  <Button mnemonicParsing="false" styleClass="addBtn" text="Lisää" onAction="#addBtnClicked"/>
+                  <Button mnemonicParsing="false" styleClass="updateBtn" text="Päivitä" onAction="#updateBtnClicked"/>
                </children>
             </HBox>
             <ScrollPane fitToWidth="true" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">

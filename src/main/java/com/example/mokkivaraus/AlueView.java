@@ -3,11 +3,18 @@ package com.example.mokkivaraus;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -19,15 +26,30 @@ public class AlueView implements Initializable {
     private VBox alueBoxes;
     @FXML
     public TextField searchTF;
+    @FXML
+    public void addBtnClicked(ActionEvent actionEvent) {
+        AlueDC alueDC = new AlueDC("alue", "alue_id");
+        loadDialog(alueDC);
+    }
+    @FXML
+    public void updateBtnClicked(ActionEvent actionEvent) {
+        updateAlueList();
+    }
 
     // Methods
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        ObservableList<Alue> alueet = SessionData.dataBase.getAllRows("alue", "alue_id", Alue.class);
-        updateAlueList(alueet);
+        updateAlueList();
         initSearch();
     }
 
+    /**
+     * Refreshes list of AlueBox:s
+     */
+    private void updateAlueList() {
+        ObservableList<Alue> alueet = SessionData.dataBase.getAllRows("alue", "alue_id", Alue.class);
+        updateAlueList(alueet);
+    }
     /**
      * Refreshes list of AlueBox:s
      * @param alueet list of Alue-objects
@@ -60,6 +82,35 @@ public class AlueView implements Initializable {
             ObservableList<Alue> alueet = new SortedList<>(filteredData);
             updateAlueList(alueet);
         });
+    }
+
+    /**
+     * Opens dialog window to edit or add a new object in the table
+     * @param dialogController Controller
+     */
+    private void loadDialog(Object dialogController) {
+        // Open DialogController window
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(getClass().getResource("changeTable-dialog.fxml"));
+            fxmlLoader.setController(dialogController);
+            Scene scene = new Scene(fxmlLoader.load());
+            Stage newStage = new Stage();
+            // Prevent from using main window while dialog is open
+            newStage.initModality(Modality.APPLICATION_MODAL);
+            // Non resizable
+            newStage.setResizable(false);
+
+            newStage.setTitle("");
+            newStage.setScene(scene);
+            newStage.showAndWait();
+
+            // Reset table data
+            updateAlueList();
+            initSearch();
+        } catch (IOException ex) {
+            System.out.println("DialogPane load error!!" + ex);
+        }
     }
 }
 
