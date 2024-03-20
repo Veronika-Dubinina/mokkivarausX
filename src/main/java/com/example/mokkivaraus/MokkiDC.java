@@ -120,6 +120,10 @@ public class MokkiDC extends DialogController{
     void setDialogContent() {
         // DialogPane title
         dialogTitle.setText("Lisää uusi mökki");
+        alueCmBox.setValue(SessionData.alue);
+
+        // Alue
+        alueCmBox.setDisable(true);
 
         // Labels
         formsGridPane.add(new Label("Alue:"), 0, 0, 1, 1);
@@ -146,6 +150,8 @@ public class MokkiDC extends DialogController{
     void setEditContent() {
         // DialogPane title
         dialogTitle.setText("Päivitä mökin tiedot");
+        // Alue
+        alueCmBox.setDisable(false);
 
         // Set data from mokki-object
         alueCmBox.setValue(dataBase.getRow("alue", "alue_id", mokki.getAlue_id(), Alue.class));

@@ -5,6 +5,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -105,9 +106,14 @@ public class AlueBox extends HBox {
 
     private void deleteAlue() {
         // Delete alue-object from database
-        SessionData.dataBase.deleteRow("alue", "alue_id", alue.getAlue_id());
-        // Delete from alue list
-        parent.getChildren().remove(this);
+        if (SessionData.dataBase.deleteRow("alue", "alue_id", alue.getAlue_id())) {
+            // Delete from alue list
+            parent.getChildren().remove(this);
+        } else {
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Alue ei voida poistaa");
+            alert.show();
+        }
+
     }
 
 }

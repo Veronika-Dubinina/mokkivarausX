@@ -154,10 +154,10 @@ public class DataBase {
      * @param tableName Name of the Table
      * @param values HasMap of row values
      */
-    public void addRow(String tableName, HashMap<String, Object> values) {
+    public boolean addRow(String tableName, HashMap<String, Object> values) {
         // Check if values is empty
         if (values.isEmpty()) {
-            return;
+            return false;
         }
 
         // Sql query
@@ -176,8 +176,10 @@ public class DataBase {
             }
             // Execute query
             ps.executeUpdate();
+            return true;
         } catch (Exception ex) {
             System.out.println("!!Exception DataBase.addRow : " + ex);
+            return false;
         }
     }
 
@@ -188,7 +190,7 @@ public class DataBase {
      * @param identifierKey Row identifier
      * @param identifierValue Row identifier value
      */
-    public void updateRow(String tableName, HashMap<String, Object> values, String identifierKey, Object identifierValue) {
+    public boolean updateRow(String tableName, HashMap<String, Object> values, String identifierKey, Object identifierValue) {
         // Sql query
         List<String> keyList = new ArrayList<String>(values.keySet());;
         String columns = keyList.stream().collect(Collectors.joining("=?, ", "", "=?"));
@@ -204,8 +206,10 @@ public class DataBase {
             }
             // Execute query
             ps.executeUpdate();
+            return true;
         } catch (Exception ex) {
             System.out.println("!!Exception DataBase.updateRow : " + ex);
+            return false;
         }
 
     }
@@ -216,15 +220,17 @@ public class DataBase {
      * @param identifierKey Row identifier
      * @param identifierValue Row identifier value
      */
-    public void deleteRow(String tableName, String identifierKey, Object identifierValue) {
+    public boolean deleteRow(String tableName, String identifierKey, Object identifierValue) {
         // Remove row in mokki-table
         String sql = "DELETE FROM " + tableName + " WHERE " + identifierKey + " = " + identifierValue;
 
         try (Connection conn = getDbConnection();
              PreparedStatement ps = conn.prepareStatement(sql);) {
             ps.executeUpdate();
+            return true;
         } catch (Exception ex) {
             System.out.println("!!Exception DataBase.deleteRow : " + ex);
+            return false;
         }
     }
 
