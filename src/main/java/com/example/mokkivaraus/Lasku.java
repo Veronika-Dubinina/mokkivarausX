@@ -1,15 +1,20 @@
 package com.example.mokkivaraus;
 
 import java.sql.ResultSet;
+import java.sql.Timestamp;
 import java.util.HashMap;
 
 public class Lasku {
     // Attributes
     private int lasku_id;
     private int varaus_id;
+    private String asiakas_etunimi;
+    private String asiakas_sukunimi;
+    private String mokkinimi;
+    private Timestamp varattu_pvm;
     private double summa;
     private double alv;
-    private boolean maksettu;
+    private byte maksettu;
 
     // Constructors
     public Lasku() {}
@@ -18,15 +23,19 @@ public class Lasku {
         try {
             this.lasku_id = res.getInt("lasku_id");
             this.varaus_id = res.getInt("varaus_id");
+            this.asiakas_etunimi = res.getString("asiakas_etunimi");
+            this.asiakas_sukunimi = res.getString("asiakas_sukunimi");
+            this.mokkinimi = res.getString("mokkinimi");
+            this.varattu_pvm = res.getTimestamp("varattu_pvm");
             this.summa = res.getDouble("summa");
             this.alv = res.getDouble("alv");
-            this.maksettu = res.getBoolean("maksettu");
+            this.maksettu = (byte)res.getInt("maksettu");
         } catch (Exception e) {
             System.out.println("!!Exc. Lasku.Constr : " + e);
         }
     }
 
-    public Lasku(int varaus_id, double summa, double alv, boolean maksettu) {
+    public Lasku(int varaus_id, double summa, double alv, byte maksettu) {
         this.varaus_id = varaus_id;
         this.summa = summa;
         this.alv = alv;
@@ -50,6 +59,38 @@ public class Lasku {
         this.varaus_id = varaus_id;
     }
 
+    public String getAsiakas_etunimi() {
+        return asiakas_etunimi;
+    }
+
+    public void setAsiakas_etunimi(String asiakas_etunimi) {
+        this.asiakas_etunimi = asiakas_etunimi;
+    }
+
+    public String getAsiakas_sukunimi() {
+        return asiakas_sukunimi;
+    }
+
+    public void setAsiakas_sukunimi(String asiakas_sukunimi) {
+        this.asiakas_sukunimi = asiakas_sukunimi;
+    }
+
+    public String getMokkinimi() {
+        return mokkinimi;
+    }
+
+    public void setMokkinimi(String mokkinimi) {
+        this.mokkinimi = mokkinimi;
+    }
+
+    public Timestamp getVarattu_pvm() {
+        return varattu_pvm;
+    }
+
+    public void setVarattu_pvm(Timestamp varattu_pvm) {
+        this.varattu_pvm = varattu_pvm;
+    }
+
     public double getSumma() {
         return summa;
     }
@@ -66,13 +107,27 @@ public class Lasku {
         this.alv = alv;
     }
 
-    public boolean isMaksettu() {
+    public byte getMaksettu() {
         return maksettu;
     }
 
-    public void setMaksettu(boolean maksettu) {
+    public void setMaksettu(byte maksettu) {
         this.maksettu = maksettu;
     }
 
     // Other methods as needed
+    @Override
+    public String toString() {
+        return "Lasku: " + lasku_id + " " + varaus_id;
+    }
+
+    public HashMap<String, Object> getAttrMap() {
+        HashMap<String, Object> attrMap = new HashMap<>();
+        attrMap.put("varaus_id", varaus_id);
+        attrMap.put("summa", summa);
+        attrMap.put("alv", alv);
+        attrMap.put("maksettu", maksettu);
+
+        return attrMap;
+    }
 }

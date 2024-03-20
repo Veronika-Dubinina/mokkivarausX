@@ -34,16 +34,16 @@ public class LaskuDC extends DialogController {
         dialogTitle.setText("Lisää uusi lasku");
 
         // Labels
-        formsGridPane.add(new Label("Varaus ID:"), 0, 1, 1, 1);
-        formsGridPane.add(new Label("Summa:"), 0, 2, 1, 1);
-        formsGridPane.add(new Label("ALV:"), 0, 3, 1, 1);
-        formsGridPane.add(new Label("Maksettu:"), 0, 4, 1, 1);
+        formsGridPane.add(new Label("Varaus ID:"), 0, 0, 1, 1);
+        formsGridPane.add(new Label("Summa:"), 0, 1, 1, 1);
+        formsGridPane.add(new Label("ALV:"), 0, 2, 1, 1);
+        formsGridPane.add(new Label("Maksettu:"), 0, 3, 1, 1);
 
         // Fields
-        formsGridPane.add(varausCmBox, 1, 1, 1, 1);
-        formsGridPane.add(summaField, 1, 2, 1, 1);
-        formsGridPane.add(alvField, 1, 3, 1, 1);
-        formsGridPane.add(maksettuCheckBox, 1, 4, 1, 1);
+        formsGridPane.add(varausCmBox, 1, 0, 1, 1);
+        formsGridPane.add(summaField, 1, 1, 1, 1);
+        formsGridPane.add(alvField, 1, 2, 1, 1);
+        formsGridPane.add(maksettuCheckBox, 1, 3, 1, 1);
     }
 
     @Override
@@ -55,17 +55,12 @@ public class LaskuDC extends DialogController {
         varausCmBox.setValue(dataBase.getRow("varaus", "varaus_id", lasku.getVaraus_id(), Varaus.class));
         summaField.setText(String.valueOf(lasku.getSumma()));
         alvField.setText(String.valueOf(lasku.getAlv()));
-        maksettuCheckBox.setSelected(lasku.isMaksettu());
+        maksettuCheckBox.setSelected(lasku.getMaksettu() == 1);
     }
 
     @Override
     HashMap<String, Object> listOfAttributes() {
-        HashMap<String, Object> attrMap = new HashMap<>();
-        attrMap.put("varaus_id", varausCmBox.getValue().getVaraus_id());
-        attrMap.put("summa", Double.parseDouble(summaField.getText()));
-        attrMap.put("alv", Double.parseDouble(alvField.getText()));
-        attrMap.put("maksettu", maksettuCheckBox.isSelected() ? 1 : 0);
-        return attrMap;
+        return lasku.getAttrMap();
     }
 
     @Override

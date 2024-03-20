@@ -18,18 +18,19 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-public class LaskuController extends TabController<Lasku> implements Initializable {
+public class LaskuController extends TabController<Lasku> {
     // Constructor
     public LaskuController() {
         // Set class attributes
-        super("lasku", "lasku_id", Lasku.class);
+        super("asiakkaiden_laskut", "lasku_id", Lasku.class);
+        filter = "WHERE alue_id = " + SessionData.alue.getAlue_id();
     }
 
     // Methods
     @Override
     ArrayList<String[]> getColToAttr() {
-        String[] cols = new String[]{"id", "varaus_id", "summa", "alv", "maksettu"};
-        String[] attrs = new String[]{"lasku_id", "varaus_id", "summa", "alv", "maksettu"};
+        String[] cols = new String[]{"id", "asiakas_etunimi", "asiakas_sukunimi", "mokki", "varattu_pvm", "summa", "alv", "maksettu"};
+        String[] attrs = new String[]{"lasku_id", "asiakas_etunimi", "asiakas_sukunimi", "mokkinimi", "varattu_pvm", "summa", "alv", "maksettu"};
         ArrayList<String[]> colToAttr = new ArrayList<>();
         colToAttr.add(cols);
         colToAttr.add(attrs);
@@ -38,7 +39,7 @@ public class LaskuController extends TabController<Lasku> implements Initializab
 
     @Override
     DialogController getController() {
-        return new LaskuDC(tableName, identifierKey);
+        return new LaskuDC("lasku", identifierKey);
     }
 
     @Override
@@ -48,13 +49,19 @@ public class LaskuController extends TabController<Lasku> implements Initializab
         String searchKeyword = newValue.toLowerCase();
         if (String.valueOf(lasku.getLasku_id()).toLowerCase().contains(searchKeyword) && (searchFilter.equals("kaikki") || searchFilter.equals("id"))) {
             return true; // Match in ID
-        } else if (String.valueOf(lasku.getVaraus_id()).toLowerCase().contains(searchKeyword) && (searchFilter.equals("kaikki") || searchFilter.equals("varaus_id"))) {
-            return true; // Match in Varaus ID
+        } else if (lasku.getAsiakas_etunimi().toLowerCase().contains(searchKeyword) && (searchFilter.equals("kaikki") || searchFilter.equals("as_etunimi"))) {
+            return true; // Match in Asiakas etunimi
+        } else if (lasku.getAsiakas_sukunimi().toLowerCase().contains(searchKeyword) && (searchFilter.equals("kaikki") || searchFilter.equals("as_sukunimi"))) {
+            return true; // Match in Asiakas sukunimi
+        } else if (lasku.getMokkinimi().toLowerCase().contains(searchKeyword) && (searchFilter.equals("kaikki") || searchFilter.equals("mökki"))) {
+            return true; // Match in Mokkinimi
+        } else if (String.valueOf(lasku.getVarattu_pvm()).contains(searchKeyword) && (searchFilter.equals("kaikki") || searchFilter.equals("varattu_pvm"))) {
+            return true; // Match in Varaus varattu_pvm
         } else if (String.valueOf(lasku.getSumma()).toLowerCase().contains(searchKeyword) && (searchFilter.equals("kaikki") || searchFilter.equals("summa"))) {
             return true; // Match in Summa
         } else if (String.valueOf(lasku.getAlv()).toLowerCase().contains(searchKeyword) && (searchFilter.equals("kaikki") || searchFilter.equals("alv"))) {
             return true; // Match in Alv
-        } else if (String.valueOf(lasku.isMaksettu()).toLowerCase().contains(searchKeyword) && (searchFilter.equals("kaikki") || searchFilter.equals("maksettu"))) {
+        } else if (String.valueOf(lasku.getMaksettu()).toLowerCase().contains(searchKeyword) && (searchFilter.equals("kaikki") || searchFilter.equals("maksettu"))) {
             return true; // Match in Maksettu
         }
         return false; // No match found
@@ -62,6 +69,6 @@ public class LaskuController extends TabController<Lasku> implements Initializab
 
     @Override
     String[] getSearchFilters() {
-        return new String[]{"kaikki", "id", "varaus_id", "summa", "alv", "maksettu"};
+        return new String[]{"kaikki", "id", "as_etunimi", "as_sukunimi", "mökki", "varattu_pvm", "summa", "alv", "maksettu"};
     }
 }
