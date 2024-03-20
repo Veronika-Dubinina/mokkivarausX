@@ -1,9 +1,9 @@
 /* Colors
-blue -  577590
-green - 00AFB9
-yellow - FDFCDC
-orrange - FED9B7
-red - F07167
+blue -  #577590
+green - #90BE6D
+yellow - #F9C74F
+orange - #F8961E
+red - #F94144
 */
 .root {
     -fx-font-family: "Gill Sans";
@@ -32,6 +32,11 @@ red - F07167
 .companyName {
     -fx-font-size: 18;
 }
+#dialogTitle {
+    -fx-alignment: center;
+    -fx-text-alignment: center;
+    -fx-font-size: 18;
+}
 .main {
     -fx-padding: 10px;
     -fx-spacing: 5;
@@ -54,12 +59,29 @@ red - F07167
 .updateBtn:hover {
     -fx-background-color: #62829f;
 }
+.deleteBtn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #F94144;
+}
+.deleteBtn:hover {
+    -fx-background-color: #F94144;
+    -fx-text-fill: white;
+}
+.editBtn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #43AA8B;
+}
+.editBtn:hover {
+    -fx-background-color: #43AA8B;
+    -fx-text-fill: white;
+}
 .backBtn {
     -fx-background-color: #F8961E;
 }
 .backBtn:hover {
     -fx-background-color: #de861b;
 }
+/* Alue view */
 #alueBoxes {
     -fx-padding: 5px;
     -fx-spacing: 5;
@@ -74,4 +96,17 @@ red - F07167
 .alueBox:hover {
     -fx-background-color: #277DA1;
 }
+/* changeTable dialog */
+#formsGridPane {
+
+}
+#formsGridPane > .text-field, .text-area {
+    -fx-max-height: 100px;
+    -fx-border-style: solid;
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
+    -fx-border-color: rgb(128, 128, 128);
+}
+
+
 

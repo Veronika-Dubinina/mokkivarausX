@@ -6,6 +6,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.net.URL;
@@ -27,7 +28,7 @@ abstract class DialogController implements Initializable{
     @FXML
     protected Label dialogTitle;
     @FXML
-    protected AnchorPane mainContent;
+    protected VBox mainContent;
     @FXML
     protected GridPane formsGridPane;
     @FXML

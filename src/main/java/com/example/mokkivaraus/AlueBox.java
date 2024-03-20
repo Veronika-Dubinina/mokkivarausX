@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
@@ -32,6 +33,7 @@ public class AlueBox extends HBox {
         this.parent = parent;
         this.alue = alue;
 
+        // Label
         this.alueLbl.setText(alue.getNimi());
         Pane pane = new Pane(alueLbl);
         setHgrow(pane, Priority.ALWAYS);
@@ -47,9 +49,13 @@ public class AlueBox extends HBox {
                 throw new RuntimeException(e);
             }
         });
+        // Buttons
         this.editBtn.setOnAction(event -> updateAlue());
+        this.editBtn.getStyleClass().add("editBtn");
         this.deleteBtn.setOnAction(event -> deleteAlue());
+        this.deleteBtn.getStyleClass().add("deleteBtn");
 
+        // Box
         this.getChildren().addAll(pane, editBtn, deleteBtn);
         this.getStyleClass().add("alueBox");
         this.setPadding(new Insets(5));
