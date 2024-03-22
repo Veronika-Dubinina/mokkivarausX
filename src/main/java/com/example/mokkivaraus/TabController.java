@@ -10,6 +10,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseButton;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -66,10 +67,9 @@ abstract class TabController<T> implements Initializable {
             TableRow<T> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 2 && (! row.isEmpty()) ) {
-                    T rowData = row.getItem();
-                    DialogController dialogController = getController();
-                    dialogController.setObject(rowData);
-                    loadDialog(dialogController);
+                    tableDoubleClick(row);
+                } else if (event.getButton() == MouseButton.SECONDARY) {
+                    tableMouseRightClick(row);
                 }
             });
             return row ;
@@ -165,6 +165,24 @@ abstract class TabController<T> implements Initializable {
         // Apply filtered sorted data to the TableView
         tableView.setItems(sortedData);
     };
+
+    /**
+     * Menetelmä, jota kutsutaan kaksoisnapsautettaessa taulukkoriviä
+     * @param row Table row
+     */
+    protected void tableDoubleClick(TableRow<T> row) {
+        T rowData = row.getItem();
+        DialogController dialogController = getController();
+        dialogController.setObject(rowData);
+        loadDialog(dialogController);
+    }
+
+    /**
+     * Menetelmä, jota kutsutaan, kun napsautat hiiren kakkospainikkeella taulukkoriviä
+     * @param row Table row
+     */
+    protected void tableMouseRightClick(TableRow<T> row) {
+    }
 
     /**
      * Returns list of table columns mapped to class attributes

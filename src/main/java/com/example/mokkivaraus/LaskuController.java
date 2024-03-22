@@ -1,22 +1,8 @@
 package com.example.mokkivaraus;
 
-import javafx.collections.transformation.FilteredList;
-import javafx.collections.transformation.SortedList;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 
-import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.ResourceBundle;
 
 public class LaskuController extends TabController<Lasku> {
     // Constructor
@@ -27,6 +13,12 @@ public class LaskuController extends TabController<Lasku> {
     }
 
     // Methods
+    @Override
+    protected void tableMouseRightClick(TableRow<Lasku> row) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Mouse right click");
+        alert.show();
+    }
+
     @Override
     ArrayList<String[]> getColToAttr() {
         String[] cols = new String[]{"id", "asiakas_etunimi", "asiakas_sukunimi", "mokki", "varattu_pvm", "summa", "alv", "maksettu"};
