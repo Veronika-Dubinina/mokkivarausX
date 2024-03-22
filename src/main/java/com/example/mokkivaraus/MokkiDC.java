@@ -120,9 +120,8 @@ public class MokkiDC extends DialogController{
     void setDialogContent() {
         // DialogPane title
         dialogTitle.setText("Lisää uusi mökki");
-        alueCmBox.setValue(SessionData.alue);
-
         // Alue
+        alueCmBox.setValue(SessionData.alue);
         alueCmBox.setDisable(true);
 
         // Labels
@@ -154,7 +153,7 @@ public class MokkiDC extends DialogController{
         alueCmBox.setDisable(false);
 
         // Set data from mokki-object
-        alueCmBox.setValue(dataBase.getRow("alue", "alue_id", mokki.getAlue_id(), Alue.class));
+        alueCmBox.setValue(SessionData.alue);
         nimiField.setText(mokki.getMokkinimi());
         postinroField.setLastSelectedItem(dataBase.getRow("posti", "postinro", mokki.getPostinro(), Posti.class));
         katuosoiteField.setText(mokki.getKatuosoite());

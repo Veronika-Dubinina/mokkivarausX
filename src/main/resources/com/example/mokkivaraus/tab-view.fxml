@@ -14,11 +14,11 @@
     <children>
         <HBox alignment="CENTER_RIGHT" prefHeight="31.0" prefWidth="600.0" styleClass="contentBar">
             <children>
-            <HBox HBox.hgrow="ALWAYS">
+            <HBox styleClass="searchBox" HBox.hgrow="ALWAYS">
                <children>
-                  <TextField fx:id="searchTF" promptText="Haku" style="-fx-border-radius: 5 0 0 5; -fx-background-radius: 5 0 0 5;" HBox.hgrow="ALWAYS">
+                  <TextField fx:id="searchTF" promptText="Haku" HBox.hgrow="ALWAYS">
                   </TextField>
-                  <ComboBox fx:id="searchFilterCB" onAction="#setSearchFilter" prefHeight="28.0" prefWidth="122.0" promptText="Hakusuodatin" style="-fx-border-radius: 0 5 5 0; -fx-background-radius: 0 5 5 0;" />
+                  <ComboBox fx:id="searchFilterCB" onAction="#setSearchFilter" prefHeight="28.0" prefWidth="122.0" promptText="Hakusuodatin" />
                </children>
             </HBox>
                 <Button mnemonicParsing="false" onAction="#onAddBtnClicked" styleClass="addBtn" text="Lisää +" />

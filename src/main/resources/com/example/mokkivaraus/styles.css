@@ -9,13 +9,16 @@ red - #F94144
     -fx-font-family: "Gill Sans";
     -fx-font-size: 14;
 }
+
 .button {
     -fx-background-radius: 5px;
     -fx-border-style: none;
 }
+
 .scroll-pane {
     -fx-background-color: white;
 }
+
 .scroll-pane > .viewport {
     -fx-background-color: transparent;
 }
@@ -23,69 +26,95 @@ red - #F94144
 .top {
     -fx-padding: 10px;
     -fx-spacing: 5;
-    -fx-alignment: bottom-left;
+    -fx-alignment: center-left;
     -fx-background-color: #577590;
 }
+
 .top > .label {
     -fx-text-fill: white;
 }
+
 .companyName {
     -fx-font-size: 18;
 }
+
 #dialogTitle {
     -fx-alignment: center;
     -fx-text-alignment: center;
     -fx-font-size: 18;
 }
+
 .main {
     -fx-padding: 10px;
     -fx-spacing: 5;
     -fx-background-color: white;
 }
+
 .contentBar {
     -fx-padding: 5px;
     -fx-spacing: 5;
 }
 
+.searchBox > .text-field {
+    -fx-border-radius: 5 0 0 5;
+    -fx-background-radius: 5 0 0 5;
+}
+
+.searchBox > .combo-box {
+    -fx-border-radius: 0 5 5 0;
+    -fx-background-radius: 0 5 5 0;
+}
+
 .addBtn {
     -fx-background-color: #90BE6D;
 }
+
 .addBtn:hover {
     -fx-background-color: #7fa860;
 }
+
 .updateBtn {
     -fx-background-color: #6e93b4;
 }
+
 .updateBtn:hover {
     -fx-background-color: #62829f;
 }
+
 .deleteBtn {
     -fx-background-color: transparent;
     -fx-text-fill: #F94144;
 }
+
 .deleteBtn:hover {
     -fx-background-color: #F94144;
     -fx-text-fill: white;
 }
+
 .editBtn {
     -fx-background-color: transparent;
     -fx-text-fill: #43AA8B;
 }
+
 .editBtn:hover {
     -fx-background-color: #43AA8B;
     -fx-text-fill: white;
 }
+
 .backBtn {
     -fx-background-color: #F8961E;
 }
+
 .backBtn:hover {
     -fx-background-color: #de861b;
 }
+
 /* Alue view */
 #alueBoxes {
     -fx-padding: 5px;
     -fx-spacing: 5;
 }
+
 .alueBox {
     -fx-background-color: whitesmoke;
     -fx-background-radius: 5px;
@@ -93,13 +122,16 @@ red - #F94144
     -fx-border-color: #577590;
     -fx-border-radius: 5px;
 }
+
 .alueBox:hover {
     -fx-background-color: #277DA1;
 }
+
 /* changeTable dialog */
 #formsGridPane {
 
 }
+
 #formsGridPane > .text-field, .text-area {
     -fx-max-height: 100px;
     -fx-border-style: solid;

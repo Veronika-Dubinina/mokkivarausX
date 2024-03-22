@@ -62,6 +62,9 @@ public class PalveluDC extends DialogController {
     void setDialogContent() {
         // DialogPane title
         dialogTitle.setText("Lisää uusi palvelu");
+        // Alue
+        alueCmBox.setValue(SessionData.alue);
+        alueCmBox.setDisable(true);
 
         // Labels
         formsGridPane.add(new Label("ID:"), 0, 0, 1, 1);
@@ -86,11 +89,13 @@ public class PalveluDC extends DialogController {
     void setEditContent() {
         // DialogPane title
         dialogTitle.setText("Päivitä palvelun tiedot");
+        // Alue
+        alueCmBox.setDisable(false);
 
         // Set data from mokki-object
         idField.setText(String.valueOf(palvelu.getPalvelu_id()));
         idField.setDisable(true);
-        alueCmBox.setValue(dataBase.getRow("alue", "alue_id", palvelu.getAlue_id(), Alue.class));
+        alueCmBox.setValue(SessionData.alue);
         nimiField.setText(palvelu.getNimi());
         tyyppiField.setText(String.valueOf(palvelu.getTyyppi()));
         kuvausArea.setText(palvelu.getKuvaus());
