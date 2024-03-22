@@ -15,7 +15,7 @@ public class LaskuController extends TabController<Lasku> {
     // Methods
     @Override
     protected void tableMouseRightClick(TableRow<Lasku> row) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Mouse right click");
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, ((Lasku) row.getItem()).toString());
         alert.show();
     }
 
