@@ -23,13 +23,15 @@ public class Lasku {
         try {
             this.lasku_id = res.getInt("lasku_id");
             this.varaus_id = res.getInt("varaus_id");
+            this.summa = res.getDouble("summa");
+            this.alv = res.getDouble("alv");
+            this.maksettu = (byte)res.getInt("maksettu");
+
             this.asiakas_etunimi = res.getString("asiakas_etunimi");
             this.asiakas_sukunimi = res.getString("asiakas_sukunimi");
             this.mokkinimi = res.getString("mokkinimi");
             this.varattu_pvm = res.getTimestamp("varattu_pvm");
-            this.summa = res.getDouble("summa");
-            this.alv = res.getDouble("alv");
-            this.maksettu = (byte)res.getInt("maksettu");
+
         } catch (Exception e) {
             System.out.println("!!Exc. Lasku.Constr : " + e);
         }
