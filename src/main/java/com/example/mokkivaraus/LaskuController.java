@@ -4,6 +4,14 @@ import javafx.scene.control.*;
 
 import java.util.ArrayList;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 public class LaskuController extends TabController<Lasku> {
     // Constructor
     public LaskuController() {
@@ -15,9 +23,34 @@ public class LaskuController extends TabController<Lasku> {
     // Methods
     @Override
     protected void tableMouseRightClick(TableRow<Lasku> row) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, ((Lasku) row.getItem()).toString());
-        alert.show();
+        Lasku lasku = row.getItem();
+        generatePDF(lasku);
     }
+
+    private void generatePDF(Lasku lasku) {
+        Document document = new Document();
+        try {
+            // Указываем путь и название для сохраняемого PDF-файла
+            String fileName = "lasku_" + lasku.getLasku_id() + ".pdf";
+            PdfWriter.getInstance(document, new FileOutputStream(fileName));
+            document.open();
+
+            // Форматируем данные из объекта Lasku и добавляем их в PDF
+            String content = String.format("ID Ласку %d ID бронирования %d Asiakas %s %s Mokki %s Дата бронирования %s Сумма %.2f НДС %.2f Оплачено %s",
+                    lasku.getLasku_id(), lasku.getVaraus_id(), lasku.getAsiakas_etunimi(), lasku.getAsiakas_sukunimi(),
+                    lasku.getMokkinimi(), lasku.getVarattu_pvm(), lasku.getSumma(), lasku.getAlv(), (lasku.getMaksettu() == 1 ? "Да" : "Нет"));
+
+            document.add(new Paragraph(content));
+
+            // Закрываем документ
+            document.close();
+
+            System.out.println("PDF успешно создан: " + fileName);
+        } catch (DocumentException | IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     @Override
     ArrayList<String[]> getColToAttr() {
@@ -36,27 +69,27 @@ public class LaskuController extends TabController<Lasku> {
 
     @Override
     boolean getSearchConditions(Lasku lasku, String newValue) {
-        // Implement your search conditions here
-        // For example:
+        // Реализуйте здесь условия поиска
+        // Например:
         String searchKeyword = newValue.toLowerCase();
         if (String.valueOf(lasku.getLasku_id()).toLowerCase().contains(searchKeyword) && (searchFilter.equals("kaikki") || searchFilter.equals("id"))) {
-            return true; // Match in ID
+            return true; // Соответствие по ID
         } else if (lasku.getAsiakas_etunimi().toLowerCase().contains(searchKeyword) && (searchFilter.equals("kaikki") || searchFilter.equals("as_etunimi"))) {
-            return true; // Match in Asiakas etunimi
+            return true; // Соответствие по имени клиента
         } else if (lasku.getAsiakas_sukunimi().toLowerCase().contains(searchKeyword) && (searchFilter.equals("kaikki") || searchFilter.equals("as_sukunimi"))) {
-            return true; // Match in Asiakas sukunimi
+            return true; // Соответствие по фамилии клиента
         } else if (lasku.getMokkinimi().toLowerCase().contains(searchKeyword) && (searchFilter.equals("kaikki") || searchFilter.equals("mökki"))) {
-            return true; // Match in Mokkinimi
+            return true; // Соответствие по названию мокки
         } else if (String.valueOf(lasku.getVarattu_pvm()).contains(searchKeyword) && (searchFilter.equals("kaikki") || searchFilter.equals("varattu_pvm"))) {
-            return true; // Match in Varaus varattu_pvm
+            return true; // Соответствие по дате бронирования
         } else if (String.valueOf(lasku.getSumma()).toLowerCase().contains(searchKeyword) && (searchFilter.equals("kaikki") || searchFilter.equals("summa"))) {
-            return true; // Match in Summa
+            return true; // Соответствие по сумме
         } else if (String.valueOf(lasku.getAlv()).toLowerCase().contains(searchKeyword) && (searchFilter.equals("kaikki") || searchFilter.equals("alv"))) {
-            return true; // Match in Alv
+            return true; // Соответствие по НДС
         } else if (String.valueOf(lasku.getMaksettu()).toLowerCase().contains(searchKeyword) && (searchFilter.equals("kaikki") || searchFilter.equals("maksettu"))) {
-            return true; // Match in Maksettu
+            return true; // Соответствие по флагу "оплачено"
         }
-        return false; // No match found
+        return false; // Нет совпадений
     }
 
     @Override

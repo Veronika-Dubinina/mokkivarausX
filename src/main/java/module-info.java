@@ -2,6 +2,8 @@ module com.example.mokkivaraus {
     requires javafx.controls;
     requires javafx.fxml;
 
+    requires java.desktop; // Add this line
+
     requires org.controlsfx.controls;
     requires com.dlsc.formsfx;
     requires org.kordamp.bootstrapfx.core;
