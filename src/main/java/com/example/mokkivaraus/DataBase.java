@@ -30,22 +30,25 @@ public class DataBase {
     }
 
     /**
-     * Returns result of executed SQL query. For SELECT statement
-     * @param sql SQL Query
-     * @return returns the ResultSet object
+     * To do with result set
+     * @param resultSet ResultSet object
      */
-    public ResultSet getData(String sql) {
+    public void toDoResultSet(ResultSet resultSet) {}
+
+    /**
+     * Returns result of executed SQL query and works with it
+     * @param sql SQL Query
+     */
+    public void getData(String sql) {
         ResultSet res = null;
         try (Connection conn = getDbConnection();
              PreparedStatement ps = conn.prepareStatement(sql);
              // Execute query
              ResultSet result = ps.executeQuery();){
-                res = result;
+                toDoResultSet(result);
         } catch (Exception ex) {
             System.out.println("!!Exception DataBase.getData:" + ex);
         }
-
-        return res;
     }
 
     /**
