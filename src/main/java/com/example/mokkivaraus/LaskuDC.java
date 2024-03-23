@@ -12,6 +12,7 @@ public class LaskuDC extends DialogController {
     private TextField summaField = new TextField();
     private TextField alvField = new TextField();
     private CheckBox maksettuCheckBox = new CheckBox();
+    private TextField laskuIdField = new TextField(); // Добавлено поле для ввода lasku_id
 
     // Constructor
     public LaskuDC(String tableName, String identifierKey) {
@@ -38,12 +39,14 @@ public class LaskuDC extends DialogController {
         formsGridPane.add(new Label("Summa:"), 0, 1, 1, 1);
         formsGridPane.add(new Label("ALV:"), 0, 2, 1, 1);
         formsGridPane.add(new Label("Maksettu:"), 0, 3, 1, 1);
+        formsGridPane.add(new Label("Lasku ID:"), 0, 4, 1, 1); // Добавлена метка для поля lasku_id
 
         // Fields
         formsGridPane.add(varausCmBox, 1, 0, 1, 1);
         formsGridPane.add(summaField, 1, 1, 1, 1);
         formsGridPane.add(alvField, 1, 2, 1, 1);
         formsGridPane.add(maksettuCheckBox, 1, 3, 1, 1);
+        formsGridPane.add(laskuIdField, 1, 4, 1, 1); // Добавлено текстовое поле для ввода lasku_id
     }
 
     @Override
@@ -56,13 +59,28 @@ public class LaskuDC extends DialogController {
         summaField.setText(String.valueOf(lasku.getSumma()));
         alvField.setText(String.valueOf(lasku.getAlv()));
         maksettuCheckBox.setSelected(lasku.getMaksettu() == 1);
+        laskuIdField.setText(String.valueOf(lasku.getLasku_id())); // Устанавливаем значение lasku_id
     }
 
     @Override
     HashMap<String, Object> listOfAttributes() {
-        return lasku.getAttrMap();
-    }
+        HashMap<String, Object> attributes = new HashMap<>();
 
+        // Добавляем только столбцы, для которых есть значения
+        attributes.put("varaus_id", varausCmBox.getValue().getVaraus_id());
+        attributes.put("summa", Double.parseDouble(summaField.getText()));
+        attributes.put("alv", Double.parseDouble(alvField.getText()));
+        attributes.put("maksettu", maksettuCheckBox.isSelected() ? 1 : 0);
+
+        // Если laskuIdField не пустой, добавляем lasku_id
+        String laskuIdText = laskuIdField.getText();
+        if (!laskuIdText.isEmpty()) {
+            int laskuId = Integer.parseInt(laskuIdText);
+            attributes.put("lasku_id", laskuId);
+        }
+
+        return attributes;
+    }
     @Override
     boolean checkData() {
         // Perform data validation checks here
