@@ -1,18 +1,19 @@
 package com.example.mokkivaraus;
 
 import javafx.scene.control.*;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfReader;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Paragraph;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.PdfWriter;
-
-import java.io.FileOutputStream;
-import java.io.IOException;
-
 public class LaskuController extends TabController<Lasku> {
+    private static final String PDF_FOLDER_PATH = "C:/Users/mikih/IdeaProjects/mokkivarausX/"; // Путь к папке для сохранения PDF-файлов
+    private static final String BLANK_PDF_PATH = "C:/Users/mikih/IdeaProjects/mokkivarausX/table_data.pdf"; // Путь к файлу-болванке
+
     // Constructor
     public LaskuController() {
         // Set class attributes
@@ -28,28 +29,35 @@ public class LaskuController extends TabController<Lasku> {
     }
 
     private void generatePDF(Lasku lasku) {
-        Document document = new Document();
+        String fileName = "lasku_" + lasku.getLasku_id() + ".pdf";
+        String dest = PDF_FOLDER_PATH + fileName;
+
         try {
-            // Указываем путь и название для сохраняемого PDF-файла
-            String fileName = "lasku_" + lasku.getLasku_id() + ".pdf";
-            PdfWriter.getInstance(document, new FileOutputStream(fileName));
-            document.open();
+            PdfDocument pdf = new PdfDocument(new PdfReader(BLANK_PDF_PATH), new PdfWriter(dest));
+            Document document = new Document(pdf);
 
-            // Форматируем данные из объекта Lasku и добавляем их в PDF
-            String content = String.format("ID Ласку %d ID бронирования %d Asiakas %s %s Mokki %s Дата бронирования %s Сумма %.2f НДС %.2f Оплачено %s",
+            // Set margins
+            document.setMargins(100, 50, 50, 100);
+
+            // Format the data from the Lasku object
+            String content = String.format("ID Lasku: %d\nID Varaus: %d\nAsiakas: %s %s\nMokki: %s\nVarauksen data: %s\nSumma: %.2f €\nALV: %.2f %%\nMaksettu: %s",
                     lasku.getLasku_id(), lasku.getVaraus_id(), lasku.getAsiakas_etunimi(), lasku.getAsiakas_sukunimi(),
-                    lasku.getMokkinimi(), lasku.getVarattu_pvm(), lasku.getSumma(), lasku.getAlv(), (lasku.getMaksettu() == 1 ? "Да" : "Нет"));
+                    lasku.getMokkinimi(), lasku.getVarattu_pvm(), lasku.getSumma(), lasku.getAlv(), (lasku.getMaksettu() == 1 ? "joo" : "ei"));
 
-            document.add(new Paragraph(content));
+            // Add content to the PDF at a fixed position
+            Paragraph paragraph = new Paragraph(content);
+            paragraph.setFixedPosition(100, 350, 400); // (x, y, width)
+            document.add(paragraph);
 
-            // Закрываем документ
+            // Close the document
             document.close();
 
-            System.out.println("PDF успешно создан: " + fileName);
-        } catch (DocumentException | IOException e) {
+            System.out.println("PDF успешно создан: " + dest);
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
 
 
     @Override
@@ -69,27 +77,27 @@ public class LaskuController extends TabController<Lasku> {
 
     @Override
     boolean getSearchConditions(Lasku lasku, String newValue) {
-        // Реализуйте здесь условия поиска
-        // Например:
+        // Implement search conditions here
+        // For example:
         String searchKeyword = newValue.toLowerCase();
         if (String.valueOf(lasku.getLasku_id()).toLowerCase().contains(searchKeyword) && (searchFilter.equals("kaikki") || searchFilter.equals("id"))) {
-            return true; // Соответствие по ID
+            return true; // Match by ID
         } else if (lasku.getAsiakas_etunimi().toLowerCase().contains(searchKeyword) && (searchFilter.equals("kaikki") || searchFilter.equals("as_etunimi"))) {
-            return true; // Соответствие по имени клиента
+            return true; // Match by customer's first name
         } else if (lasku.getAsiakas_sukunimi().toLowerCase().contains(searchKeyword) && (searchFilter.equals("kaikki") || searchFilter.equals("as_sukunimi"))) {
-            return true; // Соответствие по фамилии клиента
+            return true; // Match by customer's last name
         } else if (lasku.getMokkinimi().toLowerCase().contains(searchKeyword) && (searchFilter.equals("kaikki") || searchFilter.equals("mökki"))) {
-            return true; // Соответствие по названию мокки
+            return true; // Match by cottage name
         } else if (String.valueOf(lasku.getVarattu_pvm()).contains(searchKeyword) && (searchFilter.equals("kaikki") || searchFilter.equals("varattu_pvm"))) {
-            return true; // Соответствие по дате бронирования
+            return true; // Match by booking date
         } else if (String.valueOf(lasku.getSumma()).toLowerCase().contains(searchKeyword) && (searchFilter.equals("kaikki") || searchFilter.equals("summa"))) {
-            return true; // Соответствие по сумме
+            return true; // Match by amount
         } else if (String.valueOf(lasku.getAlv()).toLowerCase().contains(searchKeyword) && (searchFilter.equals("kaikki") || searchFilter.equals("alv"))) {
-            return true; // Соответствие по НДС
+            return true; // Match by VAT
         } else if (String.valueOf(lasku.getMaksettu()).toLowerCase().contains(searchKeyword) && (searchFilter.equals("kaikki") || searchFilter.equals("maksettu"))) {
-            return true; // Соответствие по флагу "оплачено"
+            return true; // Match by "paid" flag
         }
-        return false; // Нет совпадений
+        return false; // No match
     }
 
     @Override
