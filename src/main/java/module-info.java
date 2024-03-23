@@ -8,6 +8,8 @@ module com.example.mokkivaraus {
     requires java.sql;
     requires org.json;
     requires mysql.connector.j;
+    requires itextpdf;
+    requires org.apache.pdfbox;
 
     opens com.example.mokkivaraus to javafx.fxml;
     exports com.example.mokkivaraus;
