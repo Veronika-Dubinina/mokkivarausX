@@ -1,11 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 
-
-<VBox prefHeight="400.0" prefWidth="900.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.mokkivaraus.RaporttiController">
+<VBox prefHeight="500.0" prefWidth="900.0" styleClass="main" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.mokkivaraus.RaporttiController">
+   <children>
+      <AnchorPane styleClass="reportPicker">
+         <children>
+            <GridPane hgap="10.0" layoutX="52.0" layoutY="-1.0" vgap="10" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="ALWAYS" maxWidth="150.0" minWidth="10.0" prefWidth="120.0" />
+                  <ColumnConstraints hgrow="ALWAYS" maxWidth="150.0" minWidth="10.0" prefWidth="120.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label text="Raportti" />
+                  <Label text="Päivämäärät" GridPane.rowIndex="1" />
+                  <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <children>
+                        <Label text="Alku" />
+                        <DatePicker fx:id="alkuDtP" />
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                     <children>
+                        <Label text="Loppu" />
+                        <DatePicker fx:id="loppuDtP" />
+                     </children>
+                  </VBox>
+                  <ComboBox fx:id="raporttiCmB" prefWidth="150.0" GridPane.columnIndex="1" GridPane.columnSpan="2" />
+                  <Button mnemonicParsing="false" onAction="#luodaBtnClicked" text="Luoda" GridPane.rowIndex="2" />
+               </children>
+            </GridPane>
+         </children>
+      </AnchorPane>
+      <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS">
+         <content>
+            <VBox>
+               <children>
+                  <Label fx:id="raporttiLbl" text="Label" />
+                   <TableView fx:id="raporttiTable" prefHeight="200.0" />
+               </children>
+            </VBox>
+         </content>
+      </ScrollPane>
+   </children>
 </VBox>
