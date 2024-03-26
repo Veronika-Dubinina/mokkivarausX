@@ -11,8 +11,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class LaskuController extends TabController<Lasku> {
-    private static final String PDF_FOLDER_PATH = "C:/Users/mikih/IdeaProjects/mokkivarausX/"; // Путь к папке для сохранения PDF-файлов
-    private static final String BLANK_PDF_PATH = "C:/Users/mikih/IdeaProjects/mokkivarausX/table_data.pdf"; // Путь к файлу-болванке
+    // Attributes
+    private static final String PDF_FOLDER_PATH = "src/main/pdf/"; // Путь к папке для сохранения PDF-файлов
+    private static final String BLANK_PDF_PATH = "src/main/pdf/table_data.pdf"; // Путь к файлу-болванке
+
 
     // Constructor
     public LaskuController() {
@@ -57,8 +59,6 @@ public class LaskuController extends TabController<Lasku> {
             e.printStackTrace();
         }
     }
-
-
 
     @Override
     ArrayList<String[]> getColToAttr() {
