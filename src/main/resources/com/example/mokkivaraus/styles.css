@@ -5,6 +5,9 @@ yellow - #F9C74F
 orange - #F8961E
 red - #F94144
 */
+.hidden {
+    visibility: hidden;
+}
 .root {
     -fx-font-family: "Gill Sans";
     -fx-font-size: 14;
@@ -67,8 +70,14 @@ red - #F94144
 
 .reportPicker {
     -fx-padding: 5px;
-    -fx-background-color: rgba(87, 117, 144, 0.38);
+    -fx-background-color: #e5e5e5;
     -fx-background-radius: 5px;
+}
+.reportPicker .combo-box {
+    -fx-background-color: white;
+    -fx-border-color: lightgray;
+    -fx-border-radius: 5px;
+    -fx-effect: innershadow(three-pass-box, gray, 5, 0, 0, 0);
 }
 
 .addBtn {
@@ -113,6 +122,14 @@ red - #F94144
 
 .backBtn:hover {
     -fx-background-color: #de861b;
+}
+.printBtn {
+    -fx-pref-width: 20px;
+    -fx-background-color: transparent;
+    -fx-background-image: url('img/print.png');
+    -fx-background-size: 20px 20px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
 }
 
 /* Alue view */

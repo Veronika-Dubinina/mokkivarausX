@@ -39,15 +39,17 @@ public class DataBase {
      * Returns result of executed SQL query and works with it
      * @param sql SQL Query
      */
-    public void getData(String sql) {
+    public boolean getData(String sql) {
         ResultSet res = null;
         try (Connection conn = getDbConnection();
              PreparedStatement ps = conn.prepareStatement(sql);
              // Execute query
              ResultSet result = ps.executeQuery();){
                 toDoResultSet(result);
+                return true;
         } catch (Exception ex) {
             System.out.println("!!Exception DataBase.getData:" + ex);
+            return false;
         }
     }
 

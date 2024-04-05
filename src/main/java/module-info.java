@@ -14,6 +14,7 @@ module com.example.mokkivaraus {
     requires mysql.connector.j;
     requires itextpdf;
     requires org.apache.pdfbox;
+    requires org.slf4j;
 
     opens com.example.mokkivaraus to javafx.fxml;
     exports com.example.mokkivaraus;

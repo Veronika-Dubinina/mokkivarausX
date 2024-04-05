@@ -1,5 +1,10 @@
 package com.example.mokkivaraus;
 
+import com.itextpdf.text.Anchor;
+import com.itextpdf.text.Chapter;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Section;
+import com.itextpdf.text.pdf.PdfPTable;
 import javafx.scene.control.*;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfReader;
