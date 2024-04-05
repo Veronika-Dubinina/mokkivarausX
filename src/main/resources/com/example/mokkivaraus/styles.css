@@ -108,11 +108,11 @@ red - #F94144
 
 .editBtn {
     -fx-background-color: transparent;
-    -fx-text-fill: #43AA8B;
+    -fx-text-fill: #F9C74F;
 }
 
 .editBtn:hover {
-    -fx-background-color: #43AA8B;
+    -fx-background-color: #F9C74F;
     -fx-text-fill: white;
 }
 
@@ -139,15 +139,15 @@ red - #F94144
 }
 
 .alueBox {
-    -fx-background-color: whitesmoke;
+    -fx-background-color: rgba(245, 245, 245, 0.5);
     -fx-background-radius: 5px;
     -fx-border-style: solid;
-    -fx-border-color: #577590;
+    -fx-border-color: rgba(39, 125, 161, 1);
     -fx-border-radius: 5px;
 }
 
 .alueBox:hover {
-    -fx-background-color: #277DA1;
+    -fx-background-color: rgba(39, 125, 161, 0.8);
 }
 
 /* changeTable dialog */

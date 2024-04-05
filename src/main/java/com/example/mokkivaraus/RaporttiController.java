@@ -64,6 +64,7 @@ public class RaporttiController implements Initializable {
                     raporttiTable.getItems().add(rowData);
                 }
                 // Enable user-resizable columns
+                raporttiTable.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
                 raporttiTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
             } catch (SQLException e) {
                 throw new RuntimeException(e);
@@ -169,8 +170,8 @@ public class RaporttiController implements Initializable {
      */
     private HashMap<String, String[][]> getTables() {
         HashMap<String, String[][]> tables = new HashMap<>();
-        tables.put(raportit[0], new String[][]{{"CALL majoitusRaportti(%d, '%s', '%s')"}, {"mokkinimi", "käyttöaste_pvm", "käyttöaste_pros", "myyntisumma"}, {"mokkinimi", "käyttöaste_pvm", "käyttöaste_pros", "myyntisumma"}} );
-        tables.put(raportit[1], new String[][]{{}, {}});
+        tables.put(raportit[0], new String[][]{{"CALL majoitusRaportti(%d, '%s', '%s')"}, {"mokkinimi", "käyttöaste_pvm", "käyttöaste_pros", "myyntisumma"}, {"MÖKKI", "KÄYTTÖASTE pvm.", "KÄYTTÖASTE %", "SUMMA"}} );
+        tables.put(raportit[1], new String[][]{{"CALL palveluRaportti(%d, '%s', '%s')"}, {"nimi", "lkm", "summa", "alv"}, {"PALVELU", "LKM", "SUMMA", "ALV"}});
         return tables;
     }
 

@@ -42,22 +42,22 @@ public class VarausDC extends DialogController {
         dialogTitle.setText("Lisää uusi varaus");
 
         // Labels
-        formsGridPane.add(new Label("Asiakas:"), 0, 1, 1, 1);
-        formsGridPane.add(new Label("Mökki:"), 0, 2, 1, 1);
-        formsGridPane.add(new Label("Varattu pvm:"), 0, 3, 1, 1);
-        formsGridPane.add(new Label("Vahvistus pvm:"), 0, 4, 1, 1);
-        formsGridPane.add(new Label("Varattu alkupvm:"), 0, 5, 1, 1);
-        formsGridPane.add(new Label("Varattu loppupvm:"), 0, 6, 1, 1);
+        formsGridPane.add(new Label("Asiakas:"), 0, 0, 1, 1);
+        formsGridPane.add(new Label("Mökki:"), 0, 1, 1, 1);
+        formsGridPane.add(new Label("Varattu pvm:"), 0, 2, 1, 1);
+        formsGridPane.add(new Label("Vahvistus pvm:"), 0, 3, 1, 1);
+        formsGridPane.add(new Label("Varattu alkupvm:"), 0, 4, 1, 1);
+        formsGridPane.add(new Label("Varattu loppupvm:"), 0, 5, 1, 1);
 
         // Fields
-        formsGridPane.add(asiakasCmBox, 1, 1, 1, 1);
-        formsGridPane.add(mokkiCmBox, 1, 2, 1, 1);
-        formsGridPane.add(varattuPvmPicker, 1, 3, 1, 1);
-        formsGridPane.add(vahvistusPvmPicker, 1, 4, 1, 1);
-        formsGridPane.add(varattuAlkupvmPicker, 1, 5, 1, 1);
-        formsGridPane.add(varattuLoppupvmPicker, 1, 6, 1, 1);
+        formsGridPane.add(asiakasCmBox, 1, 0, 1, 1);
+        formsGridPane.add(mokkiCmBox, 1, 1, 1, 1);
+        formsGridPane.add(varattuPvmPicker, 1, 2, 1, 1);
+        formsGridPane.add(vahvistusPvmPicker, 1, 3, 1, 1);
+        formsGridPane.add(varattuAlkupvmPicker, 1, 4, 1, 1);
+        formsGridPane.add(varattuLoppupvmPicker, 1, 5, 1, 1);
     }
-// не добавлят окно редактирования почему то я хз
+
     @Override
     void setEditContent() {
         // DialogPane title
