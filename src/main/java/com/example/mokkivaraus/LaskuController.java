@@ -11,7 +11,8 @@ import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Paragraph;
-
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -59,12 +60,22 @@ public class LaskuController extends TabController<Lasku> {
             // Close the document
             document.close();
 
+            // Show info dialog
+            showInfoDialog(dest);
+
             System.out.println("PDF успешно создан: " + dest);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
+// информируем о создании счета
+    private void showInfoDialog(String filePath) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Tieto");
+        alert.setHeaderText(null);
+        alert.setContentText("Lasku on tallennettu: " + filePath);
+        alert.showAndWait();
+    }
     @Override
     ArrayList<String[]> getColToAttr() {
         String[] cols = new String[]{"id", "asiakas_etunimi", "asiakas_sukunimi", "mokki", "varattu_pvm", "summa", "alv", "maksettu"};
