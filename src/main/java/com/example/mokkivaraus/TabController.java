@@ -30,6 +30,7 @@ abstract class TabController<T> implements Initializable {
     protected String searchFilter = getSearchFilters()[0];
     protected Class<T> tableClass = null;
     protected String filter = "";
+    protected String dialogFXML = "changeTable-dialog.fxml";
 
     @FXML
     public TextField searchTF;
@@ -120,14 +121,14 @@ abstract class TabController<T> implements Initializable {
         // Open DialogController window
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();
-            fxmlLoader.setLocation(getClass().getResource("changeTable-dialog.fxml"));
+            fxmlLoader.setLocation(getClass().getResource(dialogFXML));
             fxmlLoader.setController(dialogController);
             Scene scene = new Scene(fxmlLoader.load());
             Stage newStage = new Stage();
             // Prevent from using main window while dialog is open
             newStage.initModality(Modality.APPLICATION_MODAL);
             // Non resizable
-            newStage.setResizable(false);
+            // newStage.setResizable(false);
 
             newStage.setTitle("");
             newStage.setScene(scene);
