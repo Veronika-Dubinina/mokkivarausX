@@ -3,6 +3,9 @@ package com.example.mokkivaraus;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.time.LocalDate;
 public class VarausDC extends DialogController {
@@ -114,35 +117,7 @@ public class VarausDC extends DialogController {
 
     @Override
     HashMap<String, Object> listOfAttributes() {
-        HashMap<String, Object> attrMap = new HashMap<>();
-        attrMap.put("asiakas_id", asiakasCmBox.getValue().getAsiakas_id());
-        attrMap.put("mokki_mokki_id", mokkiCmBox.getValue().getMokki_id());
-
-        LocalDate varattuPvmDate = varattuPvmPicker.getValue();
-        String varattuPvmString = varattuPvmDate.toString() + " " +
-                varattuPvmHour.getValue() + ":" +
-                varattuPvmMinute.getValue();
-        attrMap.put("varattu_pvm", varattuPvmString);
-
-        LocalDate vahvistusPvmDate = vahvistusPvmPicker.getValue();
-        String vahvistusPvmString = vahvistusPvmDate.toString() + " " +
-                vahvistusPvmHour.getValue() + ":" +
-                vahvistusPvmMinute.getValue();
-        attrMap.put("vahvistus_pvm", vahvistusPvmString);
-
-        LocalDate varattuAlkupvmDate = varattuAlkupvmPicker.getValue();
-        String varattuAlkupvmString = varattuAlkupvmDate.toString() + " " +
-                varattuAlkupvmHour.getValue() + ":" +
-                varattuAlkupvmMinute.getValue();
-        attrMap.put("varattu_alkupvm", varattuAlkupvmString);
-
-        LocalDate varattuLoppupvmDate = varattuLoppupvmPicker.getValue();
-        String varattuLoppupvmString = varattuLoppupvmDate.toString() + " " +
-                varattuLoppupvmHour.getValue() + ":" +
-                varattuLoppupvmMinute.getValue();
-        attrMap.put("varattu_loppupvm", varattuLoppupvmString);
-
-        return attrMap;
+        return varaus.getAttrMap();
     }
 
     @Override
@@ -174,7 +149,28 @@ public class VarausDC extends DialogController {
         } else {
             alertTitle = "Menestys";
             alertMessage = "Tiedot tarkastettu ja hyväksytty.";
+            setData();
             return true;
         }
+    }
+
+    /**
+     * Saves reservation data into Varaus-object
+     */
+    private void setData() {
+        varaus.setAsiakas_id(asiakasCmBox.getValue().getAsiakas_id());
+        varaus.setMokki_mokki_id(mokkiCmBox.getValue().getMokki_id());
+
+        LocalDateTime varattuPvmDate = varattuPvmPicker.getValue().atTime(Integer.parseInt(varattuPvmHour.getValue()), Integer.parseInt(varattuPvmMinute.getValue()));
+        varaus.setVarattu_pvm(Timestamp.valueOf(varattuPvmDate));
+
+        LocalDateTime vahvistusPvmDate = vahvistusPvmPicker.getValue().atTime(Integer.parseInt(vahvistusPvmHour.getValue()), Integer.parseInt(vahvistusPvmMinute.getValue()));
+        varaus.setVarattu_pvm(Timestamp.valueOf(vahvistusPvmDate));
+
+        LocalDateTime varattuAlkupvmDate = varattuAlkupvmPicker.getValue().atTime(Integer.parseInt(varattuAlkupvmHour.getValue()), Integer.parseInt(varattuAlkupvmMinute.getValue()));
+        varaus.setVarattu_pvm(Timestamp.valueOf(varattuAlkupvmDate));
+
+        LocalDateTime varattuLoppupvmDate = varattuLoppupvmPicker.getValue().atTime(Integer.parseInt(varattuLoppupvmHour.getValue()), Integer.parseInt(varattuLoppupvmMinute.getValue()));
+        varaus.setVarattu_pvm(Timestamp.valueOf(varattuLoppupvmDate));
     }
 }

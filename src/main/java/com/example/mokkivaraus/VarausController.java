@@ -22,14 +22,14 @@ public class VarausController extends TabController<Varaus> {
     // Constructor
     public VarausController() {
         // Set class attributes
-        super("varaus", "varaus_id", Varaus.class);
+        super("varauksen_tiedot", "varaus_id", Varaus.class);
     }
 
     // Methods
     @Override
     ArrayList<String[]> getColToAttr() {
-        String[] cols = new String[]{ "varaus_id","asiakas_id", "mokki_mokki_id", "varattu_pvm", "vahvistus_pvm", "varattu_alkupvm", "varattu_loppupvm"};
-        String[] attrs = new String[]{ "varaus_id","asiakas_id", "mokki_mokki_id", "varattu_pvm", "vahvistus_pvm", "varattu_alkupvm", "varattu_loppupvm"};
+        String[] cols = new String[]{ "varaus_id","asiakas", "mokkinimi", "varattu_pvm", "vahvistus_pvm", "varattu_alkupvm", "varattu_loppupvm"};
+        String[] attrs = new String[]{ "varaus_id","asiakasnimi", "mokkinimi", "varattu_pvm", "vahvistus_pvm", "varattu_alkupvm", "varattu_loppupvm"};
         ArrayList<String[]> colToAttr = new ArrayList<>();
         colToAttr.add(cols);
         colToAttr.add(attrs);
@@ -38,7 +38,7 @@ public class VarausController extends TabController<Varaus> {
 
     @Override
     DialogController getController() {
-        return new VarausDC(tableName, identifierKey);
+        return new VarausDC("varaus", identifierKey);
     }
 
     @Override

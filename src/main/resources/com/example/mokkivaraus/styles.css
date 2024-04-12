@@ -123,10 +123,10 @@ red - #F94144
 .backBtn:hover {
     -fx-background-color: #de861b;
 }
-.printBtn {
+.saveBtn {
     -fx-pref-width: 20px;
     -fx-background-color: transparent;
-    -fx-background-image: url('img/print.png');
+    -fx-background-image: url('img/save.png');
     -fx-background-size: 20px 20px;
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;

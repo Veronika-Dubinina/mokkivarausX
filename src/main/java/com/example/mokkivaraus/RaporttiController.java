@@ -1,27 +1,20 @@
 package com.example.mokkivaraus;
 
-import com.itextpdf.text.*;
-import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfWriter;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.MapValueFactory;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
+import javafx.stage.Window;
 import javafx.util.Callback;
-import org.apache.pdfbox.Loader;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.printing.PDFPrintable;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.xssf.usermodel.XSSFFont;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import javax.swing.*;
-import java.awt.print.PageFormat;
-import java.awt.print.Paper;
-import java.awt.print.PrinterException;
-import java.awt.print.PrinterJob;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
@@ -33,6 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class RaporttiController implements Initializable {
     // Attributes
@@ -71,7 +65,7 @@ public class RaporttiController implements Initializable {
             }
         }
     };
-    private final String FILE_PATH = "src/main/pdf/raportti.pdf";
+    private FileChooser fileChooser = new FileChooser();
     @FXML
     private DatePicker alkuDtP;
     @FXML
@@ -100,22 +94,23 @@ public class RaporttiController implements Initializable {
         if (dataBase.getData(sql)) {
             raporttiContent.getStyleClass().remove("hidden");
             success.show();
-
-            try {
-                // Create PDF document
-                Document document = new Document();
-                PdfWriter.getInstance(document, new FileOutputStream(FILE_PATH));
-                // Fill document with data
-                setDocumentContent(document);
-            } catch (DocumentException | FileNotFoundException e) {
-                throw new RuntimeException(e);
-            }
         }
     }
     @FXML
-    public void printBtnClicked(ActionEvent actionEvent) {
-        // Print Document
-        printDocumnet(FILE_PATH);
+    public void saveBtnClicked(ActionEvent actionEvent) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        String period = formatter.format(alkuDtP.getValue()) + "-" + formatter.format(loppuDtP.getValue());
+        String fileName = "(" + SessionData.alue.toString() + ")" + raportti + "_" + period;
+        
+        Window stage = raporttiContent.getScene().getWindow();
+        fileChooser.setTitle("Save dialog");
+        fileChooser.setInitialFileName(fileName);
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("xlsx file", "*.xlsx"));
+        File file = fileChooser.showSaveDialog(stage);
+
+        if (file != null) {
+            saveReportToFile(file, period);
+        }
     }
 
     // Methods
@@ -203,108 +198,90 @@ public class RaporttiController implements Initializable {
     }
 
     /**
-     * Fill document with content
-     * @param document Documnet
+     * Saves report data to xlsx file
+     * @param file File
+     * @param period Period formatted to String
      */
-    private void setDocumentContent(Document document) {
+    private void saveReportToFile(File file, String period) {
+        // Workbook
+        Workbook workbook = new XSSFWorkbook();
+
+        // Sheet
+        Sheet sheet = workbook.createSheet(period);
+        sheet.setColumnWidth(0, 6000);
+        sheet.setColumnWidth(1, 4000);
+
+        // Create table
+        addTableHeader(workbook, sheet);
+        addRows(workbook, sheet);
+
+        // Write to file
         try {
-            // Open document
-            document.open();
-
-            // Content
-            // Empty paragraph
-            Paragraph empty = new Paragraph(" ");
-            empty.setPaddingTop((float) 10.0);
-            // Report name and period
-            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-            String text1 = raportti + " " + alkuDtP.getValue().format(dateFormatter) + "-" + loppuDtP.getValue().format(dateFormatter);
-            Paragraph paragraph1 = new Paragraph(text1);
-            paragraph1.setAlignment(Element.ALIGN_RIGHT);
-            paragraph1.setFont(new Font(Font.FontFamily.SYMBOL, (float) 14.0, Font.NORMAL));
-            // Table
-            PdfPTable table = new PdfPTable(raporttiTable.getColumns().size());
-            addTableHeader(table);
-            addRows(table);
-
-            // Add content
-            document.add(paragraph1);
-            document.add(empty);
-            document.add(table);
-            // Close document
-            document.close();
-        } catch (DocumentException e) {
+            FileOutputStream outputStream = new FileOutputStream(file);
+            workbook.write(outputStream);
+            workbook.close();
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
     /**
      * Sets values for table columns
-     * @param table Table
+     * @param workbook Workbook in xlsx file
+     * @param sheet Sheet in xlsx file
      */
-    private void addTableHeader(PdfPTable table) {
+    private void addTableHeader(Workbook workbook, Sheet sheet) {
+        Row header = sheet.createRow(0);
+
+        // Style
+        CellStyle headerStyle = workbook.createCellStyle();
+        headerStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
+        headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        // Font
+        XSSFFont headerFont = ((XSSFWorkbook) workbook).createFont();
+        headerFont.setFontName("Calibri");
+        headerFont.setFontHeightInPoints((short) 16);
+        headerFont.setBold(true);
+        headerStyle.setFont(headerFont);
+
+        // Headers
+        AtomicInteger i = new AtomicInteger();
         List.of(tables.get(raportti)[2])
                 .forEach(columnTitle -> {
-                    PdfPCell header = new PdfPCell();
-                    header.setPadding((float) 5.0);
-                    header.setBackgroundColor(BaseColor.LIGHT_GRAY);
-                    header.setBorderWidth(1);
-                    Phrase phrase = new Phrase(columnTitle);
-                    header.setPhrase(phrase);
-                    table.addCell(header);
+                    Cell headerCell = header.createCell(i.get());
+                    headerCell.setCellValue(columnTitle);
+                    headerCell.setCellStyle(headerStyle);
+                    i.getAndIncrement();
                 });
     }
 
     /**
      * Sets values for table cells
-     * @param table Table
+     * @param workbook Workbook in xlsx file
+     * @param sheet Sheet in xlsx file
      */
-    private void addRows(PdfPTable table) {
+    private void addRows(Workbook workbook, Sheet sheet) {
+        // Style
+        CellStyle style = workbook.createCellStyle();
+        style.setWrapText(true);
+        // Font
+        XSSFFont contentFont = ((XSSFWorkbook) workbook).createFont();
+        contentFont.setFontName("Calibri");
+        contentFont.setFontHeightInPoints((short) 14);
+        style.setFont(contentFont);
+
+        // Content
+        int i = 1;
         for (Map row : raporttiTable.getItems()) {
+            Row content = sheet.createRow(i);
+            int j = 0;
             for (String column : tables.get(raportti)[1]) {
-                PdfPCell cell = new PdfPCell();
-                cell.setPhrase(new Phrase(row.get(column).toString()));
-                cell.setPadding((float) 5.0);
-                table.addCell(cell);
+                Cell contentCell = content.createCell(j);
+                contentCell.setCellValue(row.get(column).toString());
+                contentCell.setCellStyle(style);
+                j++;
             }
-        }
-    }
-
-    /**
-     * Initializes printer work. Prints document.
-     * @param path Path to document
-     */
-    private void printDocumnet(String path) {
-        try {
-            PDDocument doc = Loader.loadPDF(new File(path));
-            // Create a PrinterJob object
-            PrinterJob printerJob = PrinterJob.getPrinterJob();
-            // Create a PageFormat object and set it to a default size and orientation
-            PageFormat pageFormat = printerJob.defaultPage();
-            // Return a copy of the Paper object associated with this PageFormat
-            Paper paper = pageFormat.getPaper();
-            // Set the imageable area of this Paper
-            paper.setImageableArea(0, 0, pageFormat.getWidth(), pageFormat.getHeight());
-            // Set the Paper object for this PageFormat
-            pageFormat.setPaper(paper);
-
-            // Call painter to render the pages in the specified format
-            printerJob.setPrintable(new PDFPrintable(doc), pageFormat);
-            // Display the print dialog
-            SwingUtilities.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-
-                    if (printerJob.printDialog()) {
-                        try {
-                            printerJob.print();
-                        } catch (PrinterException e) {
-                            System.out.println("RaporttiController:printDocumnet. Error!!! " + e.getMessage());
-                        }
-                    }
-                }
-            });
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+            i++;
         }
     }
 }

@@ -15,6 +15,7 @@ module com.example.mokkivaraus {
     requires itextpdf;
     requires org.apache.pdfbox;
     requires org.slf4j;
+    requires org.apache.poi.ooxml;
 
     opens com.example.mokkivaraus to javafx.fxml;
     exports com.example.mokkivaraus;

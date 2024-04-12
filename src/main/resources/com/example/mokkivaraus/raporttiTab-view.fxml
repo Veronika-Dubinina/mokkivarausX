@@ -58,7 +58,7 @@
                   <HBox alignment="BOTTOM_RIGHT" spacing="10.0">
                      <children>
                         <Label fx:id="raporttiLbl" text="Label" />
-                        <Button styleClass="printBtn" onAction="#printBtnClicked"/>
+                        <Button styleClass="saveBtn" onAction="#saveBtnClicked"/>
                      </children>
                   </HBox>
                    <TableView fx:id="raporttiTable" prefHeight="200.0" />
