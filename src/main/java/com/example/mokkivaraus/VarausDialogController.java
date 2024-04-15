@@ -14,10 +14,11 @@ import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.sql.ResultSet;
+import java.util.HashMap;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class VarausDialogController implements Initializable {
+public class VarausDialogController extends DialogController {
     // Attributes
     private Varaus varaus = new Varaus();
     private ObservableList<VarauksenPalvelut> palvelut = FXCollections.observableArrayList();
@@ -69,14 +70,28 @@ public class VarausDialogController implements Initializable {
     @FXML
     private CheckBox paperiLaskuChB;
 
-    // Constructor
-    public VarausDialogController(Varaus varaus) {
-        this.varaus = varaus;
-        setVarausData();
-    }
+   // Constructors
+   public VarausDialogController(String tableName, String identifierKey) {
+       super(tableName, identifierKey);
+   }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+    }
+
+    @Override
+    void setObject(Object object) {
+
+    }
+
+    @Override
+    boolean checkData() {
+        return false;
+    }
+
+    @Override
+    void setDialogContent() {
         summaLbl.setText(summ.getValue().toString());
         summ.addListener(((observableValue, oldValue, newValue) -> {
             summaLbl.setText(newValue.toString());
@@ -86,6 +101,17 @@ public class VarausDialogController implements Initializable {
         mokkiCmB.getItems().addAll(SessionData.getMokit());
         initializeTimeComboBoxes();
         initPalvelut();
+    }
+
+    @Override
+    void setEditContent() {
+        setVarausData();
+        setPalvelut();
+    }
+
+    @Override
+    HashMap<String, Object> listOfAttributes() {
+        return null;
     }
 
     // Methods

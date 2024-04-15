@@ -12,7 +12,7 @@ public class PalveluDC extends DialogController {
     private Palvelu palvelu = new Palvelu();
 
     private TextField idField = new TextField();
-    private ComboBox<Alue> alueCmBox = new ComboBox<>(dataBase.getAllRows("alue", "alue_id", Alue.class));
+    private ComboBox<Alue> alueCmBox = new ComboBox<>(SessionData.getAlueet());
     private TextField nimiField = new TextField();
     private TextField tyyppiField = new TextField();
     private TextArea kuvausArea = new TextArea();

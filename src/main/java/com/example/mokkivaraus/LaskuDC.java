@@ -8,7 +8,7 @@ public class LaskuDC extends DialogController {
     // Attributes
     private Lasku lasku = new Lasku();
 
-    private ComboBox<Varaus> varausCmBox = new ComboBox<>(dataBase.getAllRows("varaus", "varaus_id", Varaus.class));
+    private ComboBox<Varaus> varausCmBox = new ComboBox<>(SessionData.getVaraukset());
     private TextField summaField = new TextField();
     private TextField alvField = new TextField();
     private CheckBox maksettuCheckBox = new CheckBox();
@@ -55,7 +55,12 @@ public class LaskuDC extends DialogController {
         dialogTitle.setText("Päivitä laskun tiedot");
 
         // Set data from lasku-object
-        varausCmBox.setValue(dataBase.getRow("varaus", "varaus_id", lasku.getVaraus_id(), Varaus.class));
+        SessionData.getVaraukset().forEach(v -> {
+            if (lasku.getVaraus_id() == v.getVaraus_id()) {
+                varausCmBox.setValue(v);
+                return;
+            }
+        });
         summaField.setText(String.valueOf(lasku.getSumma()));
         alvField.setText(String.valueOf(lasku.getAlv()));
         maksettuCheckBox.setSelected(lasku.getMaksettu() == 1);

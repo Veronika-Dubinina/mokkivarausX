@@ -17,6 +17,7 @@ public class SessionData {
     static ObservableList<Asiakas> asiakkaat;
     static ObservableList<Varaus> varaukset;
     static ObservableList<Lasku> laskut;
+    static ObservableList<Posti> postit;
 
     // Methods
     public static Alue getAlue() {
@@ -83,6 +84,14 @@ public class SessionData {
         SessionData.laskut = dataBase.getAllRows("asiakkaiden_laskut", "lasku_id", Lasku.class);
     }
 
+    public static ObservableList<Posti> getPostit() {
+        return postit;
+    }
+
+    public static void setPostit() {
+        SessionData.postit = dataBase.getAllRows("posti", "postinro", Posti.class);
+    }
+
     public static void refreshLists() {
         setFilter();
         setAlueet();
@@ -91,6 +100,7 @@ public class SessionData {
         setAsiakkaat();
         setVaraukset();
         setLaskut();
+        setPostit();
     }
 
     public static <T> ObservableList<?> getList(Class<T> tableClass) {

@@ -15,7 +15,6 @@ import java.util.ResourceBundle;
 
 abstract class DialogController implements Initializable{
     // Attributes
-    protected DataBase dataBase = new DataBase();
     protected String tableName;
     protected String identifierKey;
     protected Object identifierValue;
@@ -64,7 +63,7 @@ abstract class DialogController implements Initializable{
         }
 
         // Add new row into table
-        dataBase.addRow(tableName, listOfAttributes());
+        SessionData.dataBase.addRow(tableName, listOfAttributes());
         showAlert(Alert.AlertType.INFORMATION);
 
         // Close dialog window
@@ -81,7 +80,7 @@ abstract class DialogController implements Initializable{
         }
 
         // Update row in table
-        dataBase.updateRow(tableName, listOfAttributes(), identifierKey, identifierValue);
+        SessionData.dataBase.updateRow(tableName, listOfAttributes(), identifierKey, identifierValue);
         showAlert(Alert.AlertType.INFORMATION);
 
         // Close dialog window
@@ -92,7 +91,7 @@ abstract class DialogController implements Initializable{
     @FXML
     void deleteBtnClicked(ActionEvent event) {
         // Delete row in table
-        dataBase.deleteRow(tableName, identifierKey, identifierValue);
+        SessionData.dataBase.deleteRow(tableName, identifierKey, identifierValue);
 
         // Close dialog window
         Stage stage = (Stage) addBtn.getScene().getWindow();

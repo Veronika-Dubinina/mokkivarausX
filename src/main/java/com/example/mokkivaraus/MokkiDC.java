@@ -11,6 +11,7 @@ import javafx.stage.Stage;
 import org.controlsfx.control.PopOver;
 
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class MokkiDC extends DialogController{
@@ -19,7 +20,7 @@ public class MokkiDC extends DialogController{
 
     private ComboBox<Alue> alueCmBox = new ComboBox<>(SessionData.getAlueet());
     private TextField nimiField = new TextField();
-    private AutoCompleteTextField<Posti> postinroField = new AutoCompleteTextField<>(dataBase.getAllRows("posti", "postinro", Posti.class), true) {
+    private AutoCompleteTextField<Posti> postinroField = new AutoCompleteTextField<>(SessionData.getPostit(), true) {
         @Override
         public void onCreateLabelClicked() {
             // Create popover window
@@ -73,7 +74,7 @@ public class MokkiDC extends DialogController{
                     return;
                 } else {
                     Posti posti = new Posti(postinro.get(), toimipaikka.get());
-                    dataBase.addRow("posti", posti.getAttrMap());
+                    SessionData.dataBase.addRow("posti", posti.getAttrMap());
                     setLastSelectedItem(posti);
                 }
 
@@ -155,7 +156,12 @@ public class MokkiDC extends DialogController{
         // Set data from mokki-object
         alueCmBox.setValue(SessionData.alue);
         nimiField.setText(mokki.getMokkinimi());
-        postinroField.setLastSelectedItem(dataBase.getRow("posti", "postinro", mokki.getPostinro(), Posti.class));
+        SessionData.getPostit().forEach(p -> {
+            if (Objects.equals(mokki.getPostinro(), p.getPostinro())) {
+                postinroField.setLastSelectedItem(p);
+                return;
+            }
+        });
         katuosoiteField.setText(mokki.getKatuosoite());
         hintaField.setText(String.valueOf(mokki.getHinta()));
         henkilomaaraField.setText(String.valueOf(mokki.getHenkilomaara()));

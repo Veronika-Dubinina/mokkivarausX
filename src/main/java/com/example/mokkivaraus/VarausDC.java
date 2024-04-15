@@ -12,8 +12,8 @@ public class VarausDC extends DialogController {
     // Attributes
     private Varaus varaus = new Varaus();
 
-    private ComboBox<Asiakas> asiakasCmBox = new ComboBox<>(dataBase.getAllRows("asiakas", "asiakas_id", Asiakas.class));
-    private ComboBox<Mokki> mokkiCmBox = new ComboBox<>(dataBase.getAllRows("mokki", "mokki_id", Mokki.class));
+    private ComboBox<Asiakas> asiakasCmBox = new ComboBox<>(SessionData.getAsiakkaat());
+    private ComboBox<Mokki> mokkiCmBox = new ComboBox<>(SessionData.getMokit());
     private DatePicker varattuPvmPicker = new DatePicker();
     private DatePicker vahvistusPvmPicker = new DatePicker();
     private DatePicker varattuAlkupvmPicker = new DatePicker();
@@ -95,9 +95,20 @@ public class VarausDC extends DialogController {
     void setEditContent() {
         dialogTitle.setText("Päivitä varauksen tiedot");
 
-        asiakasCmBox.setValue(dataBase.getRow("asiakas", "asiakas_id", varaus.getAsiakas_id(), Asiakas.class));
-        mokkiCmBox.setValue(dataBase.getRow("mokki", "mokki_id", varaus.getMokki_mokki_id(), Mokki.class));
-
+        // Asiakas
+        SessionData.getAsiakkaat().forEach(asiakas -> {
+            if (asiakas.getAsiakas_id() == varaus.getAsiakas_id()) {
+                asiakasCmBox.setValue(asiakas);
+                return;
+            }
+        });
+        // Mokki
+        SessionData.getMokit().forEach(mokki -> {
+            if (mokki.getMokki_id() == varaus.getMokki_mokki_id()) {
+                mokkiCmBox.setValue(mokki);
+                return;
+            }
+        });
         varattuPvmPicker.setValue(varaus.getVarattu_pvm().toLocalDateTime().toLocalDate());
         varattuPvmHour.setValue(String.format("%02d", varaus.getVarattu_pvm().toLocalDateTime().getHour()));
         varattuPvmMinute.setValue(String.format("%02d", varaus.getVarattu_pvm().toLocalDateTime().getMinute()));
