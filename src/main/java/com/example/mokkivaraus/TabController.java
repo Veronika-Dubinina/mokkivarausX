@@ -129,7 +129,7 @@ abstract class TabController<T> implements Initializable {
             newStage.showAndWait();
 
             // Reset table data
-            SessionData.updateList(tableClass);
+            SessionData.refreshLists();
             updateTable();
             initSearch();
         } catch (IOException ex) {
