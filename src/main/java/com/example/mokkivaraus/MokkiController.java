@@ -22,8 +22,7 @@ public class MokkiController extends TabController<Mokki> {
     // Constructor
     public MokkiController() {
         // Set class attributes
-        super("mokki", "mokki_id", Mokki.class);
-        filter = "WHERE alue_id = " + SessionData.alue.getAlue_id();
+        super(Mokki.class);
     }
 
     // Methods
@@ -39,7 +38,7 @@ public class MokkiController extends TabController<Mokki> {
 
     @Override
     DialogController getController() {
-        return new MokkiDC(tableName, identifierKey);
+        return new MokkiDC("mokki", "mokki_id");
     }
 
     @Override

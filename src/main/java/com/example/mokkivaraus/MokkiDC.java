@@ -17,7 +17,7 @@ public class MokkiDC extends DialogController{
     // Attributes
     private Mokki mokki = new Mokki();
 
-    private ComboBox<Alue> alueCmBox = new ComboBox<>(dataBase.getAllRows("alue", "alue_id", Alue.class));
+    private ComboBox<Alue> alueCmBox = new ComboBox<>(SessionData.getAlueet());
     private TextField nimiField = new TextField();
     private AutoCompleteTextField<Posti> postinroField = new AutoCompleteTextField<>(dataBase.getAllRows("posti", "postinro", Posti.class), true) {
         @Override

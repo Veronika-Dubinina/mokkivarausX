@@ -24,12 +24,8 @@ import java.util.ResourceBundle;
 
 abstract class TabController<T> implements Initializable {
     // Attributes
-    protected DataBase dataBase = new DataBase();
-    protected String tableName;
-    protected String identifierKey;
     protected String searchFilter = getSearchFilters()[0];
-    protected Class<T> tableClass = null;
-    protected String filter = "";
+    protected Class<T> tableClass;
     protected String dialogFXML = "changeTable-dialog.fxml";
 
     @FXML
@@ -40,9 +36,7 @@ abstract class TabController<T> implements Initializable {
     public TableView<T> tableView;
 
     // Constructors
-    public TabController(String tableName, String identifierKey, Class<T> tableClass) {
-        this.tableName = tableName;
-        this.identifierKey = identifierKey;
+    public TabController(Class<T> tableClass) {
         this.tableClass = tableClass;
     }
 
@@ -105,7 +99,7 @@ abstract class TabController<T> implements Initializable {
      */
     private void updateTable() {
         try {
-            ObservableList<T> list = dataBase.getAllRows(tableName, identifierKey, tableClass, filter);
+            ObservableList<T> list = (ObservableList<T>) SessionData.getList(tableClass);
             tableView.setItems(list);
             tableView.refresh();
         } catch (Exception ex) {
@@ -117,7 +111,7 @@ abstract class TabController<T> implements Initializable {
      * Opens dialog window to edit or add a new object in the table
      * @param dialogController Controller
      */
-    private void loadDialog(Object dialogController) {
+    protected void loadDialog(Object dialogController) {
         // Open DialogController window
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();
@@ -135,6 +129,7 @@ abstract class TabController<T> implements Initializable {
             newStage.showAndWait();
 
             // Reset table data
+            SessionData.updateList(tableClass);
             updateTable();
             initSearch();
         } catch (IOException ex) {
@@ -146,7 +141,9 @@ abstract class TabController<T> implements Initializable {
      * Initials search for Table
      */
     private void initSearch() {
-        FilteredList<T> filteredData = new FilteredList<>(dataBase.getAllRows(tableName, identifierKey, tableClass, filter), b -> true);
+        ObservableList<T> list = (ObservableList<T>) SessionData.getList(tableClass);
+        assert list != null;
+        FilteredList<T> filteredData = new FilteredList<>(list, b -> true);
         searchTF.textProperty().addListener((observable, oldValue, newValue) -> {
             filteredData.setPredicate(object -> {
                 // if no search value

@@ -14,7 +14,7 @@ public class Lasku {
     private Timestamp varattu_pvm;
     private double summa;
     private double alv;
-    private byte maksettu;
+    private int maksettu;
 
     // Constructors
     public Lasku() {}
@@ -25,7 +25,7 @@ public class Lasku {
             this.varaus_id = res.getInt("varaus_id");
             this.summa = res.getDouble("summa");
             this.alv = res.getDouble("alv");
-            this.maksettu = (byte)res.getInt("maksettu");
+            this.maksettu = res.getInt("maksettu");
 
             this.asiakas_etunimi = res.getString("asiakas_etunimi");
             this.asiakas_sukunimi = res.getString("asiakas_sukunimi");
@@ -109,11 +109,11 @@ public class Lasku {
         this.alv = alv;
     }
 
-    public byte getMaksettu() {
+    public int getMaksettu() {
         return maksettu;
     }
 
-    public void setMaksettu(byte maksettu) {
+    public void setMaksettu(int maksettu) {
         this.maksettu = maksettu;
     }
 
@@ -125,6 +125,7 @@ public class Lasku {
 
     public HashMap<String, Object> getAttrMap() {
         HashMap<String, Object> attrMap = new HashMap<>();
+        attrMap.put("lasku_id", lasku_id);
         attrMap.put("varaus_id", varaus_id);
         attrMap.put("summa", summa);
         attrMap.put("alv", alv);

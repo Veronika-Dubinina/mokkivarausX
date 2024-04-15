@@ -22,7 +22,7 @@ public class VarausController extends TabController<Varaus> {
     // Constructor
     public VarausController() {
         // Set class attributes
-        super("varauksen_tiedot", "varaus_id", Varaus.class);
+        super(Varaus.class);
     }
 
     // Methods
@@ -38,7 +38,7 @@ public class VarausController extends TabController<Varaus> {
 
     @Override
     DialogController getController() {
-        return new VarausDC("varaus", identifierKey);
+        return new VarausDC("varaus", "varaus_id");
     }
 
     @Override

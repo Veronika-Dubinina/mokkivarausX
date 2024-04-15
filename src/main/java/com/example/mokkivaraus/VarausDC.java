@@ -7,7 +7,7 @@ import javafx.scene.control.Label;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.HashMap;
-import java.time.LocalDate;
+
 public class VarausDC extends DialogController {
     // Attributes
     private Varaus varaus = new Varaus();
@@ -165,12 +165,12 @@ public class VarausDC extends DialogController {
         varaus.setVarattu_pvm(Timestamp.valueOf(varattuPvmDate));
 
         LocalDateTime vahvistusPvmDate = vahvistusPvmPicker.getValue().atTime(Integer.parseInt(vahvistusPvmHour.getValue()), Integer.parseInt(vahvistusPvmMinute.getValue()));
-        varaus.setVarattu_pvm(Timestamp.valueOf(vahvistusPvmDate));
+        varaus.setVahvistus_pvm(Timestamp.valueOf(vahvistusPvmDate));
 
         LocalDateTime varattuAlkupvmDate = varattuAlkupvmPicker.getValue().atTime(Integer.parseInt(varattuAlkupvmHour.getValue()), Integer.parseInt(varattuAlkupvmMinute.getValue()));
-        varaus.setVarattu_pvm(Timestamp.valueOf(varattuAlkupvmDate));
+        varaus.setVarattu_alkupvm(Timestamp.valueOf(varattuAlkupvmDate));
 
         LocalDateTime varattuLoppupvmDate = varattuLoppupvmPicker.getValue().atTime(Integer.parseInt(varattuLoppupvmHour.getValue()), Integer.parseInt(varattuLoppupvmMinute.getValue()));
-        varaus.setVarattu_pvm(Timestamp.valueOf(varattuLoppupvmDate));
+        varaus.setVarattu_loppupvm(Timestamp.valueOf(varattuLoppupvmDate));
     }
 }

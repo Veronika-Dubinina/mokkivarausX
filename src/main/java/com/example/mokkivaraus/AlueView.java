@@ -47,8 +47,8 @@ public class AlueView implements Initializable {
      * Refreshes list of AlueBox:s
      */
     private void updateAlueList() {
-        ObservableList<Alue> alueet = SessionData.dataBase.getAllRows("alue", "alue_id", Alue.class);
-        updateAlueList(alueet);
+        SessionData.setAlueet();
+        updateAlueList(SessionData.getAlueet());
     }
     /**
      * Refreshes list of AlueBox:s

@@ -72,14 +72,7 @@ public class AsiakasDC extends DialogController {
 
     @Override
     HashMap<String, Object> listOfAttributes() {
-        HashMap<String, Object> attrMap = new HashMap<>();
-        attrMap.put("postinro", postinroField.getText());
-        attrMap.put("etunimi", etunimiField.getText());
-        attrMap.put("sukunimi", sukunimiField.getText());
-        attrMap.put("lahiosoite", lahiosoiteField.getText());
-        attrMap.put("email", emailField.getText());
-        attrMap.put("puhelinnro", puhelinnroField.getText());
-        return attrMap;
+        return asiakas.getAttrMap();
     }
 
     @Override
@@ -98,31 +91,37 @@ public class AsiakasDC extends DialogController {
     // Methods to check each field individually
     private boolean checkPostinro() {
         // Implement your validation logic for postinro field
+        asiakas.setPostinro(postinroField.getText());
         return true; // Return true if validation passes
     }
 
     private boolean checkEtunimi() {
         // Implement your validation logic for etunimi field
+        asiakas.setEtunimi(etunimiField.getText());
         return true; // Return true if validation passes
     }
 
     private boolean checkSukunimi() {
         // Implement your validation logic for sukunimi field
+        asiakas.setSukunimi(sukunimiField.getText());
         return true; // Return true if validation passes
     }
 
     private boolean checkLahiosoite() {
         // Implement your validation logic for lahiosoite field
+        asiakas.setLahiosoite(lahiosoiteField.getText());
         return true; // Return true if validation passes
     }
 
     private boolean checkEmail() {
         // Implement your validation logic for email field
+        asiakas.setEmail(emailField.getText());
         return true; // Return true if validation passes
     }
 
     private boolean checkPuhelinnro() {
         // Implement your validation logic for puhelinnro field
+        asiakas.setPuhelinnro(puhelinnroField.getText());
         return true; // Return true if validation passes
     }
 }

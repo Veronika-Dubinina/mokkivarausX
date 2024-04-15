@@ -25,8 +25,7 @@ public class LaskuController extends TabController<Lasku> {
     // Constructor
     public LaskuController() {
         // Set class attributes
-        super("asiakkaiden_laskut", "lasku_id", Lasku.class);
-        filter = "WHERE alue_id = " + SessionData.alue.getAlue_id();
+        super(Lasku.class);
     }
 
     // Methods
@@ -88,7 +87,7 @@ public class LaskuController extends TabController<Lasku> {
 
     @Override
     DialogController getController() {
-        return new LaskuDC("lasku", identifierKey);
+        return new LaskuDC("lasku", "lasku_id");
     }
 
     @Override

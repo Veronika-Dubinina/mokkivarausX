@@ -5,8 +5,7 @@ import java.util.ArrayList;
 public class PalveluController extends TabController<Palvelu> {
     // Constructor
     public PalveluController() {
-        super("palvelu", "palvelu_id", Palvelu.class);
-        filter = "WHERE alue_id = " + SessionData.alue.getAlue_id();
+        super(Palvelu.class);
     }
 
     // Methods
@@ -22,7 +21,7 @@ public class PalveluController extends TabController<Palvelu> {
 
     @Override
     DialogController getController() {
-        return new PalveluDC(tableName, identifierKey);
+        return new PalveluDC("palvelu", "palvelu_id");
     }
 
     @Override

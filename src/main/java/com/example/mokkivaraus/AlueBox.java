@@ -47,7 +47,8 @@ public class AlueBox extends HBox {
         AnchorPane pane = new AnchorPane(alueLbl, nimiTF);
         setHgrow(pane, Priority.ALWAYS);
         pane.setOnMouseClicked(event -> {
-            SessionData.alue = alue;
+            SessionData.setAlue(alue);
+            SessionData.refreshLists();
             try {
                 Parent root = FXMLLoader.load(getClass().getResource("main-view.fxml"));
                 Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();

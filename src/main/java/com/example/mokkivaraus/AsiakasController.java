@@ -24,7 +24,7 @@ public class AsiakasController extends TabController<Asiakas> {
     // Constructor
     public AsiakasController() {
         // Set class attributes
-        super("asiakas", "asiakas_id", Asiakas.class);
+        super(Asiakas.class);
     }
     // Methods
     @Override
@@ -39,7 +39,7 @@ public class AsiakasController extends TabController<Asiakas> {
 
     @Override
     DialogController getController() {
-        return new AsiakasDC(tableName, identifierKey);
+        return new AsiakasDC("asiakas", "asiakas_id");
     }
 
     @Override

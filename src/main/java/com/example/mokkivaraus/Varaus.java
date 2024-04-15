@@ -40,12 +40,13 @@ public class Varaus {
             this.varaus_id = res.getInt("varaus_id");
             this.asiakas_id = res.getInt("asiakas_id");
             this.mokki_mokki_id = res.getInt("mokki_mokki_id");
-            this.asiakasnimi = res.getString("asiakas");
-            this.mokkinimi = res.getString("mokkinimi");
             this.varattu_pvm = new SQLDateTime(res.getTimestamp("varattu_pvm"));
             this.vahvistus_pvm = new SQLDateTime(res.getTimestamp("vahvistus_pvm"));
             this.varattu_alkupvm = new SQLDateTime(res.getTimestamp("varattu_alkupvm"));
             this.varattu_loppupvm = new SQLDateTime(res.getTimestamp("varattu_loppupvm"));
+
+            this.asiakasnimi = res.getString("asiakas");
+            this.mokkinimi = res.getString("mokkinimi");
         } catch (Exception e) {
             System.out.println("!!Exc. Varaus.Constr : " + e);
         }
@@ -148,6 +149,7 @@ public class Varaus {
         attrMap.put("vahvistus_pvm", vahvistus_pvm);
         attrMap.put("varattu_alkupvm", varattu_alkupvm);
         attrMap.put("varattu_loppupvm", varattu_loppupvm);
+
         return attrMap;
     }
 }

@@ -60,26 +60,12 @@ public class LaskuDC extends DialogController {
         alvField.setText(String.valueOf(lasku.getAlv()));
         maksettuCheckBox.setSelected(lasku.getMaksettu() == 1);
         laskuIdField.setText(String.valueOf(lasku.getLasku_id())); // Устанавливаем значение lasku_id
+        laskuIdField.setDisable(true);
     }
 
     @Override
     HashMap<String, Object> listOfAttributes() {
-        HashMap<String, Object> attributes = new HashMap<>();
-
-        // Добавляем только столбцы, для которых есть значения
-        attributes.put("varaus_id", varausCmBox.getValue().getVaraus_id());
-        attributes.put("summa", Double.parseDouble(summaField.getText()));
-        attributes.put("alv", Double.parseDouble(alvField.getText()));
-        attributes.put("maksettu", maksettuCheckBox.isSelected() ? 1 : 0);
-
-        // Если laskuIdField не пустой, добавляем lasku_id
-        String laskuIdText = laskuIdField.getText();
-        if (!laskuIdText.isEmpty()) {
-            int laskuId = Integer.parseInt(laskuIdText);
-            attributes.put("lasku_id", laskuId);
-        }
-
-        return attributes;
+        return lasku.getAttrMap();
     }
     @Override
     boolean checkData() {
@@ -92,6 +78,7 @@ public class LaskuDC extends DialogController {
         else { // if there is no data failure
             alertTitle = "Menestys";
             alertMessage = "Taulukko on päivitetty";
+            setData();
             return true;
         }
 
@@ -133,5 +120,20 @@ public class LaskuDC extends DialogController {
             return false;
         }
         return true;
+    }
+
+    private void setData() {
+        // Добавляем только столбцы, для которых есть значения
+        lasku.setVaraus_id(varausCmBox.getValue().getVaraus_id());
+        lasku.setSumma(Double.parseDouble(summaField.getText()));
+        lasku.setAlv(Double.parseDouble(alvField.getText()));
+        lasku.setMaksettu(maksettuCheckBox.isSelected() ? 1 : 0);
+
+        // Если laskuIdField не пустой, добавляем lasku_id
+        String laskuIdText = laskuIdField.getText();
+        if (!laskuIdText.isEmpty()) {
+            int laskuId = Integer.parseInt(laskuIdText);
+            lasku.setLasku_id(laskuId);
+        }
     }
 }
