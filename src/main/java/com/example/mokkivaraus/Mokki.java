@@ -19,7 +19,9 @@ public class Mokki {
 
     // Constructors
     // Default constructor
-    public Mokki() {}
+    public Mokki() {
+        this(0, "", "", "", 0.0, "", 0, "");
+    }
     // Fill from result set
     public Mokki(ResultSet res) {
         try {

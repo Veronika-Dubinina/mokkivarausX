@@ -53,7 +53,7 @@
       </AnchorPane>
       <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS">
          <content>
-            <VBox fx:id="raporttiContent">
+            <VBox fx:id="raporttiContent" styleClass="hidden">
                <children>
                   <HBox alignment="BOTTOM_RIGHT" spacing="10.0">
                      <children>

@@ -51,8 +51,7 @@ abstract class TabController<T> implements Initializable {
     }
     @FXML
     public void onRefreshBtnClicked(ActionEvent actionEvent) {
-        updateTable();
-        initSearch();
+        refreshData();
     }
 
     @Override
@@ -108,6 +107,15 @@ abstract class TabController<T> implements Initializable {
     }
 
     /**
+     * Refreshes data
+     */
+    private void refreshData() {
+        SessionData.updateList(tableClass);
+        updateTable();
+        initSearch();
+    }
+
+    /**
      * Opens dialog window to edit or add a new object in the table
      * @param dialogController Controller
      */
@@ -129,9 +137,7 @@ abstract class TabController<T> implements Initializable {
             newStage.showAndWait();
 
             // Reset table data
-            SessionData.refreshLists();
-            updateTable();
-            initSearch();
+            refreshData();
         } catch (IOException ex) {
             System.out.println("DialogPane load error!!" + ex);
         }

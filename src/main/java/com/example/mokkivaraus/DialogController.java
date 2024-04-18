@@ -50,52 +50,33 @@ abstract class DialogController implements Initializable{
     @FXML
     void closeBtnClicked(ActionEvent event){
         // Close dialog window
-        Stage stage = (Stage) closeBtn.getScene().getWindow();
-        stage.close();
+        closeStage();
     }
 
     @FXML
     void addBtnClicked(ActionEvent event) {
-        // Check user's input data, if there is data failure, show warning window
-        if (!checkData()) {
+        if (addData()) {
+            showAlert(Alert.AlertType.INFORMATION);
+            closeStage();
+        } else
             showAlert(Alert.AlertType.WARNING);
-            return;
-        }
-
-        // Add new row into table
-        SessionData.dataBase.addRow(tableName, listOfAttributes());
-        showAlert(Alert.AlertType.INFORMATION);
-
-        // Close dialog window
-        Stage stage = (Stage) addBtn.getScene().getWindow();
-        stage.close();
     }
 
     @FXML
     void updateBtnClicked(ActionEvent event) {
-        // Check user's input data, if there is data failure, show warning window
-        if (!checkData()) {
+        if (updateData()) {
+            showAlert(Alert.AlertType.INFORMATION);
+            closeStage();
+        } else
             showAlert(Alert.AlertType.WARNING);
-            return;
-        }
-
-        // Update row in table
-        SessionData.dataBase.updateRow(tableName, listOfAttributes(), identifierKey, identifierValue);
-        showAlert(Alert.AlertType.INFORMATION);
-
-        // Close dialog window
-        Stage stage = (Stage) addBtn.getScene().getWindow();
-        stage.close();
     }
 
     @FXML
     void deleteBtnClicked(ActionEvent event) {
-        // Delete row in table
-        SessionData.dataBase.deleteRow(tableName, identifierKey, identifierValue);
-
-        // Close dialog window
-        Stage stage = (Stage) addBtn.getScene().getWindow();
-        stage.close();
+        if (deleteData()) {
+            closeStage();
+        } else
+            showAlert(Alert.AlertType.WARNING);
     }
 
     @FXML
@@ -109,10 +90,7 @@ abstract class DialogController implements Initializable{
         setDialogContent();
         // Edit mode
         if (editMode) {
-            setEditContent();
-            addBtn.setVisible(false);
-            deleteBtn.setVisible(true);
-            updateBtn.setVisible(true);
+            EditMode();
         }
     }
 
@@ -122,6 +100,14 @@ abstract class DialogController implements Initializable{
 
     public void setEditMode(boolean editMode) {
         this.editMode = editMode;
+    }
+
+    /** Edit mode */
+    void EditMode() {
+        setEditContent();
+        addBtn.setVisible(false);
+        deleteBtn.setVisible(true);
+        updateBtn.setVisible(true);
     }
 
     /**
@@ -158,12 +144,56 @@ abstract class DialogController implements Initializable{
      * With title and message derived from the class alertTitle and alertMessage attributes' values.
      * @param type Alert type
      */
-    private void showAlert(Alert.AlertType type) {
+    void showAlert(Alert.AlertType type) {
         Alert a = new Alert(Alert.AlertType.NONE);
 
         a.setAlertType(type);
         a.setTitle(alertTitle);
         a.setContentText(alertMessage);
         a.show();
+    }
+
+    /** Close dialog window */
+    void closeStage() {
+        Stage stage = (Stage) addBtn.getScene().getWindow();
+        stage.close();
+    }
+
+    /** Add new row into table */
+    boolean addData() {
+        // Check user's input data, if there is data failure, show warning window
+        if (checkData()) {
+            // Add new row into table
+            if (SessionData.dataBase.addRow(tableName, listOfAttributes()))
+                return true;
+            else
+                alertMessage = "Tietokannan vika";
+        }
+
+        return false;
+    }
+
+    /** Update row in table */
+    boolean updateData() {
+        // Check user's input data, if there is data failure, show warning window
+        if (checkData()) {
+            // Add new row into table
+            if (SessionData.dataBase.updateRow(tableName, listOfAttributes(), identifierKey, identifierValue))
+                return true;
+            else
+                alertMessage = "Tietokannan vika";
+        }
+
+        return false;
+    }
+
+    /** Delete row in table */
+    boolean deleteData() {
+        if (SessionData.dataBase.deleteRow(tableName, identifierKey, identifierValue)) {
+            return true;
+        } else {
+            alertMessage = "Tietokannan vika";
+            return false;
+        }
     }
 }

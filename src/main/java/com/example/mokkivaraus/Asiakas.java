@@ -15,7 +15,9 @@ public class Asiakas {
 
     // Constructors
     // Default constructor
-    public Asiakas() {}
+    public Asiakas() {
+        this("", "", "", "", "", "");
+    }
     // Fill Asiakas from result set
     public Asiakas(ResultSet res) {
         try{

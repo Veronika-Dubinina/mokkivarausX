@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 public class Palvelu {
     // Attributes
+    public static int last_id = -1;
     private int palvelu_id;
     private int alue_id;
     private String nimi;
@@ -16,11 +17,16 @@ public class Palvelu {
     // Constructors
     // Default
     public Palvelu() {
+        this(0, "", 0, "", 0.0, 0.0);
+        last_id++;
+        palvelu_id = last_id;
     }
     // Fill from result set
     public Palvelu(ResultSet res) {
         try {
             this.palvelu_id = res.getInt("palvelu_id");
+            if (palvelu_id > last_id)
+                last_id = palvelu_id;
             this.alue_id = res.getInt("alue_id");
             this.nimi = res.getString("nimi");
             this.tyyppi = res.getInt("tyyppi");
@@ -32,13 +38,15 @@ public class Palvelu {
         }
     }
     // Fill all attributes from user input
-    public Palvelu(int alue_id, String nimi, int tyyppi, String kuvaus, Double hinta, Double alv) {
+    public Palvelu(int alue_id, String nimi, int tyyppi, String kuvaus, double hinta, double alv) {
         this.alue_id = alue_id;
         this.nimi = nimi;
         this.tyyppi = tyyppi;
         this.kuvaus = kuvaus;
         this.hinta = hinta;
         this.alv = alv;
+        last_id++;
+        palvelu_id = last_id;
     }
 
     // Methods

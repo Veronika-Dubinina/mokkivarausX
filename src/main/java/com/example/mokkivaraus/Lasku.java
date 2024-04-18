@@ -6,6 +6,7 @@ import java.util.HashMap;
 
 public class Lasku {
     // Attributes
+    static int last_id = -1;
     private int lasku_id;
     private int varaus_id;
     private String asiakas_etunimi;
@@ -17,11 +18,17 @@ public class Lasku {
     private int maksettu;
 
     // Constructors
-    public Lasku() {}
+    public Lasku() {
+        this(0, 0, 24, 0);
+        last_id ++;
+        this.lasku_id = last_id;
+    }
 
     public Lasku(ResultSet res) {
         try {
             this.lasku_id = res.getInt("lasku_id");
+            if (lasku_id > last_id)
+                last_id = lasku_id;
             this.varaus_id = res.getInt("varaus_id");
             this.summa = res.getDouble("summa");
             this.alv = res.getDouble("alv");
@@ -37,11 +44,13 @@ public class Lasku {
         }
     }
 
-    public Lasku(int varaus_id, double summa, double alv, byte maksettu) {
+    public Lasku(int varaus_id, double summa, double alv, int maksettu) {
         this.varaus_id = varaus_id;
         this.summa = summa;
         this.alv = alv;
         this.maksettu = maksettu;
+        last_id ++;
+        this.lasku_id = last_id;
     }
 
     // Getters and Setters

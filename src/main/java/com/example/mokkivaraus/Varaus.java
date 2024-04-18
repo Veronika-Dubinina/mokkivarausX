@@ -33,7 +33,9 @@ public class Varaus {
     private SQLDateTime varattu_loppupvm;
 
     // Constructors
-    public Varaus() {}
+    public Varaus() {
+        this(0, 0, new Timestamp(0), new Timestamp(0), new Timestamp(0), new Timestamp(0));
+    }
 
     public Varaus(ResultSet res) {
         try {
@@ -151,5 +153,11 @@ public class Varaus {
         attrMap.put("varattu_loppupvm", varattu_loppupvm);
 
         return attrMap;
+    }
+
+    public boolean equals(Varaus varaus) {
+        if (this.varaus_id == varaus.getVaraus_id())
+            return true;
+        return this.getAttrMap().equals(varaus.getAttrMap());
     }
 }

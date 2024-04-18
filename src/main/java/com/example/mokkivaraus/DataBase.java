@@ -132,7 +132,13 @@ public class DataBase {
      */
     public <TableClass> TableClass getRow(String tableName, String identifierKey, Object identifierValue, Class<TableClass> tableClass) {
         // Sql query
-        String sql = "SELECT * FROM " + tableName + " WHERE " + identifierKey + " = " + identifierValue;
+        String filter = "WHERE " + identifierKey + " = " + identifierValue;
+        return getRow(tableName, filter, tableClass);
+    }
+
+    public <TableClass> TableClass getRow(String tableName, String filter, Class<TableClass> tableClass) {
+        // Sql query
+        String sql = "SELECT * FROM " + tableName + " " + filter;
         // TableClass-object
         TableClass obj = null;
         // List of TableClass constructors
@@ -196,10 +202,15 @@ public class DataBase {
      * @param identifierValue Row identifier value
      */
     public boolean updateRow(String tableName, HashMap<String, Object> values, String identifierKey, Object identifierValue) {
+        String filter = "WHERE " + identifierKey + "=" + identifierValue;
+        return updateRow(tableName, values, filter);
+    }
+
+    public boolean updateRow(String tableName, HashMap<String, Object> values, String filter) {
         // Sql query
         List<String> keyList = new ArrayList<String>(values.keySet());;
         String columns = keyList.stream().collect(Collectors.joining("=?, ", "", "=?"));
-        String sql = "UPDATE " + tableName + " SET " + columns + " WHERE " + identifierKey + "=" + identifierValue;
+        String sql = "UPDATE " + tableName + " SET " + columns + " " + filter;
 
         try (Connection conn = getDbConnection();
              PreparedStatement ps = conn.prepareStatement(sql);){
@@ -226,8 +237,13 @@ public class DataBase {
      * @param identifierValue Row identifier value
      */
     public boolean deleteRow(String tableName, String identifierKey, Object identifierValue) {
+        String filter = "WHERE " + identifierKey + " = " + identifierValue;
+        return deleteRow(tableName, filter);
+    }
+
+    public boolean deleteRow(String tableName, String filter) {
         // Remove row in mokki-table
-        String sql = "DELETE FROM " + tableName + " WHERE " + identifierKey + " = " + identifierValue;
+        String sql = "DELETE FROM " + tableName + " " + filter;
 
         try (Connection conn = getDbConnection();
              PreparedStatement ps = conn.prepareStatement(sql);) {

@@ -39,6 +39,7 @@ public class AutoCompleteTextField<T> extends TextField {
 
     // Methods
     public void setLastSelectedItem(Object lastSelectedItem) {
+        entries.add((T) lastSelectedItem);
         this.lastSelectedItem.set((T) lastSelectedItem);
         setText(lastSelectedItem.toString());
     }

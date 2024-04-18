@@ -116,8 +116,6 @@ public class RaporttiController implements Initializable {
     // Methods
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Hide vbox
-        raporttiContent.getStyleClass().add("hidden");
         // Reports
         raporttiCmB.getItems().addAll(raportit);
 

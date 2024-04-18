@@ -23,6 +23,7 @@ public class VarausController extends TabController<Varaus> {
     public VarausController() {
         // Set class attributes
         super(Varaus.class);
+        dialogFXML = "varaus-dialog.fxml";
     }
 
     // Methods
@@ -38,7 +39,7 @@ public class VarausController extends TabController<Varaus> {
 
     @Override
     DialogController getController() {
-        return new VarausDC("varaus", "varaus_id");
+        return new VarausDialogController("varaus", "varaus_id");
     }
 
     @Override

@@ -10,7 +10,9 @@ public class Alue {
 
     // Constructors
     // Default constructor
-    public Alue() {}
+    public Alue() {
+        this("");
+    }
     // Fill Alue from result set
     public Alue(ResultSet res) {
         try{

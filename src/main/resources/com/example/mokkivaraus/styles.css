@@ -162,6 +162,9 @@ red - #F94144
     -fx-border-radius: 5px;
     -fx-border-color: rgb(128, 128, 128);
 }
+.spinner {
+    -fx-pref-width: 75px;
+}
 
 
 
