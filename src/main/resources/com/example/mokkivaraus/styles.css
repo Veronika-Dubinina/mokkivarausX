@@ -97,7 +97,7 @@ red - #F94144
 }
 
 .deleteBtn {
-    -fx-background-color: transparent;
+    -fx-background-color: white;
     -fx-text-fill: #F94144;
 }
 
@@ -107,12 +107,12 @@ red - #F94144
 }
 
 .editBtn {
-    -fx-background-color: transparent;
-    -fx-text-fill: #F9C74F;
+    -fx-background-color: white;
+    -fx-text-fill: #F8961E;
 }
 
 .editBtn:hover {
-    -fx-background-color: #F9C74F;
+    -fx-background-color: #F8961E;
     -fx-text-fill: white;
 }
 
@@ -147,7 +147,7 @@ red - #F94144
 }
 
 .alueBox:hover {
-    -fx-background-color: rgba(39, 125, 161, 0.8);
+    -fx-background-color: rgba(39, 125, 161, 0.7);
 }
 
 /* changeTable dialog */
