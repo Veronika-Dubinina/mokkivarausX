@@ -1,36 +1,32 @@
 package com.example.mokkivaraus;
 
 import java.sql.ResultSet;
+import java.util.HashMap;
 
 class VarauksenPalvelut {
     // Attributes
     private int varaus_id;
     private int palvelu_id;
     private int lkm;
-    private String nimi;
-    private double hinta;
-    private double alv;
 
     // Constructors
-    public VarauksenPalvelut() {}
+    public VarauksenPalvelut() {
+        this(0, 0, 1);
+    }
     public VarauksenPalvelut (ResultSet res) {
         try {
             this.varaus_id = res.getInt("varaus_id");
             this.palvelu_id = res.getInt("palvelu_id");
             this.lkm = res.getInt("lkm");
-
-            this.nimi = res.getString("nimi");
-            this.hinta = res.getDouble("hinta");
-            this.alv = res.getDouble("alv");
         } catch (Exception e) {
             System.out.println("!!Exc. VarauksenPalvelut Constr: " + e);
         }
     }
-    public VarauksenPalvelut(Palvelu palvelu) {
-        this.palvelu_id = palvelu.getPalvelu_id();
-        this.nimi = palvelu.getNimi();
-        this.hinta = palvelu.getHinta();
-        this.alv = palvelu.getAlv();
+
+    public VarauksenPalvelut(int varaus_id, int palvelu_id, int lkm) {
+        this.varaus_id = varaus_id;
+        this.palvelu_id = palvelu_id;
+        this.lkm = lkm;
     }
 
     // Methods
@@ -58,27 +54,17 @@ class VarauksenPalvelut {
         this.lkm = lkm;
     }
 
-    public String getNimi() {
-        return nimi;
+    @Override
+    public String toString() {
+        return "Palvelu: " + palvelu_id;
     }
 
-    public void setNimi(String nimi) {
-        this.nimi = nimi;
-    }
+    public HashMap<String, Object> getAttrMap() {
+        HashMap<String, Object> attrMap = new HashMap<>();
+        attrMap.put("varaus_id", varaus_id);
+        attrMap.put("palvelu_id", palvelu_id);
+        attrMap.put("lkm", lkm);
 
-    public double getHinta() {
-        return hinta;
-    }
-
-    public void setHinta(double hinta) {
-        this.hinta = hinta;
-    }
-
-    public double getAlv() {
-        return alv;
-    }
-
-    public void setAlv(double alv) {
-        this.alv = alv;
+        return attrMap;
     }
 }
