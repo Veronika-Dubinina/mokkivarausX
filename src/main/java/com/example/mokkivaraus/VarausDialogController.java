@@ -113,7 +113,7 @@ public class VarausDialogController extends DialogController {
             puhelinTF.setPromptText("Puhelinnro");
             puhelinTF.textProperty().addListener((object, oldValue, newValue) -> {
                 String nro = newValue.trim();
-                if (nro.length() <= 15 && nro.matches("\\+[0-9]+")) {
+                if (nro.length() <= 15 && nro.matches("\\+?[0-9]+")) {
                     puhnro.set(nro);
                     puhelinTF.setStyle("-fx-border-color: green");
                 } else {

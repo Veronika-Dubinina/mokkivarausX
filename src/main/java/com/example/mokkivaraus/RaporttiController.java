@@ -47,6 +47,7 @@ public class RaporttiController implements Initializable {
                 for (String col : columns) {
                     TableColumn<Map, Object> tableColumn = new TableColumn<>(col);
                     tableColumn.setCellValueFactory(new MapValueFactory<>(col));
+                    tableColumn.setMinWidth(115.0);
                     raporttiTable.getColumns().add(tableColumn);
                 }
                 // Fill table with data
@@ -58,7 +59,6 @@ public class RaporttiController implements Initializable {
                     raporttiTable.getItems().add(rowData);
                 }
                 // Enable user-resizable columns
-                raporttiTable.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
                 raporttiTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
             } catch (SQLException e) {
                 throw new RuntimeException(e);
