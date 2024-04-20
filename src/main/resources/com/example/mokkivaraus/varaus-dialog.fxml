@@ -107,7 +107,7 @@
                   </HBox>
             </content>
           </Tab>
-            <Tab fx:id="laskuTab" disable="true" text="Lasku">
+            <Tab fx:id="laskuTab" disable="true" text="Summa">
                <content>
                   <VBox minHeight="0.0" minWidth="0.0" styleClass="main">
                      <children>
