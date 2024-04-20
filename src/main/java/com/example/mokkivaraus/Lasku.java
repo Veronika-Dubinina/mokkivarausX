@@ -12,7 +12,7 @@ public class Lasku {
     private String asiakas_etunimi;
     private String asiakas_sukunimi;
     private String mokkinimi;
-    private Timestamp varattu_pvm;
+    private SQLDateTime varattu_pvm;
     private double summa;
     private double alv;
     private int maksettu;
@@ -37,7 +37,7 @@ public class Lasku {
             this.asiakas_etunimi = res.getString("asiakas_etunimi");
             this.asiakas_sukunimi = res.getString("asiakas_sukunimi");
             this.mokkinimi = res.getString("mokkinimi");
-            this.varattu_pvm = res.getTimestamp("varattu_pvm");
+            this.varattu_pvm = new SQLDateTime(res.getTimestamp("varattu_pvm"));
 
         } catch (Exception e) {
             System.out.println("!!Exc. Lasku.Constr : " + e);
@@ -94,12 +94,12 @@ public class Lasku {
         this.mokkinimi = mokkinimi;
     }
 
-    public Timestamp getVarattu_pvm() {
+    public SQLDateTime getVarattu_pvm() {
         return varattu_pvm;
     }
 
     public void setVarattu_pvm(Timestamp varattu_pvm) {
-        this.varattu_pvm = varattu_pvm;
+        this.varattu_pvm = new SQLDateTime(varattu_pvm);
     }
 
     public double getSumma() {

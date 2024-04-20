@@ -176,7 +176,9 @@ public class VarausDialogController extends DialogController {
         @Override
         public boolean getSearchConditions(Asiakas object, String newValue) {
             newValue = newValue.trim().toLowerCase();
-            if (object.getEtunimi().toLowerCase().contains(newValue))
+            if ((object.getEtunimi().toLowerCase() + " " + object.getSukunimi().toLowerCase()).contains(newValue))
+                return true;
+            else if (object.getEtunimi().toLowerCase().contains(newValue))
                 return true;
             else if (object.getSukunimi().toLowerCase().contains(newValue))
                 return true;

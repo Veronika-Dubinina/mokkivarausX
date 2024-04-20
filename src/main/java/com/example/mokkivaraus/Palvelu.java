@@ -108,7 +108,7 @@ public class Palvelu {
 
     @Override
     public String toString() {
-        return "Palvelu: " + palvelu_id + " " + nimi;
+        return "Palvelu: " + nimi;
     }
 
     public HashMap<String, Object> getAttrMap() {
