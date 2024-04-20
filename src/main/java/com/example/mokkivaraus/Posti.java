@@ -45,7 +45,7 @@ public class Posti {
 
     @Override
     public String toString() {
-        return postinro + " - " + toimipaikka;
+        return postinro + " " + toimipaikka;
     }
 
     public HashMap<String, Object> getAttrMap() {

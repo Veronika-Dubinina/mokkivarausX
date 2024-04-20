@@ -15,7 +15,7 @@ public class AsiakasDC extends DialogController {
     // Attributes
     private Asiakas asiakas = new Asiakas();
 
-    private AutoCompleteTextField<Posti> postinroField = new AutoCompleteTextField<>(SessionData.getPostit(), true) {
+    private AutoCompleteTextField<Posti> postinroACTF = new AutoCompleteTextField<>(SessionData.getPostit(), true) {
         @Override
         public void onCreateLabelClicked() {
             // Create popover window
@@ -32,28 +32,30 @@ public class AsiakasDC extends DialogController {
             // Postinumero text field
             TextField postinroTF = new TextField();
             postinroTF.setPromptText("Postinro");
+            postinroTF.getStyleClass().add("wrong");
             postinroTF.textProperty().addListener((object, oldValue, newValue) -> {
                 String nro = newValue.trim();
                 if (nro.length() == 5 && nro.matches("[0-9]+")) {
                     postinro.set(nro);
-                    postinroTF.setStyle("-fx-border-color: green");
+                    postinroTF.getStyleClass().add("right");
                 } else {
                     postinro.set("");
-                    postinroTF.setStyle("-fx-border-color: red");
+                    postinroTF.getStyleClass().remove("right");
                 }
             });
             // Toimipaikka text field
             TextField toimipaikkaTF = new TextField();
             toimipaikkaTF.setPromptText("Toimipaikka");
+            toimipaikkaTF.getStyleClass().add("wrong");
             toimipaikkaTF.textProperty().addListener((object, oldValue, newValue) -> {
                 String tp = newValue.trim();
                 if (!tp.isEmpty() && tp.length() <= 45) {
                     toimipaikka.set(tp);
-                    toimipaikkaTF.setStyle("-fx-border-color: green");
+                    toimipaikkaTF.getStyleClass().add("right");
 
                 } else {
                     toimipaikka.set("");
-                    toimipaikkaTF.setStyle("-fx-border-color: red");
+                    toimipaikkaTF.getStyleClass().remove("right");
                 }
             });
             // Close button
@@ -124,7 +126,7 @@ public class AsiakasDC extends DialogController {
 
         // Labels and Fields
         formsGridPane.add(new Label("Postinro:"), 0, 0);
-        formsGridPane.add(postinroField, 1, 0);
+        formsGridPane.add(postinroACTF, 1, 0);
 
         formsGridPane.add(new Label("Etunimi:"), 0, 1);
         formsGridPane.add(etunimiField, 1, 1);
@@ -150,7 +152,7 @@ public class AsiakasDC extends DialogController {
         // Set data from asiakas-object
         SessionData.getPostit().forEach(p -> {
             if (Objects.equals(asiakas.getPostinro(), p.getPostinro())) {
-                postinroField.setLastSelectedItem(p);
+                postinroACTF.setLastSelectedItem(p);
                 return;
             }
         });
@@ -204,7 +206,7 @@ public class AsiakasDC extends DialogController {
 
     // Методы для проверки каждого поля индивидуально
     private boolean checkPostinro() {
-        var posti = postinroField.getLastSelectedItem();
+        var posti = postinroACTF.getLastSelectedItem();
         if (posti == null) { // is empty
             alertMessage = "Valitse Posti, kiitos!";
             return false;

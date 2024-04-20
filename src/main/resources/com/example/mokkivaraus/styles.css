@@ -8,6 +8,20 @@ red - #F94144
 .hidden {
     visibility: hidden;
 }
+.wrong {
+    -fx-prompt-text-fill: #545454;
+    -fx-border-color: red;
+    -fx-background-color: rgba(255, 0, 0, 0.05);
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+}
+.right {
+    -fx-border-color: green;
+    -fx-background-color: rgba(0, 128, 0, 0.05);
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+}
+
 .root {
     -fx-font-family: "Gill Sans";
     -fx-font-size: 14;

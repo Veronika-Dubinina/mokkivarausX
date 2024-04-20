@@ -17,7 +17,7 @@ public class PalveluDC extends DialogController {
     private TextField tyyppiField = new TextField();
     private TextArea kuvausArea = new TextArea();
     private TextField hintaField = new TextField();
-    private TextField alvField = new TextField();
+    private TextField alvField = new TextField(palvelu.getAlv().toString());
 
     // Constructor
     public PalveluDC(String tableName, String identifierKey) {
@@ -114,7 +114,10 @@ public class PalveluDC extends DialogController {
      */
     private boolean checkId() {
         try {
-            // is empty or is not a number
+            // is empty
+            if (idField.getText().isEmpty() || idField.getText().isBlank())
+                return true;
+            // is not a number
             int id = Integer.parseInt(idField.getText());
             // if ok
             palvelu.setPalvelu_id(id);
@@ -164,7 +167,10 @@ public class PalveluDC extends DialogController {
      */
     private boolean checkTyyppi() {
         try {
-            // is empty or is not a number
+            // is empty
+            if (tyyppiField.getText().isEmpty() || tyyppiField.getText().isBlank())
+                return true;
+            // is not a number
             int t = Integer.parseInt(tyyppiField.getText());
             // if ok
             palvelu.setTyyppi(t);
@@ -181,9 +187,7 @@ public class PalveluDC extends DialogController {
      */
     private boolean checkKuvaus() {
         String k = kuvausArea.getText();
-        if (k.isEmpty() || k.isBlank()) // is empty
-            alertMessage = "Kirjoita kuvaus, kiitos!";
-        else if (k.length() > 150) // is longer than 150 chars
+        if (k.length() > 150) // is longer than 150 chars
             alertMessage = "Kuvaus pituus on liian pitkä (maximi 150 merkkiä)";
         else { // if ok
             palvelu.setKuvaus(k);

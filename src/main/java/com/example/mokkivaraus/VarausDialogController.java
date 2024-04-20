@@ -31,6 +31,7 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class VarausDialogController extends DialogController {
@@ -85,40 +86,44 @@ public class VarausDialogController extends DialogController {
             // Etunimi text field
             TextField etunimiTF = new TextField();
             etunimiTF.setPromptText("Etunimi");
+            etunimiTF.getStyleClass().add("wrong");
             etunimiTF.textProperty().addListener((object, oldValue, newValue) -> {
                 String enimi = newValue.trim();
-                if (enimi.length() <= 20 && enimi.matches("[a-zA-Z]+")) {
+                if (!enimi.isEmpty() && enimi.length() <= 20 && enimi.matches("[a-zA-Z- ]+")) {
                     etunimi.set(enimi);
-                    etunimiTF.setStyle("-fx-border-color: green");
+                    etunimiTF.getStyleClass().add("right");
                 } else {
                     etunimi.set("");
-                    etunimiTF.setStyle("-fx-border-color: red");
+                    etunimiTF.getStyleClass().remove("right");
                 }
             });
             // Sukunimi text field
             TextField sukunimiTF = new TextField();
             sukunimiTF.setPromptText("Sukunimi");
+            sukunimiTF.getStyleClass().add("wrong");
             sukunimiTF.textProperty().addListener((object, oldValue, newValue) -> {
                 String snimi = newValue.trim();
-                if (snimi.length() <= 40 && snimi.matches("[a-zA-Z]+")) {
+                if (!snimi.isEmpty() && snimi.length() <= 40 && snimi.matches("[a-zA-Z- ]+")) {
                     sukunimi.set(snimi);
-                    sukunimiTF.setStyle("-fx-border-color: green");
+                    sukunimiTF.getStyleClass().add("right");
                 } else {
                     sukunimi.set("");
-                    sukunimiTF.setStyle("-fx-border-color: red");
+                    sukunimiTF.getStyleClass().remove("right");
                 }
             });
             // Puhelinnumero text field
             TextField puhelinTF = new TextField();
             puhelinTF.setPromptText("Puhelinnro");
+            puhelinTF.getStyleClass().add("wrong");
             puhelinTF.textProperty().addListener((object, oldValue, newValue) -> {
                 String nro = newValue.trim();
-                if (nro.length() <= 15 && nro.matches("\\+?[0-9]+")) {
+                if (!nro.isEmpty() && nro.length() <= 15 && nro.matches("\\+?[0-9]+")) {
                     puhnro.set(nro);
-                    puhelinTF.setStyle("-fx-border-color: green");
+                    puhelinTF.getStyleClass().add("right");
                 } else {
                     puhnro.set("");
-                    puhelinTF.setStyle("-fx-border-color: red");
+                    puhelinTF.getStyleClass().remove("right");
+
                 }
             });
             // Email text field
@@ -191,7 +196,7 @@ public class VarausDialogController extends DialogController {
     private FileChooser fileChooser = new FileChooser();
     private static final String BLANK_PDF_PATH = "src/main/pdf/table_data.pdf"; // Путь к файлу-болванке
     @FXML
-    private ComboBox<Mokki> mokkiCmB;
+    private ComboBox<Mokki> mokkiCmBox;
     @FXML
     private ListView<VarauksenPalvelut> palvelutListView;
     @FXML
@@ -235,9 +240,85 @@ public class VarausDialogController extends DialogController {
     @FXML
     private VBox paperiLaskuBox;
     @FXML
-    private TextField postinroTF;
-    @FXML
     private TextField katuosoiteTF;
+    private AutoCompleteTextField<Posti> postinroACTF = new AutoCompleteTextField<>(SessionData.getPostit(), true) {
+        @Override
+        public void onCreateLabelClicked() {
+            // Create popover window
+            PopOver popover = new PopOver();
+            VBox content = new VBox();
+            content.setSpacing(10);
+            content.setPadding(new Insets(10));
+
+            // Posti attributes
+            AtomicReference<String> postinro = new AtomicReference<>("");
+            AtomicReference<String> toimipaikka = new AtomicReference<>("");
+
+            // Popover nodes
+            // Postinumero text field
+            TextField postinroTF = new TextField();
+            postinroTF.setPromptText("Postinro");
+            postinroTF.getStyleClass().add("wrong");
+            postinroTF.textProperty().addListener((object, oldValue, newValue) -> {
+                String nro = newValue.trim();
+                if (nro.length() == 5 && nro.matches("[0-9]+")) {
+                    postinro.set(nro);
+                    postinroTF.getStyleClass().add("right");
+                } else {
+                    postinro.set("");
+                    postinroTF.getStyleClass().remove("right");
+                }
+            });
+            // Toimipaikka text field
+            TextField toimipaikkaTF = new TextField();
+            toimipaikkaTF.setPromptText("Toimipaikka");
+            toimipaikkaTF.getStyleClass().add("wrong");
+            toimipaikkaTF.textProperty().addListener((object, oldValue, newValue) -> {
+                String tp = newValue.trim();
+                if (!tp.isEmpty() && tp.length() <= 45) {
+                    toimipaikka.set(tp);
+                    toimipaikkaTF.getStyleClass().add("right");
+
+                } else {
+                    toimipaikka.set("");
+                    toimipaikkaTF.getStyleClass().remove("right");
+                }
+            });
+            // Close button
+            Button close = new Button("Peruuta");
+            close.setOnAction(event -> {
+                // Hide popover
+                popover.hide();
+            });
+            // Add button
+            Button add = new Button("Lisää");
+            add.setOnAction(event -> {
+                if (postinro.get().isEmpty() || toimipaikka.get().isEmpty()) {
+                    return;
+                } else {
+                    Posti posti = new Posti(postinro.get(), toimipaikka.get());
+                    SessionData.dataBase.addRow("posti", posti.getAttrMap());
+                    setLastSelectedItem(posti);
+                }
+
+                popover.hide();
+            });
+            // Buttons container
+            HBox buttons = new HBox(close, add);
+            buttons.setSpacing(10);
+
+            // Popover root node
+            content.getChildren().addAll(
+                    postinroTF,
+                    toimipaikkaTF,
+                    buttons
+            );
+
+            // Set popover content and show it
+            popover.setContentNode(content);
+            popover.show(this);
+        }
+    };
 
     // Constructors
     public VarausDialogController(String tableName, String identifierKey) {
@@ -254,8 +335,36 @@ public class VarausDialogController extends DialogController {
 
     @Override
     boolean checkData() {
-        setData();
-        return true;
+        if (asiakasACTF.getLastSelectedItem() == null) {
+            alertTitle = "Puuttuvia tietoja";
+            alertMessage = "Valitse asiakas";
+            return false;
+        } else if (mokkiCmBox.getValue() == null) {
+            alertTitle = "Puuttuvia tietoja";
+            alertMessage = "Valitse mökki";
+            return false;
+        } else if (varattuPvmPicker.getValue() == null || varattuPvmHour.getValue() == null || varattuPvmMin.getValue() == null) {
+            alertTitle = "Puuttuvia tietoja";
+            alertMessage = "Valitse varattu päivämäärä ja aika";
+            return false;
+        } else if (vahvistusPvmPicker.getValue() == null || vahvistusPvmHour.getValue() == null || vahvistusPvmMin.getValue() == null) {
+            alertTitle = "Puuttuvia tietoja";
+            alertMessage = "Valitse vahvistus päivämäärä ja aika";
+            return false;
+        } else if (varattuAlkupvmPicker.getValue() == null || varattuAlkupvmHour.getValue() == null || varattuAlkupvmMin.getValue() == null) {
+            alertTitle = "Puuttuvia tietoja";
+            alertMessage = "Valitse varattu alkupäivämäärä ja aika";
+            return false;
+        } else if (varattuLoppupvmPicker.getValue() == null || varattuLoppupvmHour.getValue() == null || varattuLoppupvmMin.getValue() == null) {
+            alertTitle = "Puuttuvia tietoja";
+            alertMessage = "Valitse varattu loppupäivämäärä ja aika";
+            return false;
+        } else {
+            alertTitle = "Menestys";
+            alertMessage = "Tiedot tarkastettu ja hyväksytty.";
+            setData();
+            return true;
+        }
     }
 
     @Override
@@ -282,6 +391,7 @@ public class VarausDialogController extends DialogController {
     @Override
     void addBtnClicked(ActionEvent event) {
         if (addData()) {
+            showAlert(Alert.AlertType.INFORMATION);
             // Varaus id
             SessionData.setVaraukset();
             SessionData.getVaraukset().forEach(v -> {
@@ -290,7 +400,6 @@ public class VarausDialogController extends DialogController {
                     return;
                 }
             });
-
             addLasku(); // Lasku
             EditMode(); // Edit mode
 
@@ -301,6 +410,7 @@ public class VarausDialogController extends DialogController {
     @Override
     void updateBtnClicked(ActionEvent event) {
         if (updateData()) {
+            showAlert(Alert.AlertType.INFORMATION);
             // palvelut
             updatePalvelut();
             // lasku
@@ -312,19 +422,21 @@ public class VarausDialogController extends DialogController {
 
     @FXML
     void sendBtnClicked(ActionEvent event) {
+        String address = "";
         if (paperiLaskuChB.isSelected()) {
-            // File name
-            String fileName = "Lasku" + lasku.getLasku_id();
-            // Save file dialog
-            Window stage = paperiLaskuBox.getScene().getWindow();
-            fileChooser.setTitle("Save dialog");
-            fileChooser.setInitialFileName(fileName);
-            fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("pdf file", "*.pdf"));
-            File file = fileChooser.showSaveDialog(stage);
+            address = katuosoiteTF.getText() + "\n" + postinroACTF.getText();
+        }
+        // File name
+        String fileName = "Lasku" + lasku.getLasku_id();
+        // Save file dialog
+        Window stage = paperiLaskuBox.getScene().getWindow();
+        fileChooser.setTitle("Save dialog");
+        fileChooser.setInitialFileName(fileName);
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("pdf file", "*.pdf"));
+        File file = fileChooser.showSaveDialog(stage);
 
-            if (file != null) {
-                saveLaskuToFile(file);
-            }
+        if (file != null) {
+            saveLaskuToFile(file);
         }
     }
 
@@ -340,7 +452,7 @@ public class VarausDialogController extends DialogController {
             // Format the data from the Lasku object
             String content = String.format("ID Lasku: %d\nID Varaus: %d\nAsiakas: %s \nMokki: %s\nVarauksen data: %s\nSumma: %.2f €\nALV: %.2f %%\nMaksettu: %s",
                     lasku.getLasku_id(), lasku.getVaraus_id(), asiakasACTF.getLastSelectedItem(),
-                    mokkiCmB.getValue(), varaus.getVarattu_pvm(), lasku.getSumma(), lasku.getAlv(), (lasku.getMaksettu() == 1 ? "joo" : "ei"));
+                    mokkiCmBox.getValue(), varaus.getVarattu_pvm(), lasku.getSumma(), lasku.getAlv(), (lasku.getMaksettu() == 1 ? "joo" : "ei"));
 
             // Add content to the PDF at a fixed position
             Paragraph paragraph = new Paragraph(content);
@@ -481,8 +593,8 @@ public class VarausDialogController extends DialogController {
         // Asiakas
         tiedotGrP.add(asiakasACTF, 1, 0);
         // Mokki
-        mokkiCmB.getItems().addAll(SessionData.getMokit());
-        mokkiCmB.valueProperty().addListener((observable, oldValue, newValue) -> {
+        mokkiCmBox.getItems().addAll(SessionData.getMokit());
+        mokkiCmBox.valueProperty().addListener((observable, oldValue, newValue) -> {
             mokkiSumma.set(newValue.getHinta() * numOfDays.get());
             rangesToDisable.clear();
             SessionData.getVaraukset().forEach(v -> {
@@ -500,8 +612,8 @@ public class VarausDialogController extends DialogController {
         initDatePickers();
         initTimeComboBoxes();
         numOfDays.addListener(((observableValue, oldValue, newValue) -> {
-            if (mokkiCmB.getValue() != null)
-                mokkiSumma.set(mokkiCmB.getValue().getHinta() * newValue.intValue());
+            if (mokkiCmBox.getValue() != null)
+                mokkiSumma.set(mokkiCmBox.getValue().getHinta() * newValue.intValue());
         }));
     }
 
@@ -565,18 +677,25 @@ public class VarausDialogController extends DialogController {
         paperiLaskuChB.selectedProperty().addListener((observable, oldValue, newValue) -> {
             if(newValue) {
                 Asiakas asiakas = (Asiakas) asiakasACTF.getLastSelectedItem();
-                postinroTF.setText(asiakas.getPostinro());
+                SessionData.getPostit().forEach(p -> {
+                    if (Objects.equals(asiakas.getPostinro(), p.getPostinro())) {
+                       postinroACTF.setPromptText("Postinro");
+                       postinroACTF.setLastSelectedItem(p);
+                        return;
+                    }
+                });
                 katuosoiteTF.setText(asiakas.getLahiosoite());
                 paperiLaskuBox.getStyleClass().remove("hidden");
             } else
                 paperiLaskuBox.getStyleClass().add("hidden");
         });
+        paperiLaskuBox.getChildren().addFirst(postinroACTF);
     }
 
     /** Saves reservation data into Varaus-object */
     private void setData() {
         varaus.setAsiakas_id(((Asiakas)asiakasACTF.getLastSelectedItem()).getAsiakas_id());
-        varaus.setMokki_mokki_id(mokkiCmB.getValue().getMokki_id());
+        varaus.setMokki_mokki_id(mokkiCmBox.getValue().getMokki_id());
 
         LocalDateTime varattuPvmDate = varattuPvmPicker.getValue().atTime(Integer.parseInt(varattuPvmHour.getValue()), Integer.parseInt(varattuPvmMin.getValue()));
         varaus.setVarattu_pvm(Timestamp.valueOf(varattuPvmDate));
@@ -603,7 +722,7 @@ public class VarausDialogController extends DialogController {
         // Mokki
         SessionData.getMokit().forEach(mokki -> {
             if (mokki.getMokki_id() == varaus.getMokki_mokki_id()) {
-                mokkiCmB.setValue(mokki);
+                mokkiCmBox.setValue(mokki);
                 return;
             }
         });

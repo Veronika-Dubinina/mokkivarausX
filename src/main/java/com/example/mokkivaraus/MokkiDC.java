@@ -2,12 +2,8 @@ package com.example.mokkivaraus;
 
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.stage.Stage;
 import org.controlsfx.control.PopOver;
 
 import java.util.HashMap;
@@ -20,7 +16,7 @@ public class MokkiDC extends DialogController{
 
     private ComboBox<Alue> alueCmBox = new ComboBox<>(SessionData.getAlueet());
     private TextField nimiField = new TextField();
-    private AutoCompleteTextField<Posti> postinroField = new AutoCompleteTextField<>(SessionData.getPostit(), true) {
+    private AutoCompleteTextField<Posti> postinroACTF = new AutoCompleteTextField<>(SessionData.getPostit(), true) {
         @Override
         public void onCreateLabelClicked() {
             // Create popover window
@@ -37,28 +33,30 @@ public class MokkiDC extends DialogController{
             // Postinumero text field
             TextField postinroTF = new TextField();
             postinroTF.setPromptText("Postinro");
+            postinroTF.getStyleClass().add("wrong");
             postinroTF.textProperty().addListener((object, oldValue, newValue) -> {
                 String nro = newValue.trim();
                 if (nro.length() == 5 && nro.matches("[0-9]+")) {
                     postinro.set(nro);
-                    postinroTF.setStyle("-fx-border-color: green");
+                    postinroTF.getStyleClass().add("right");
                 } else {
                     postinro.set("");
-                    postinroTF.setStyle("-fx-border-color: red");
+                    postinroTF.getStyleClass().remove("right");
                 }
             });
             // Toimipaikka text field
             TextField toimipaikkaTF = new TextField();
             toimipaikkaTF.setPromptText("Toimipaikka");
+            toimipaikkaTF.getStyleClass().add("wrong");
             toimipaikkaTF.textProperty().addListener((object, oldValue, newValue) -> {
                 String tp = newValue.trim();
                 if (!tp.isEmpty() && tp.length() <= 45) {
                     toimipaikka.set(tp);
-                    toimipaikkaTF.setStyle("-fx-border-color: green");
+                    toimipaikkaTF.getStyleClass().add("right");
 
                 } else {
                     toimipaikka.set("");
-                    toimipaikkaTF.setStyle("-fx-border-color: red");
+                    toimipaikkaTF.getStyleClass().remove("right");
                 }
             });
             // Close button
@@ -138,7 +136,7 @@ public class MokkiDC extends DialogController{
         // Fields
         formsGridPane.add(alueCmBox, 1, 0, 1, 1);
         formsGridPane.add(nimiField, 1, 1, 1, 1);
-        formsGridPane.add(postinroField, 1, 2, 1, 1);
+        formsGridPane.add(postinroACTF, 1, 2, 1, 1);
         formsGridPane.add(katuosoiteField, 1, 3, 1, 1);
         formsGridPane.add(hintaField, 1, 4, 1, 1);
         formsGridPane.add(henkilomaaraField, 1, 5, 1, 1);
@@ -158,7 +156,7 @@ public class MokkiDC extends DialogController{
         nimiField.setText(mokki.getMokkinimi());
         SessionData.getPostit().forEach(p -> {
             if (Objects.equals(mokki.getPostinro(), p.getPostinro())) {
-                postinroField.setLastSelectedItem(p);
+                postinroACTF.setLastSelectedItem(p);
                 return;
             }
         });
@@ -240,7 +238,7 @@ public class MokkiDC extends DialogController{
      * @return false - if posti-field is empty
      */
     private boolean checkPostinro() {
-        var posti = postinroField.getLastSelectedItem();
+        var posti = postinroACTF.getLastSelectedItem();
         if (posti == null) { // is empty
             alertMessage = "Valitse Posti, kiitos!";
             return false;
@@ -276,7 +274,10 @@ public class MokkiDC extends DialogController{
      */
     private boolean checkHinta() {
         try {
-            // is empty or is not a number
+            // is empty
+            if (hintaField.getText().isEmpty() || hintaField.getText().isBlank())
+                return true;
+            // is not a number
             double h = Double.parseDouble(hintaField.getText().replace(',', '.'));
             // bigger than 1 billion
             if (h / Math.pow(10,8) > 1) {
@@ -299,9 +300,7 @@ public class MokkiDC extends DialogController{
      */
     private boolean checkKuvaus() {
         String k = kuvausArea.getText();
-        if (k.isEmpty() || k.isBlank()) // is empty
-            alertMessage = "Kirjoita kuvaus, kiitos!";
-        else if (k.length() > 150) // is longer than 150 chars
+        if (k.length() > 150) // is longer than 150 chars
             alertMessage = "Kuvaus pituus on liian pitkä (maximi 150 merkkiä)";
         else { // if ok
             mokki.setKuvaus(k);
@@ -317,9 +316,11 @@ public class MokkiDC extends DialogController{
      */
     private boolean checkHenkilomaara() {
         try {
-            // if empty or is not a number
+            // if empty
+            if (henkilomaaraField.getText().isEmpty() || henkilomaaraField.getText().isBlank())
+                return true;
+            // is not a number
             int hm = Integer.parseInt(henkilomaaraField.getText());
-
             // if ok
             mokki.setHenkilomaara(hm);
             return true;
@@ -335,9 +336,7 @@ public class MokkiDC extends DialogController{
      */
     private boolean checkVarustelu() {
         String v = varusteluArea.getText();
-        if (v.isEmpty() || v.isBlank()) // is empty
-            alertMessage = "Kirjoita Varustelu, kiitos!";
-        else if (v.length() > 100) // is longer than 100 chars
+        if (v.length() > 100) // is longer than 100 chars
             alertMessage = "Varustelu pituus on liian pitkä (maximi 100 merkkiä)";
         else { // if ok
             mokki.setVarustelu(v);

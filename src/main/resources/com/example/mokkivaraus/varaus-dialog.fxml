@@ -55,7 +55,7 @@
                               <Label text="Vahvistus pvm" GridPane.rowIndex="3" />
                               <Label text="Varattu alku pvm" GridPane.rowIndex="4" />
                               <Label text="Varattu loppu pvm" GridPane.rowIndex="5" />
-                              <ComboBox fx:id="mokkiCmB" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <ComboBox fx:id="mokkiCmBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                               <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                  <children>
                                     <DatePicker fx:id="varattuPvmPicker" minWidth="100.0" />
@@ -141,11 +141,10 @@
                               <CheckBox fx:id="paperiLaskuChB" mnemonicParsing="false" text="Paperi lasku" GridPane.columnSpan="2147483647" GridPane.rowIndex="5" />
                               <VBox fx:id="paperiLaskuBox" spacing="5.0" styleClass="hidden" GridPane.rowIndex="6">
                                  <children>
-                                    <TextField fx:id="postinroTF" promptText="Postinro" />
                                     <TextField fx:id="katuosoiteTF" promptText="Katuosoite" />
                                  </children>
                               </VBox>
-                              <Button mnemonicParsing="false" text="Lähetä lasku" onAction="#sendBtnClicked" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="7" />
+                              <Button mnemonicParsing="false" text="Tallenna lasku" onAction="#sendBtnClicked" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="7" />
                            </children>
                         </GridPane>
                      </children>
