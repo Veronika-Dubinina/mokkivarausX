@@ -7,7 +7,6 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
@@ -91,21 +90,13 @@
             </content>
           </Tab>
           <Tab fx:id="palveluTab" disable="true" text="Palvelut">
-            <content>
-                  <HBox>
-                     <children>
-                        <ScrollPane fitToWidth="true" HBox.hgrow="ALWAYS">
-                           <content>
-                              <VBox fx:id="palvelutVBox" fillWidth="false" styleClass="main">
-                                 <children>
-                                 </children>
-                              </VBox>
-                           </content>
-                        </ScrollPane>
-                        <ListView fx:id="palvelutListView" prefHeight="229.0" prefWidth="200.0" />
-                     </children>
-                  </HBox>
-            </content>
+               <content>
+                  <ScrollPane fitToWidth="true">
+                     <content>
+                        <VBox fx:id="palvelutVBox" prefHeight="200.0" styleClass="main"/>
+                     </content>
+                  </ScrollPane>
+               </content>
           </Tab>
             <Tab fx:id="laskuTab" disable="true" text="Summa">
                <content>
@@ -144,7 +135,7 @@
                                     <TextField fx:id="katuosoiteTF" promptText="Katuosoite" />
                                  </children>
                               </VBox>
-                              <Button mnemonicParsing="false" text="Tallenna lasku" onAction="#sendBtnClicked" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="7" />
+                              <Button mnemonicParsing="false" onAction="#sendBtnClicked" text="Tallenna lasku" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="7" />
                            </children>
                         </GridPane>
                      </children>

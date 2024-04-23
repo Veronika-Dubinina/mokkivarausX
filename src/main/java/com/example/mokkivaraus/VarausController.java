@@ -46,11 +46,24 @@ public class VarausController extends TabController<Varaus> {
     boolean getSearchConditions(Varaus varaus, String newValue) {
         String searchKeyword = newValue.toLowerCase();
         // Implement your search conditions here
-        return false;
+        if (varaus.getAsiakasnimi().toLowerCase().contains(searchKeyword) && (searchFilter.equals("kaikki") || searchFilter.equals("asiakas"))) {
+            return true; // Match by Asiakas
+        } else if (varaus.getMokkinimi().toLowerCase().contains(searchKeyword) && (searchFilter.equals("kaikki") || searchFilter.equals("mokki"))) {
+            return true; // Match by Mokki
+        } else if (String.valueOf(varaus.getVarattu_pvm()).toLowerCase().contains(searchKeyword) && (searchFilter.equals("kaikki") || searchFilter.equals("varattu_pvm"))) {
+            return true; // Match by booking date
+        } else if (String.valueOf(varaus.getVahvistus_pvm()).toLowerCase().contains(searchKeyword) && (searchFilter.equals("kaikki") || searchFilter.equals("vahvistus_pvm"))) {
+            return true; // Match by confirmation date
+        } else if (String.valueOf(varaus.getVarattu_alkupvm()).toLowerCase().contains(searchKeyword) && (searchFilter.equals("kaikki") || searchFilter.equals("varattu_alkupvm"))) {
+            return true; // Match by start date
+        } else if (String.valueOf(varaus.getVarattu_loppupvm()).toLowerCase().contains(searchKeyword) && (searchFilter.equals("kaikki") || searchFilter.equals("varattu_loppupvm"))) {
+            return true; // Match by end date
+        } else
+            return false; // No match
     }
 
     @Override
     String[] getSearchFilters() {
-        return new String[]{"kaikki", "asiakas_id", "mokki_mokki_id", "varattu_pvm", "vahvistus_pvm", "varattu_alkupvm", "varattu_loppupvm"};
+        return new String[]{"kaikki", "asiakas", "mokki", "varattu_pvm", "vahvistus_pvm", "varattu_alkupvm", "varattu_loppupvm"};
     }
 }

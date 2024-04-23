@@ -111,8 +111,8 @@ public class LaskuController extends TabController<Lasku> {
             return true; // Match by VAT
         } else if (String.valueOf(lasku.getMaksettu()).toLowerCase().contains(searchKeyword) && (searchFilter.equals("kaikki") || searchFilter.equals("maksettu"))) {
             return true; // Match by "paid" flag
-        }
-        return false; // No match
+        } else
+            return false; // No match
     }
 
     @Override

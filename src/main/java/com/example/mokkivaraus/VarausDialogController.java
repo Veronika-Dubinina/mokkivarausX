@@ -1,21 +1,23 @@
 package com.example.mokkivaraus;
 
+import com.itextpdf.kernel.font.PdfFont;
+import com.itextpdf.kernel.font.PdfFontFactory;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.kernel.pdf.PdfXrefTable;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.text.Font;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -30,6 +32,8 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
@@ -54,9 +58,10 @@ public class VarausDialogController extends DialogController {
     private Varaus varaus = new Varaus();
     private IntegerProperty numOfDays = new SimpleIntegerProperty(0);
     private final ObservableList<DisabledRange> rangesToDisable = FXCollections.observableArrayList();
-    private ObservableList<VarauksenPalvelut> varauksenPalvelut = FXCollections.observableArrayList();
+    private HashMap<Integer, VarauksenPalvelut> varauksenPalvelutOLd = new HashMap<>();
+    private ArrayList<Integer> varauksenPalvelut = new ArrayList<>();
     private Lasku lasku = new Lasku();
-    private HashMap<Integer, Node[]> palveluNodes = new HashMap<>();
+    private HashMap<Integer, Object[]> palveluNodes = new HashMap<>();
     private DoubleProperty mokkiSumma = new SimpleDoubleProperty(0.0);
     private DoubleProperty palvelutSumma = new SimpleDoubleProperty(0.0);
     private DoubleProperty summa = new SimpleDoubleProperty(0.0);
@@ -197,8 +202,6 @@ public class VarausDialogController extends DialogController {
     private static final String BLANK_PDF_PATH = "src/main/pdf/table_data.pdf"; // Путь к файлу-болванке
     @FXML
     private ComboBox<Mokki> mokkiCmBox;
-    @FXML
-    private ListView<VarauksenPalvelut> palvelutListView;
     @FXML
     private VBox palvelutVBox;
     @FXML
@@ -424,7 +427,7 @@ public class VarausDialogController extends DialogController {
     void sendBtnClicked(ActionEvent event) {
         String address = "";
         if (paperiLaskuChB.isSelected()) {
-            address = katuosoiteTF.getText() + "\n" + postinroACTF.getText();
+            address = "\n" + postinroACTF.getText() + "\n" + katuosoiteTF.getText();
         }
         // File name
         String fileName = "Lasku" + lasku.getLasku_id();
@@ -436,12 +439,12 @@ public class VarausDialogController extends DialogController {
         File file = fileChooser.showSaveDialog(stage);
 
         if (file != null) {
-            saveLaskuToFile(file);
+            saveLaskuToFile(file, address);
         }
     }
 
     /** Fill lasku-pdf file with data */
-    private void saveLaskuToFile(File file) {
+    private void saveLaskuToFile(File file, String address) {
         try {
             PdfDocument pdf = new PdfDocument(new PdfReader(BLANK_PDF_PATH), new PdfWriter(file));
             Document document = new Document(pdf);
@@ -449,15 +452,54 @@ public class VarausDialogController extends DialogController {
             // Set margins
             document.setMargins(100, 50, 50, 100);
 
-            // Format the data from the Lasku object
-            String content = String.format("ID Lasku: %d\nID Varaus: %d\nAsiakas: %s \nMokki: %s\nVarauksen data: %s\nSumma: %.2f €\nALV: %.2f %%\nMaksettu: %s",
-                    lasku.getLasku_id(), lasku.getVaraus_id(), asiakasACTF.getLastSelectedItem(),
-                    mokkiCmBox.getValue(), varaus.getVarattu_pvm(), lasku.getSumma(), lasku.getAlv(), (lasku.getMaksettu() == 1 ? "joo" : "ei"));
+            // Laskun tiedot
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+            Paragraph laskuData = new Paragraph(
+                    "Lasku nro: " + lasku.getLasku_id()
+                    + "\nMaksajan nimi ja osoite:\n" + asiakasACTF.getLastSelectedItem() + address
+                    + "\nPvm: " + LocalDate.now().format(formatter)
+                    + "\nEräpäivä: " + varaus.getVahvistus_pvm().toLocalDateTime().format(formatter)
+            );
+            laskuData.setFixedPosition(340, 640, 200);
+            document.add(laskuData);
 
+            // Varaus data
+            String vd = "\nVarauksen pvmt " + varaus.getVarattu_alkupvm().toLocalDateTime().format(formatter)
+                    + " - " + varaus.getVarattu_loppupvm().toLocalDateTime().format(formatter) + "\n";
+            // Mokki
+            Mokki mokki = mokkiCmBox.getValue();
+            String n = mokki.getMokkinimi();
+            double h = mokki.getHinta();
+            vd += String.format("\nMökki\n"
+                            + "%s" + " ".repeat(45-n.length())
+                            + " ".repeat(12-String.valueOf((int)h).length()) + "%.2f €/p"
+                            + " ".repeat(12-String.valueOf(numOfDays.get()).length()) + "%d p"
+                            + " ".repeat(10-String.valueOf((int)mokkiSumma.get()).length()) + "%.2f €\n",
+                    n, h, numOfDays.get(), mokkiSumma.get());
+            // Palvelut
+            AtomicReference<String> palvelut = new AtomicReference<>("\nPalvelut\n");
+            varauksenPalvelut.forEach(id -> {
+                Palvelu p = ((Palvelu)palveluNodes.get(id)[2]);
+                String nimi = p.getNimi();
+                double hinta = p.getHinta();
+                int lkm = ((Spinner<Integer>)palveluNodes.get(id)[1]).getValue();
+
+                String palvelu = String.format("%s" + " ".repeat(45-nimi.length())
+                                + " ".repeat(10-String.valueOf((int)hinta).length()) + "%.2f €/kpl"
+                                + " ".repeat(10-String.valueOf(lkm).length()) + "%d kpl"
+                                + " ".repeat(10-String.valueOf((int)(hinta * lkm)).length()) + "%.2f €\n",
+                        nimi, hinta, lkm, hinta * lkm);
+                palvelut.set(palvelut.get() + palvelu);
+            });
+            vd += palvelut.get();
+            vd += String.format("." + " ".repeat(103-String.valueOf((int)palvelutSumma.get()).length()) + "%.2f €\n", palvelutSumma.get());
+            // Summa
+            vd += String.format("\nSumma"+ " ".repeat(92-String.valueOf((int)summa.get()).length()) +"%.2f €", summa.get());
+
+            Paragraph varausData = new Paragraph(vd);
             // Add content to the PDF at a fixed position
-            Paragraph paragraph = new Paragraph(content);
-            paragraph.setFixedPosition(100, 350, 400); // (x, y, width)
-            document.add(paragraph);
+            varausData.setFixedPosition(100, 270, 500); // (x, y, width)
+            document.add(varausData);
 
             // Close the document
             document.close();
@@ -619,16 +661,6 @@ public class VarausDialogController extends DialogController {
 
     /** Initialize palvelut-data nodes */
     private void initPalvelut() {
-        // Add listener to list of palvelu
-        varauksenPalvelut.addListener(new ListChangeListener<VarauksenPalvelut>() {
-            @Override
-            public void onChanged(Change<? extends VarauksenPalvelut> change) {
-                palvelutListView.getItems().clear();
-                palvelutListView.getItems().addAll(varauksenPalvelut);
-
-            }
-        });
-
         // Add palvelut
         SessionData.getPalvelut().forEach(palvelu -> {
             Spinner<Integer> lkm = new Spinner<>(1, 50, 1);
@@ -644,16 +676,18 @@ public class VarausDialogController extends DialogController {
                 if (newValue) {
                     lkm.setDisable(false);
                     palvelutSumma.set(palvelutSumma.get() + palvelu.getHinta() * lkm.getValue());
+                    varauksenPalvelut.add(palvelu.getPalvelu_id());
                 } else {
                     lkm.setDisable(true);
                     palvelutSumma.set(palvelutSumma.get() - (palvelu.getHinta() * lkm.getValue()));
+                    varauksenPalvelut.remove((Object) palvelu.getPalvelu_id());
                 }
             });
 
             HBox container = new HBox(palveluBox, lkm);
             container.setSpacing(5.0);
             palvelutVBox.getChildren().add(container);
-            palveluNodes.put(palvelu.getPalvelu_id(), new Node[]{palveluBox, lkm});
+            palveluNodes.put(palvelu.getPalvelu_id(), new Object[]{palveluBox, lkm, palvelu});
         });
     }
 
@@ -747,13 +781,14 @@ public class VarausDialogController extends DialogController {
     /** Set chosen varaus-object palvelut-data */
     private void setPalvelut() {
         String filter = "WHERE varaus_id = " + varaus.getVaraus_id();
-        varauksenPalvelut = SessionData.dataBase.getAllRows("varauksen_palvelut", "varaus_id", VarauksenPalvelut.class, filter);
-        varauksenPalvelut.forEach(vp -> {
-            // CheckBox
-            Node[] nodes = palveluNodes.get(vp.getPalvelu_id());
-            ((CheckBox) nodes[0]).setSelected(true);
-            ((Spinner<Integer>) nodes[1]).getValueFactory().setValue(vp.getLkm());
-        });
+        SessionData.dataBase.getAllRows("varauksen_palvelut", "varaus_id", VarauksenPalvelut.class, filter)
+                .forEach(vp -> {
+                    // CheckBox
+                    Object[] nodes = palveluNodes.get(vp.getPalvelu_id());
+                    ((CheckBox) nodes[0]).setSelected(true);
+                    ((Spinner<Integer>) nodes[1]).getValueFactory().setValue(vp.getLkm());
+                    varauksenPalvelutOLd.put(vp.getPalvelu_id(), vp);
+                });
     }
 
     /** Set chosen varaus-object lasku-data */
@@ -777,31 +812,25 @@ public class VarausDialogController extends DialogController {
 
     /** Update palvelut-data */
     private void updatePalvelut() {
-        HashMap<Integer, VarauksenPalvelut> vpt = new HashMap<>();
-        varauksenPalvelut.forEach(vp -> {
-            vpt.put(vp.getPalvelu_id(), vp);
-        });
-
-        palveluNodes.forEach((p, nodes) -> {
+        varauksenPalvelut.forEach(id -> {
+            Object[] nodes = palveluNodes.get(id);
             CheckBox chB = (CheckBox) nodes[0];
             Spinner<Integer> lkm = (Spinner) nodes[1];
-
-            if (vpt.containsKey(p)) {
-                VarauksenPalvelut vp = vpt.get(p);
+            if (varauksenPalvelutOLd.containsKey(id)) {
+                VarauksenPalvelut vp = varauksenPalvelutOLd.get(id);
                 String filter = "WHERE varaus_id=" + vp.getVaraus_id() + " AND palvelu_id=" + vp.getPalvelu_id();
-
-                if (chB.isSelected()) { // Update row
-                    vp.setLkm(lkm.getValue());
-                    SessionData.dataBase.updateRow("varauksen_palvelut", vp.getAttrMap(), filter);
-                }
-                else // Delete row
-                    SessionData.dataBase.deleteRow("varauksen_palvelut", filter);
+                vp.setLkm(lkm.getValue());
+                SessionData.dataBase.updateRow("varauksen_palvelut", vp.getAttrMap(), filter);
+                varauksenPalvelutOLd.remove(id);
             } else {
-                if (chB.isSelected()) { // Add row
-                    VarauksenPalvelut vp = new VarauksenPalvelut(varaus.getVaraus_id(), p, lkm.getValue());
-                    SessionData.dataBase.addRow("varauksen_palvelut", vp.getAttrMap());
-                }
+                VarauksenPalvelut vp = new VarauksenPalvelut(varaus.getVaraus_id(), id, lkm.getValue());
+                SessionData.dataBase.addRow("varauksen_palvelut", vp.getAttrMap());
             }
+        });
+        varauksenPalvelutOLd.forEach((id, vp) -> {
+            String filter = "WHERE varaus_id=" + vp.getVaraus_id() + " AND palvelu_id=" + vp.getPalvelu_id();
+            SessionData.dataBase.deleteRow("varauksen_palvelut", filter);
+
         });
     }
 
