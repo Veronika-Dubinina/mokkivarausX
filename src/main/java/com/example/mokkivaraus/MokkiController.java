@@ -46,11 +46,11 @@ public class MokkiController extends TabController<Mokki> {
         String searchKeyword = newValue.trim().toLowerCase();
         if (mokki.getMokkinimi().toLowerCase().contains(searchKeyword) && (searchFilter.equals("kaikki") || searchFilter.equals("nimi"))) {
             return true; // Match in Nimi
-        } else if (mokki.getKatuosoite().toLowerCase().contains(searchKeyword) && (searchFilter.equals("kaikki") || searchFilter.equals("osoite"))) {
+        } else if (mokki.getKatuosoite() != null && mokki.getKatuosoite().toLowerCase().contains(searchKeyword) && (searchFilter.equals("kaikki") || searchFilter.equals("osoite"))) {
             return true; // Match in Osoite
-        } else if (mokki.getKuvaus().toLowerCase().contains(searchKeyword) && (searchFilter.equals("kaikki") || searchFilter.equals("kuvaus"))) {
+        } else if (mokki.getKuvaus() != null && mokki.getKuvaus().toLowerCase().contains(searchKeyword) && (searchFilter.equals("kaikki") || searchFilter.equals("kuvaus"))) {
             return true; // Match in Kuvaus
-        } else if (mokki.getVarustelu().toLowerCase().contains(searchKeyword) && (searchFilter.equals("kaikki") || searchFilter.equals("varustelu"))) {
+        } else if (mokki.getVarustelu() != null && mokki.getVarustelu().toLowerCase().contains(searchKeyword) && (searchFilter.equals("kaikki") || searchFilter.equals("varustelu"))) {
             return true; // Match in Varustelu
         } else if (mokki.getPostinro().toLowerCase().contains(searchKeyword) && (searchFilter.equals("kaikki") || searchFilter.equals("postinro"))) {
             return true; // Match in Postinumero

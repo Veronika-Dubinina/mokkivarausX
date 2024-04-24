@@ -47,8 +47,8 @@ public class LaskuController extends TabController<Lasku> {
             document.setMargins(100, 50, 50, 100);
 
             // Format the data from the Lasku object
-            String content = String.format("ID Lasku: %d\nID Varaus: %d\nAsiakas: %s %s\nMokki: %s\nVarauksen data: %s\nSumma: %.2f €\nALV: %.2f %%\nMaksettu: %s",
-                    lasku.getLasku_id(), lasku.getVaraus_id(), lasku.getAsiakas_etunimi(), lasku.getAsiakas_sukunimi(),
+            String content = String.format("ID Lasku: %d\nID Varaus: %d\nAsiakas: %s\nMokki: %s\nVarauksen data: %s\nSumma: %.2f €\nALV: %.2f %%\nMaksettu: %s",
+                    lasku.getLasku_id(), lasku.getVaraus_id(), lasku.getAsiakas(),
                     lasku.getMokkinimi(), lasku.getVarattu_pvm(), lasku.getSumma(), lasku.getAlv(), (lasku.getMaksettu() == 1 ? "joo" : "ei"));
 
             // Add content to the PDF at a fixed position
@@ -77,8 +77,8 @@ public class LaskuController extends TabController<Lasku> {
     }
     @Override
     ArrayList<String[]> getColToAttr() {
-        String[] cols = new String[]{"id", "asiakas_etunimi", "asiakas_sukunimi", "mokki", "varattu_pvm", "summa", "alv", "maksettu"};
-        String[] attrs = new String[]{"lasku_id", "asiakas_etunimi", "asiakas_sukunimi", "mokkinimi", "varattu_pvm", "summa", "alv", "maksettu"};
+        String[] cols = new String[]{"id", "asiakas", "mokki", "varattu_pvm", "summa", "alv", "maksettu"};
+        String[] attrs = new String[]{"lasku_id", "asiakas", "mokkinimi", "varattu_pvm", "summa", "alv", "maksettu"};
         ArrayList<String[]> colToAttr = new ArrayList<>();
         colToAttr.add(cols);
         colToAttr.add(attrs);
@@ -97,10 +97,8 @@ public class LaskuController extends TabController<Lasku> {
         String searchKeyword = newValue.toLowerCase();
         if (String.valueOf(lasku.getLasku_id()).toLowerCase().contains(searchKeyword) && (searchFilter.equals("kaikki") || searchFilter.equals("id"))) {
             return true; // Match by ID
-        } else if (lasku.getAsiakas_etunimi().toLowerCase().contains(searchKeyword) && (searchFilter.equals("kaikki") || searchFilter.equals("as_etunimi"))) {
-            return true; // Match by customer's first name
-        } else if (lasku.getAsiakas_sukunimi().toLowerCase().contains(searchKeyword) && (searchFilter.equals("kaikki") || searchFilter.equals("as_sukunimi"))) {
-            return true; // Match by customer's last name
+        } else if (lasku.getAsiakas().toLowerCase().contains(searchKeyword) && (searchFilter.equals("kaikki") || searchFilter.equals("asiakas"))) {
+            return true; // Match by customer
         } else if (lasku.getMokkinimi().toLowerCase().contains(searchKeyword) && (searchFilter.equals("kaikki") || searchFilter.equals("mökki"))) {
             return true; // Match by cottage name
         } else if (String.valueOf(lasku.getVarattu_pvm()).contains(searchKeyword) && (searchFilter.equals("kaikki") || searchFilter.equals("varattu_pvm"))) {
@@ -117,6 +115,6 @@ public class LaskuController extends TabController<Lasku> {
 
     @Override
     String[] getSearchFilters() {
-        return new String[]{"kaikki", "id", "as_etunimi", "as_sukunimi", "mökki", "varattu_pvm", "summa", "alv", "maksettu"};
+        return new String[]{"kaikki", "id", "asiakas", "mökki", "varattu_pvm", "summa", "alv", "maksettu"};
     }
 }

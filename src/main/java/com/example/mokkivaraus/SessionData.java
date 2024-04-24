@@ -81,7 +81,7 @@ public class SessionData {
     }
 
     public static void setLaskut() {
-        SessionData.laskut = dataBase.getAllRows("asiakkaiden_laskut", "lasku_id", Lasku.class);
+        SessionData.laskut = dataBase.getAllRows("asiakkaiden_laskut", "lasku_id", Lasku.class, filter);
     }
 
     public static ObservableList<Posti> getPostit() {

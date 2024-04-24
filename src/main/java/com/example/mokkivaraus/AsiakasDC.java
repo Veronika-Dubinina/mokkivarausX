@@ -218,39 +218,29 @@ public class AsiakasDC extends DialogController {
     }
 
     private boolean checkEtunimi() {
-        String etunimiText = etunimiField.getText();
-        if (etunimiText == null) {
-            asiakas.setEtunimi(null); // Поле может быть пустым, поэтому установим значение null
-        } else {
-            String etunimi = etunimiText.trim();
-            if (etunimi.isEmpty()) {
-                asiakas.setEtunimi(null); // Поле может быть пустым, поэтому установим значение null
-            } else if (etunimi.length() > 20) {
-                errorMessages.put(etunimiField, "Etunimi ei saa ylittää 20 merkkiä.");
-                return false;
-            } else {
-                asiakas.setEtunimi(etunimi);
-            }
+        String etunimi = etunimiField.getText().trim();
+        if (etunimi.isEmpty()) // is empty
+            errorMessages.put(etunimiField, "Kirjoita Etunimi, kiitos!");
+        else if (etunimi.length() > 20) // longer than 20 chars
+            errorMessages.put(etunimiField, "Etunimi ei saa ylittää 20 merkkiä.");
+        else { // if ok
+            asiakas.setEtunimi(etunimi);
+            return true;
         }
-        return true;
+        return false;
     }
 
     private boolean checkSukunimi() {
-        String sukunimiText = sukunimiField.getText();
-        if (sukunimiText == null) {
-            asiakas.setSukunimi(null); // Поле может быть пустым, поэтому установим значение null
-        } else {
-            String sukunimi = sukunimiText.trim();
-            if (sukunimi.isEmpty()) {
-                asiakas.setSukunimi(null); // Поле может быть пустым, поэтому установим значение null
-            } else if (sukunimi.length() > 40) {
-                errorMessages.put(sukunimiField, "Sukunimi ei saa ylittää 40 merkkiä.");
-                return false;
-            } else {
-                asiakas.setSukunimi(sukunimi);
-            }
+        String sukunimi = sukunimiField.getText().trim();
+        if (sukunimi.isEmpty()) // is empty
+            errorMessages.put(etunimiField, "Kirjoita Sukunimi, kiitos!");
+        else if (sukunimi.length() > 40) // longer than 40 chars
+            errorMessages.put(etunimiField, "Sukunimi ei saa ylittää 40 merkkiä.");
+        else { // if ok
+            asiakas.setSukunimi(sukunimi);
+            return true;
         }
-        return true;
+        return false;
     }
 
     private boolean checkLahiosoite() {
@@ -293,24 +283,17 @@ public class AsiakasDC extends DialogController {
     }
 
     private boolean checkPuhelinnro() {
-        String puhelinnroText = puhelinnroField.getText();
-        if (puhelinnroText == null) {
-            asiakas.setPuhelinnro(null); // Поле может быть пустым, поэтому установим значение null
+        String puhelinnro = puhelinnroField.getText().trim();
+        if (puhelinnro.isEmpty()) {
+            errorMessages.put(puhelinnroField, "Kirjoita puhelinnumero, kiitos!");
+        } else if (puhelinnro.length() > 15) {
+            errorMessages.put(puhelinnroField, "Puhelinnumero saa olla enintään 15 merkkiä pitkä.");
+        } else if (!puhelinnro.matches("\\+?[0-9]+")) {
+            errorMessages.put(puhelinnroField, "Puhelinnumero saa sisältää vain numeroita.");
         } else {
-            String puhelinnro = puhelinnroText.trim();
-            if (puhelinnro.isEmpty()) {
-                asiakas.setPuhelinnro(null); // Поле может быть пустым, поэтому установим значение null
-            } else if (puhelinnro.length() > 15) {
-                errorMessages.put(puhelinnroField, "Puhelinnumero saa olla enintään 15 merkkiä pitkä.");
-                return false;
-            } else if (!puhelinnro.matches("\\+?[0-9]+")) {
-                errorMessages.put(puhelinnroField, "Puhelinnumero saa sisältää vain numeroita.");
-                return false;
-
-            } else {
-                asiakas.setPuhelinnro(puhelinnro);
-            }
+            asiakas.setPuhelinnro(puhelinnro);
+            return true;
         }
-        return true;
+        return false;
     }
 }

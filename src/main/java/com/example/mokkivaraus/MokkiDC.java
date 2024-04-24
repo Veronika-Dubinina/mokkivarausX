@@ -221,8 +221,8 @@ public class MokkiDC extends DialogController{
      * @return false - if nimi-field is empty or nimi length is more than 45 characters
      */
     private boolean checkNimi() {
-        String n = nimiField.getText();
-        if (n.isEmpty() || n.isBlank()) // is empty
+        String n = nimiField.getText().trim();
+        if (n.isEmpty()) // is empty
             alertMessage = "Kirjoita Nimi, kiitos!";
         else if (n.length() > 45) // longer than 45 chars
             alertMessage = "Nimi pituus on liian pitkä (maximi 45 merkkiä)";
@@ -254,8 +254,8 @@ public class MokkiDC extends DialogController{
      * @return false - if osoite-field is empty or osoite length is more than 45 characters
      */
     private boolean checkOsoite() {
-        String ko = katuosoiteField.getText();
-        if (ko.isEmpty() || ko.isBlank()) // is empty
+        String ko = katuosoiteField.getText().trim();
+        if (ko.isEmpty()) // is empty
             alertMessage = "Kirjoita Osoite, kiitos!";
         else if (ko.length() > 45) // longer than 45 chars
             alertMessage = "Osoite pituus on liian pitkä (maximi 45 merkkiä)";
@@ -274,11 +274,8 @@ public class MokkiDC extends DialogController{
      */
     private boolean checkHinta() {
         try {
-            // is empty
-            if (hintaField.getText().isEmpty() || hintaField.getText().isBlank())
-                return true;
-            // is not a number
-            double h = Double.parseDouble(hintaField.getText().replace(',', '.'));
+            // is empty or is not a number
+            double h = Double.parseDouble(hintaField.getText().trim().replace(',', '.'));
             // bigger than 1 billion
             if (h / Math.pow(10,8) > 1) {
                 alertMessage = "Hinta on liian suuri (on oltava alle 1 miljardi)";
@@ -299,7 +296,7 @@ public class MokkiDC extends DialogController{
      * @return false - if kuvaus-field is empty or kuvaus length is more than 150 characters
      */
     private boolean checkKuvaus() {
-        String k = kuvausArea.getText();
+        String k = kuvausArea.getText().trim();
         if (k.length() > 150) // is longer than 150 chars
             alertMessage = "Kuvaus pituus on liian pitkä (maximi 150 merkkiä)";
         else { // if ok
@@ -317,10 +314,11 @@ public class MokkiDC extends DialogController{
     private boolean checkHenkilomaara() {
         try {
             // if empty
-            if (henkilomaaraField.getText().isEmpty() || henkilomaaraField.getText().isBlank())
+            String henklm = henkilomaaraField.getText().trim();
+            if (henklm.isEmpty())
                 return true;
             // is not a number
-            int hm = Integer.parseInt(henkilomaaraField.getText());
+            int hm = Integer.parseInt(henklm);
             // if ok
             mokki.setHenkilomaara(hm);
             return true;
@@ -335,7 +333,7 @@ public class MokkiDC extends DialogController{
      * @return false - if varustelu-field is empty or varustelu length is more than 150 characters
      */
     private boolean checkVarustelu() {
-        String v = varusteluArea.getText();
+        String v = varusteluArea.getText().trim();
         if (v.length() > 100) // is longer than 100 chars
             alertMessage = "Varustelu pituus on liian pitkä (maximi 100 merkkiä)";
         else { // if ok

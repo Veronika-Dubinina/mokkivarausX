@@ -115,12 +115,13 @@ public class PalveluDC extends DialogController {
     private boolean checkId() {
         try {
             // is empty
-            if (idField.getText().isEmpty() || idField.getText().isBlank())
+            String id = idField.getText().trim();
+            if (id.isEmpty())
                 return true;
             // is not a number
-            int id = Integer.parseInt(idField.getText());
+            int i = Integer.parseInt(id);
             // if ok
-            palvelu.setPalvelu_id(id);
+            palvelu.setPalvelu_id(i);
             return true;
         } catch (Exception ex) {
             alertMessage = "ID on ilmoitettava numerona";
@@ -149,8 +150,8 @@ public class PalveluDC extends DialogController {
      * @return false - if nimi-field is empty or nimi length is more than 45 characters
      */
     private boolean checkNimi() {
-        String n = nimiField.getText();
-        if (n.isEmpty() || n.isBlank()) // is empty
+        String n = nimiField.getText().trim();
+        if (n.isEmpty()) // is empty
             alertMessage = "Kirjoita Nimi, kiitos!";
         else if (n.length() > 45) // longer than 45 chars
             alertMessage = "Nimi pituus on liian pitkä (maximi 45 merkkiä)";
@@ -168,10 +169,11 @@ public class PalveluDC extends DialogController {
     private boolean checkTyyppi() {
         try {
             // is empty
-            if (tyyppiField.getText().isEmpty() || tyyppiField.getText().isBlank())
+            String tyyppi = tyyppiField.getText().trim();
+            if (tyyppi.isEmpty())
                 return true;
             // is not a number
-            int t = Integer.parseInt(tyyppiField.getText());
+            int t = Integer.parseInt(tyyppi);
             // if ok
             palvelu.setTyyppi(t);
             return true;
@@ -186,7 +188,7 @@ public class PalveluDC extends DialogController {
      * @return false - if kuvaus-field is empty or kuvaus length is more than 150 characters
      */
     private boolean checkKuvaus() {
-        String k = kuvausArea.getText();
+        String k = kuvausArea.getText().trim();
         if (k.length() > 150) // is longer than 150 chars
             alertMessage = "Kuvaus pituus on liian pitkä (maximi 150 merkkiä)";
         else { // if ok
@@ -205,7 +207,7 @@ public class PalveluDC extends DialogController {
     private boolean checkHinta() {
         try {
             // is empty or is not a number
-            double h = Double.parseDouble(hintaField.getText().replace(',', '.'));
+            double h = Double.parseDouble(hintaField.getText().trim().replace(',', '.'));
             // bigger than 1 billion
             if (h / Math.pow(10,8) > 1) {
                 alertMessage = "Hinta on liian suuri (on oltava alle 1 miljardi)";
@@ -229,7 +231,7 @@ public class PalveluDC extends DialogController {
     private boolean checkAlv() {
         try {
             // is empty or is not a number
-            double a = Double.parseDouble(alvField.getText().replace(',', '.'));
+            double a = Double.parseDouble(alvField.getText().trim().replace(',', '.'));
             // bigger than 1 billion
             if (a / Math.pow(10,8) > 1) {
                 alertMessage = "ALV on liian suuri (on oltava alle 1 miljardi)";

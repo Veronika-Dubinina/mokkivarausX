@@ -53,7 +53,7 @@ public class AsiakasController extends TabController<Asiakas> {
             return true; // Match in Postinro
         } else if (asiakas.getPuhelinnro().toLowerCase().contains(searchKeyword) && (searchFilter.equals("kaikki") || searchFilter.equals("puhelinnro"))) {
             return true; // Match in Puhelinnro
-        } else if (asiakas.getLahiosoite().toLowerCase().contains(searchKeyword) && (searchFilter.equals("kaikki") || searchFilter.equals("lahiosoite"))) {
+        } else if (asiakas.getLahiosoite() != null && asiakas.getLahiosoite().toLowerCase().contains(searchKeyword) && (searchFilter.equals("kaikki") || searchFilter.equals("lahiosoite"))) {
             return true; // Match in Lahiosoite
         } else {
             return false; // No match found

@@ -9,8 +9,7 @@ public class Lasku {
     static int last_id = -1;
     private int lasku_id;
     private int varaus_id;
-    private String asiakas_etunimi;
-    private String asiakas_sukunimi;
+    private String asiakas;
     private String mokkinimi;
     private SQLDateTime varattu_pvm;
     private double summa;
@@ -34,8 +33,7 @@ public class Lasku {
             this.alv = res.getDouble("alv");
             this.maksettu = res.getInt("maksettu");
 
-            this.asiakas_etunimi = res.getString("asiakas_etunimi");
-            this.asiakas_sukunimi = res.getString("asiakas_sukunimi");
+            this.asiakas = res.getString("asiakas");
             this.mokkinimi = res.getString("mokkinimi");
             this.varattu_pvm = new SQLDateTime(res.getTimestamp("varattu_pvm"));
 
@@ -70,20 +68,12 @@ public class Lasku {
         this.varaus_id = varaus_id;
     }
 
-    public String getAsiakas_etunimi() {
-        return asiakas_etunimi;
+    public String getAsiakas() {
+        return asiakas;
     }
 
-    public void setAsiakas_etunimi(String asiakas_etunimi) {
-        this.asiakas_etunimi = asiakas_etunimi;
-    }
-
-    public String getAsiakas_sukunimi() {
-        return asiakas_sukunimi;
-    }
-
-    public void setAsiakas_sukunimi(String asiakas_sukunimi) {
-        this.asiakas_sukunimi = asiakas_sukunimi;
+    public void setAsiakas(String asiakas) {
+        this.asiakas = asiakas;
     }
 
     public String getMokkinimi() {
